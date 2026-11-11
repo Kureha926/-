@@ -133,10 +133,10 @@
 
             <!-- Global Navigation Tabs (Desktop) -->
             <nav class="hidden xl:flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700/60 text-xs font-bold shrink-0">
-                <button onclick="switchTab('anime')" id="tab-btn-anime" class="tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap" data-i18n="navAnime">アニメ15選</button>
-                <button onclick="switchTab('animemovie')" id="tab-btn-animemovie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navAnimeMovie">アニメ映画15選</button>
-                <button onclick="switchTab('movie')" id="tab-btn-movie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navMovie">映画15選</button>
-                <button onclick="switchTab('manga')" id="tab-btn-manga" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navManga">漫画15選</button>
+                <button onclick="switchTab('anime')" id="tab-btn-anime" class="tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap" data-i18n="navAnime">アニメ</button>
+                <button onclick="switchTab('animemovie')" id="tab-btn-animemovie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navAnimeMovie">アニメ映画</button>
+                <button onclick="switchTab('movie')" id="tab-btn-movie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navMovie">映画</button>
+                <button onclick="switchTab('manga')" id="tab-btn-manga" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navManga">漫画</button>
                 <button onclick="switchTab('goods')" id="tab-btn-goods" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition flex items-center gap-1 whitespace-nowrap">
                     <i class="fa-solid fa-bag-shopping text-pink-500"></i> <span data-i18n="navGoods">おすすめ商品</span>
                 </button>
@@ -227,7 +227,7 @@
                     <i class="fa-solid fa-paper-plane"></i> <span data-i18n="submitBoxTitle">企画に回答を送信</span>
                 </h3>
                 <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed" data-i18n="submitBoxDesc">
-                    完成した15選カルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。
+                    完成したカルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。
                 </p>
                 <button onclick="openSubmitModal('grid')" class="w-full py-2.5 px-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/20 transition flex items-center justify-center gap-2 active:scale-95">
                     <i class="fa-solid fa-clipboard-check"></i> <span data-i18n="btnOpenSubmit">Googleフォームへ回答を送信</span>
@@ -274,7 +274,7 @@
         <!-- Main Workspace Area -->
         <section class="flex-1 min-w-0">
             
-            <!-- SECTION 1: 15-GRID WORKSPACE -->
+            <!-- SECTION 1: GRID WORKSPACE -->
             <div id="section-grid-view" class="space-y-4">
                 
                 <div id="capture-container" class="glass-card p-4 sm:p-7 rounded-3xl relative overflow-hidden transition-colors">
@@ -289,12 +289,12 @@
                             <h2 id="display-subtitle" class="text-xl sm:text-3xl font-black tracking-tight leading-tight" data-i18n="defaultSubtitleText">タイトル未設定</h2>
                         </div>
                         <div class="text-right self-end sm:self-auto">
-                            <span id="display-media-tag" class="px-4 py-1.5 bg-black/40 backdrop-blur-md text-white border border-white/30 font-black rounded-xl text-sm shadow-md tracking-wider uppercase inline-block">ANIME 15</span>
+                            <span id="display-media-tag" class="px-4 py-1.5 bg-black/40 backdrop-blur-md text-white border border-white/30 font-black rounded-xl text-sm shadow-md tracking-wider uppercase inline-block">ANIME</span>
                         </div>
                     </div>
 
-                    <!-- 15 Cards Grid -->
-                    <div id="main-15-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
+                    <!-- Cards Grid -->
+                    <div id="main-15-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
                         <!-- Dynamic Grid Cards -->
                     </div>
 
@@ -538,7 +538,7 @@
             <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
                 <div class="flex items-center gap-2">
                     <span id="modal-cat-num" class="w-7 h-7 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-extrabold text-xs flex items-center justify-center">1</span>
-                    <h3 id="modal-cat-title" class="font-bold text-base">万人向け</h3>
+                    <h3 id="modal-cat-title" class="font-bold text-base">最推し</h3>
                 </div>
                 <button onclick="closeGridModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark"></i>
@@ -663,7 +663,7 @@
         </div>
     </div>
 
-    <!-- GUIDE MODAL (UPDATED VISUAL FLOW TO GOOGLE FORMS) -->
+    <!-- GUIDE MODAL -->
     <div id="guide-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
         <div id="guide-modal-container" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 dark:border-slate-800 gap-2">
@@ -682,44 +682,44 @@
                 
                 <!-- STEP BY STEP VISUAL GUIDE TO GOOGLE FORMS -->
                 <div class="space-y-3">
-                    <h4 class="font-black text-sm text-pink-600 dark:text-pink-400 flex items-center gap-2">
-                        <i class="fa-solid fa-map-location-dot"></i> Googleフォーム回答・企画参加の超簡単4ステップ
+                    <h4 class="font-black text-sm text-pink-600 dark:text-pink-400 flex items-center gap-2" data-i18n="guideHeading1">
+                        <i class="fa-solid fa-map-location-dot"></i> Googleフォーム回答・企画参加の簡単4ステップ
                     </h4>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="p-3.5 bg-pink-50/50 dark:bg-pink-950/20 rounded-2xl border border-pink-200 dark:border-pink-900/40 relative">
                             <span class="w-6 h-6 rounded-full bg-pink-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">1</span>
-                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">カルテの15選を作成</h5>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">好きな作品や商品をカードをクリックして入力・登録します。1文字入力で自動画像検索が使えます！</p>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1" data-i18n="guideStep1Title">カルテを作成</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="guideStep1Desc">カードをクリックして好きな作品や商品を入力。1文字検索で画像を自動取得できます。</p>
                         </div>
 
                         <div class="p-3.5 bg-purple-50/50 dark:bg-purple-950/20 rounded-2xl border border-purple-200 dark:border-purple-900/40 relative">
                             <span class="w-6 h-6 rounded-full bg-purple-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">2</span>
-                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">「企画に回答を送信」を押す</h5>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">画面左側または下部の「企画に回答を送信」ボタンをクリック。回答内容が自動的に綺麗にテキスト化されます。</p>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1" data-i18n="guideStep2Title">「回答を送信」を押す</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="guideStep2Desc">「企画に回答を送信」をクリックすると、回答内容が綺麗にテキスト化されます。</p>
                         </div>
 
                         <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-200 dark:border-indigo-900/40 relative">
                             <span class="w-6 h-6 rounded-full bg-indigo-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">3</span>
-                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">コピーしてフォームを開く</h5>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">モーダルで配信者のフォームURLを入力し、「コピーしてフォームを開く」を押すと、回答が自動コピーされフォームが開きます。</p>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1" data-i18n="guideStep3Title">コピーしてフォームを開く</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="guideStep3Desc">配信者のフォームURLを入力してコピー。「フォームを開く」で回答がクリップボードに保存されます。</p>
                         </div>
 
                         <div class="p-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200 dark:border-emerald-900/40 relative">
                             <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">4</span>
-                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">フォームへ貼り付けて送信！</h5>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">開いたGoogleフォームの回答欄に「貼り付け（Ctrl+V / 長押し）」して送信完了！匿名希望チェッカーも使えます。</p>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1" data-i18n="guideStep4Title">フォームへ貼り付けて送信</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="guideStep4Desc">開いたGoogleフォームに「貼り付け」して送信完了！匿名送信も可能です。</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
-                    <h4 class="font-black text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2">
+                    <h4 class="font-black text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2" data-i18n="guideHeading2">
                         <i class="fa-solid fa-chart-pie"></i> 配信者向け：自動集計機能の使い方
                     </h4>
                     <div class="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
-                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Googleフォームと連携したスプレッドシートの「公開CSV URL」または「CSVファイル」を『アーカイブ』タブで読み込むことで、リスナーからの人気作品ランキングおよび個別回答が自動で可視化されます。
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed" data-i18n="guideStreamerDesc">
+                            Googleフォーム連携スプレッドシートの「公開CSV URL」または「CSVファイル」を『アーカイブ』タブで読み込むと、リスナーのランキングと個別回答が自動で可視化されます。
                         </p>
                     </div>
                 </div>
@@ -744,6 +744,10 @@
                     <h4 class="font-black text-pink-600 dark:text-pink-400 text-sm flex items-center gap-1.5" data-i18n="terms1Title">①【配信大歓迎】</h4>
                     <p class="text-slate-600 dark:text-slate-300" data-i18n="terms1Desc">当ツールはVTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作でのご利用を大歓迎しております！</p>
                 </div>
+                <div class="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-1">
+                    <h4 class="font-black text-slate-700 dark:text-slate-200 text-sm flex items-center gap-1.5" data-i18n="terms2Title">②【完全無料・個人保存】</h4>
+                    <p class="text-slate-600 dark:text-slate-300" data-i18n="terms2Desc">本ツールは完全非営利の無料ツールです。入力データはお使いのブラウザ内にのみローカル保存され、外部送信されません。</p>
+                </div>
                 <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex justify-between items-center">
                     <span>Powered by 葵杏くれは (@kikyokureha)</span>
                 </div>
@@ -756,12 +760,12 @@
         // Multi-Language Translation Dictionary
         const i18nDict = {
             ja: {
-                navAnime: "アニメ15選", navAnimeMovie: "アニメ映画15選", navMovie: "映画15選", navManga: "漫画15選",
+                navAnime: "アニメ", navAnimeMovie: "アニメ映画", navMovie: "映画", navManga: "漫画",
                 navGoods: "おすすめ商品", navArchive: "アーカイブ", navMypage: "マイページ", navGuide: "使い方ガイド",
                 mobAnime: "アニメ", mobAnimeMovie: "アニメ映画", mobMovie: "映画", mobManga: "漫画", mobGoods: "商品", mobArchive: "アーカイブ", mobMypage: "マイページ", mobGuide: "❓ 使い方",
                 blurOff: "ぼかし OFF", blurOn: "ぼかし ON", btnSaveImage: "画像保存",
                 sidebarInfoTitle: "カルテ情報設定", labelCreator: "配信者 / リスナー名", labelSubtitle: "カルテサブタイトル",
-                submitBoxTitle: "企画に回答を送信", submitBoxDesc: "完成した15選カルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。", btnOpenSubmit: "Googleフォームへ回答を送信",
+                submitBoxTitle: "企画に回答を送信", submitBoxDesc: "完成したカルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。", btnOpenSubmit: "Googleフォームへ回答を送信",
                 streamBoxTitle: "配信利用・ぼかし対策", streamWelcomeBadge: "配信大歓迎！", streamBoxDesc: "センシティブな画像やネタバレ画像を配信中にぼかして表示し、1個ずつ解禁演出ができます。", globalBlurLabel: "全画像ぼかし",
                 resetBoxTitle: "操作・リセット", btnSample: "サンプル読込", btnReset: "リセット", defaultSubtitleText: "タイトル未設定",
                 footerGenerator: "#推し活脳内カルテ 公式ジェネレーター", footerTerms: "利用規約・ガイドライン", bottomBannerHint: "完成したら配信者のGoogleフォームに送信して配信企画に参加しよう！", bottomBannerBtn: "企画に回答を送信する",
@@ -775,37 +779,53 @@
                 submitModalTitle: "Googleフォームへ回答を送信", labelFormUrl: "配信者のGoogleフォームURL", formAnonDesc: "「匿名希望」にチェックを入れると名前欄が「匿名希望」に置き換わります。", labelPreview: "送信データのプレビュー", btnCancel: "キャンセル", btnCopyAndOpen: "コピーしてフォームを開く",
                 candidateModalTitle: "画像を選択（候補一覧）", labelTitleInput: "作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）", btnCandidates: "候補一覧", labelCoverUrl: "カバー画像 (URL)", btnBlurToggle: "ぼかしトグル", imgPreviewText: "画像プレビュー", labelComment: "おすすめコメント", btnSave: "保存する",
                 goodsModalHeader: "おすすめ商品の追加・編集", labelCategory: "カテゴリ設定", catCustom: "✏️ 自由入力", labelGoodsTitle: "商品名（1文字入力からリアルタイム検索・候補表示）", btnAutoSearch: "画像自動検索", labelGoodsImg: "商品画像URL", labelGoodsNote: "価格帯 / 購入場所 メモ", labelGoodsComment: "おすすめポイント",
-                guideModalTitle: "使い方ガイド", termsModalTitle: "利用規約・配信利用ガイドライン", terms1Title: "①【配信大歓迎】", terms1Desc: "当ツールはVTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作でのご利用を大歓迎しております！"
+                guideModalTitle: "使い方ガイド", termsModalTitle: "利用規約・配信利用ガイドライン", terms1Title: "①【配信大歓迎】", terms1Desc: "当ツールはVTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作でのご利用を大歓迎しております！",
+                terms2Title: "②【完全無料・個人保存】", terms2Desc: "本ツールは完全非営利の無料ツールです。入力データはお使いのブラウザ内にのみローカル保存され、外部送信されません。",
+                guideHeading1: "Googleフォーム回答・企画参加の簡単4ステップ",
+                guideStep1Title: "カルテを作成", guideStep1Desc: "カードをクリックして好きな作品や商品を登録。1文字検索で画像を自動取得できます。",
+                guideStep2Title: "「回答を送信」を押す", guideStep2Desc: "「企画に回答を送信」をクリックすると、回答内容が綺麗にテキスト化されます。",
+                guideStep3Title: "コピーしてフォームを開く", guideStep3Desc: "配信者のフォームURLを入力してコピー。「フォームを開く」で回答がクリップボードに保存されます。",
+                guideStep4Title: "フォームへ貼り付けて送信", guideStep4Desc: "開いたGoogleフォームに「貼り付け」して送信完了！匿名送信も可能です。",
+                guideHeading2: "配信者向け：自動集計機能の使い方",
+                guideStreamerDesc: "Googleフォーム連携スプレッドシートの「公開CSV URL」または「CSVファイル」を『アーカイブ』タブで読み込むと、リスナーのランキングと個別回答が自動で可視化されます。"
             },
             en: {
-                navAnime: "Top 15 Anime", navAnimeMovie: "Anime Movies", navMovie: "Top 15 Movies", navManga: "Top 15 Manga",
+                navAnime: "Anime", navAnimeMovie: "Anime Movies", navMovie: "Movies", navManga: "Manga",
                 navGoods: "Goods", navArchive: "Archive", navMypage: "My Page", navGuide: "User Guide",
                 mobAnime: "Anime", mobAnimeMovie: "Anime Movie", mobMovie: "Movie", mobManga: "Manga", mobGoods: "Goods", mobArchive: "Archive", mobMypage: "My Page", mobGuide: "❓ Guide",
                 blurOff: "Blur OFF", blurOn: "Blur ON", btnSaveImage: "Save Image",
                 sidebarInfoTitle: "Karte Settings", labelCreator: "Streamer / User Name", labelSubtitle: "Karte Subtitle",
-                submitBoxTitle: "Submit to Streamer", submitBoxDesc: "Format your karte and safely send it to the streamer's Google Form.", btnOpenSubmit: "Submit to Google Form",
-                streamBoxTitle: "Stream Safety & Blur", streamWelcomeBadge: "Streaming Welcome!", streamBoxDesc: "Blur images during streams for spoiler safety and reveal them one by one.", globalBlurLabel: "Global Blur",
+                submitBoxTitle: "Submit to Streamer", submitBoxDesc: "Format your karte text automatically and safely submit to Google Form.", btnOpenSubmit: "Submit to Google Form",
+                streamBoxTitle: "Stream Safety & Blur", streamWelcomeBadge: "Streaming Welcome!", streamBoxDesc: "Blur spoiler or sensitive images during streams and reveal them one by one.", globalBlurLabel: "Global Blur",
                 resetBoxTitle: "Actions & Reset", btnSample: "Load Sample", btnReset: "Reset", defaultSubtitleText: "Untitled Karte",
-                footerGenerator: "#OshikatsuBrainKarte Generator", footerTerms: "Terms & Guidelines", bottomBannerHint: "Send your completed karte to the streamer's Google Form!", bottomBannerBtn: "Submit Answers",
+                footerGenerator: "#OshikatsuBrainKarte Generator", footerTerms: "Terms & Guidelines", bottomBannerHint: "Submit your completed karte to the streamer's Google Form!", bottomBannerBtn: "Submit Answers",
                 goodsHeaderTitle: "Recommended Goods", goodsHeaderDesc: "Cardify your favorite snacks, desserts, items, and gadgets!", btnAddGoods: "Add Goods",
-                archiveHeaderTitle: "Streamer Analytics Dashboard", archiveHeaderDesc: "Load public Google Spreadsheet CSV URL or local CSV to auto-aggregate!", btnLoadSampleStats: "Load Sample Stats",
+                archiveHeaderTitle: "Streamer Analytics Dashboard", archiveHeaderDesc: "Load public Google Sheets CSV URL or local CSV file to auto-aggregate!", btnLoadSampleStats: "Load Sample Stats",
                 csvUrlLabel: "Google Sheets Public CSV URL", btnLoadCsv: "Load CSV", localFileLabel: "Local File:", btnResetStats: "Reset Stats",
                 statListeners: "Total Listeners", unitPersons: "", statTopWork: "Top Voted Title", statUncalculated: "N/A", statGoodsCount: "Saved Goods", unitItems: "items",
                 rankingTitle: "🏆 Top 5 Popular Titles", rankingPlaceholder: "Load CSV data to display rankings here.",
-                mypageNoticeTitle: "【100% Free & Secure Guarantee】", mypageNoticeDesc: "This is a free personal Web tool. No ads, no fees, no registration required. All data is saved securely in your browser.",
+                mypageNoticeTitle: "【100% Free & Secure Guarantee】", mypageNoticeDesc: "This is a free personal web tool. No ads, no fees, no registration required. All data is saved securely in your browser.",
                 mypageDataTitle: "Browser Saved Data", btnManualSave: "Save to Browser", btnJsonExport: "Export JSON", labelJsonImport: "Import JSON File:",
                 submitModalTitle: "Submit to Google Form", labelFormUrl: "Streamer's Google Form URL", formAnonDesc: "Check 'Anonymous' to replace your name with 'Anonymous'.", labelPreview: "Formatted Preview Data", btnCancel: "Cancel", btnCopyAndOpen: "Copy & Open Form",
                 candidateModalTitle: "Select Image Candidates", labelTitleInput: "Title (Real-time auto search)", btnCandidates: "Candidates", labelCoverUrl: "Cover Image URL", btnBlurToggle: "Toggle Blur", imgPreviewText: "Image Preview", labelComment: "Comment", btnSave: "Save",
                 goodsModalHeader: "Add / Edit Goods", labelCategory: "Category", catCustom: "✏️ Custom", labelGoodsTitle: "Goods Name", btnAutoSearch: "Auto Search", labelGoodsImg: "Goods Image URL", labelGoodsNote: "Price / Store Note", labelGoodsComment: "Review Comment",
-                guideModalTitle: "User Guide", termsModalTitle: "Terms & Guidelines", terms1Title: "① Streaming Welcome", terms1Desc: "VTubers and streamers are welcome to use this app on YouTube or Twitch streams!"
+                guideModalTitle: "User Guide", termsModalTitle: "Terms & Guidelines", terms1Title: "① Streaming Welcome", terms1Desc: "VTubers and streamers are welcome to use this app on YouTube or Twitch streams!",
+                terms2Title: "② Free & Local Storage", terms2Desc: "This tool is non-profit and 100% free. All data stays local in your browser.",
+                guideHeading1: "4 Easy Steps to Submit to Google Form",
+                guideStep1Title: "1. Create Karte", guideStep1Desc: "Click slots to add titles. Auto-fetch cover images in 1-character search.",
+                guideStep2Title: "2. Click Submit", guideStep2Desc: "Click 'Submit to Google Form' to format your answers into clean text.",
+                guideStep3Title: "3. Copy & Open Form", guideStep3Desc: "Paste the streamer's form URL and copy text to your clipboard.",
+                guideStep4Title: "4. Paste & Send", guideStep4Desc: "Paste into the opened Google Form and submit! Anonymous submission supported.",
+                guideHeading2: "For Streamers: Analytics Dashboard Guide",
+                guideStreamerDesc: "Load public Google Sheets CSV URL or local CSV file in the 'Archive' tab to view rankings and individual listener responses."
             },
             ko: {
-                navAnime: "애니 15선", navAnimeMovie: "극장판 애니", navMovie: "영화 15선", navManga: "만화 15선",
+                navAnime: "애니", navAnimeMovie: "극장판 애니", navMovie: "영화", navManga: "만화",
                 navGoods: "추천 상품", navArchive: "아카이브", navMypage: "마이페이지", navGuide: "가이드",
                 mobAnime: "애니", mobAnimeMovie: "극장판", mobMovie: "영화", mobManga: "만화", mobGoods: "상품", mobArchive: "아카이브", mobMypage: "마이페이지", mobGuide: "❓ 가이드",
                 blurOff: "블러 OFF", blurOn: "블러 ON", btnSaveImage: "이미지 저장",
                 sidebarInfoTitle: "차트 정보 설정", labelCreator: "스트리머 / 닉네임", labelSubtitle: "차트 서브타이틀",
-                submitBoxTitle: "방송 기획 답변 제출", submitBoxDesc: "작성한 15선 차트를 텍스트로 자동 변환하여 구글 폼에 안전하게 제출합니다.", btnOpenSubmit: "구글 폼으로 답변 제출",
+                submitBoxTitle: "방송 기획 답변 제출", submitBoxDesc: "작성한 차트를 텍스트로 자동 변환하여 구글 폼에 안전하게 제출합니다.", btnOpenSubmit: "구글 폼으로 답변 제출",
                 streamBoxTitle: "방송용 블러 설정", streamWelcomeBadge: "방송 이용 환영!", streamBoxDesc: "스포일러 방지를 위해 이미지를 블러 처리하고 하나씩 공개할 수 있습니다.", globalBlurLabel: "전체 이미지 블러",
                 resetBoxTitle: "작업 & 리셋", btnSample: "샘플 불러오기", btnReset: "리셋", defaultSubtitleText: "제목 미설정",
                 footerGenerator: "#오시카츠뇌내차트 공식 제네레이터", footerTerms: "이용약관・가이드라인", bottomBannerHint: "완성된 차트를 스트리머의 구글 폼에 제출해보세요!", bottomBannerBtn: "답변 제출하기",
@@ -819,10 +839,18 @@
                 submitModalTitle: "구글 폼으로 답변 제출", labelFormUrl: "스트리머 구글 폼 URL", formAnonDesc: "익명 희망에 체크하면 이름이 '익명'으로 변경됩니다.", labelPreview: "제출 데이터 미리보기", btnCancel: "취소", btnCopyAndOpen: "복사하고 폼 열기",
                 candidateModalTitle: "이미지 후보 선택", labelTitleInput: "작품/상품 제목 (실시간 검색)", btnCandidates: "후보 목록", labelCoverUrl: "커버 이미지 URL", btnBlurToggle: "블러 토글", imgPreviewText: "이미지 미리보기", labelComment: "추천 한마디", btnSave: "저장하기",
                 goodsModalHeader: "추천 상품 추가/수정", labelCategory: "카테고리", catCustom: "✏️ 직접 입력", labelGoodsTitle: "상품명", btnAutoSearch: "이미지 자동 검색", labelGoodsImg: "상품 이미지 URL", labelGoodsNote: "가격/구매처 메모", labelGoodsComment: "추천 포인트",
-                guideModalTitle: "사용 가이드", termsModalTitle: "이용약관 & 가이드라인", terms1Title: "① 방송 이용 환영", terms1Desc: "VTuber 및 스트리머분들의 방송 활용을 적극 환영합니다!"
+                guideModalTitle: "사용 가이드", termsModalTitle: "이용약관 & 가이드라인", terms1Title: "① 방송 이용 환영", terms1Desc: "VTuber 및 스트리머분들의 방송 활용을 적극 환영합니다!",
+                terms2Title: "② 무료 & 로컬 저장", terms2Desc: "본 툴은 비영리 무료 툴이며, 모든 데이터는 브라우저 내에만 안전하게 저장됩니다.",
+                guideHeading1: "구글 폼 제출을 위한 4단계 가이드",
+                guideStep1Title: "1. 차트 작성", guideStep1Desc: "카드를 클릭하여 원하는 작품 등록. 1자 검색으로 이미지를 자동 검색합니다.",
+                guideStep2Title: "2. 제출 버튼 클릭", guideStep2Desc: "'답변 제출'을 눌러 작성한 내용을 깔끔한 텍스트로 변환합니다.",
+                guideStep3Title: "3. 복사 및 폼 열기", guideStep3Desc: "스트리머 폼 URL 입력 후 복사하면 클립보드에 자동 저장됩니다.",
+                guideStep4Title: "4. 붙여넣기 및 완료", guideStep4Desc: "열린 구글 폼에 붙여넣고 제출하면 완료! 익명 제출도 지원합니다.",
+                guideHeading2: "스트리머용: 자동 집계 기능 사용법",
+                guideStreamerDesc: "구글 스프레드시트의 '공개 CSV URL' 또는 'CSV 파일'을 '아카이브' 탭에서 불러오면 리스너 랭킹 및 개별 답변이 자동 집계됩니다."
             },
             th: {
-                navAnime: "อนิเมะ 15 เรื่อง", navAnimeMovie: "อนิเมะมูฟวี่", navMovie: "หนัง 15 เรื่อง", navManga: "มังงะ 15 เรื่อง",
+                navAnime: "อนิเมะ", navAnimeMovie: "อนิเมะมูฟวี่", navMovie: "หนัง", navManga: "มังงะ",
                 navGoods: "สินค้าแนะนำ", navArchive: "คลังข้อมูล", navMypage: "มายเพจ", navGuide: "คู่มือใช้งาน",
                 mobAnime: "อนิเมะ", mobAnimeMovie: "มูฟวี่", mobMovie: "หนัง", mobManga: "มังงะ", mobGoods: "สินค้า", mobArchive: "คลัง", mobMypage: "มายเพจ", mobGuide: "❓ คู่มือ",
                 blurOff: "เบลอ OFF", blurOn: "เบลอ ON", btnSaveImage: "บันทึกภาพ",
@@ -841,10 +869,18 @@
                 submitModalTitle: "ส่งคำตอบไปยัง Google Form", labelFormUrl: "ลิงก์ Google Form ของสตรีมเมอร์", formAnonDesc: "ติ๊ก 'ไม่เปิดเผยชื่อ' เพื่อเปลี่ยนชื่อเป็น ไม่ระบุตัวตน", labelPreview: "ตัวอย่างข้อความที่จะส่ง", btnCancel: "ยกเลิก", btnCopyAndOpen: "ก๊อปปี้และเปิดฟอร์ม",
                 candidateModalTitle: "เลือกภาพปก", labelTitleInput: "ชื่อผลงาน/สินค้า (ค้นหาอัตโนมัติ)", btnCandidates: "รายการ候補", labelCoverUrl: "URL ภาพปก", btnBlurToggle: "เปิด/ปิด เบลอ", imgPreviewText: "ตัวอย่างภาพ", labelComment: "ความคิดเห็น", btnSave: "บันทึก",
                 goodsModalHeader: "เพิ่ม/แก้ไข สินค้า", labelCategory: "หมวดหมู่", catCustom: "✏️ กำหนดเอง", labelGoodsTitle: "ชื่อสินค้า", btnAutoSearch: "ค้นหาภาพอัตโนมัติ", labelGoodsImg: "URL ภาพสินค้า", labelGoodsNote: "บันทึกราคา/สถานที่ซื้อ", labelGoodsComment: "จุดเด่นแนะนำ",
-                guideModalTitle: "คู่มือใช้งาน", termsModalTitle: "ข้อตกลงและแนวทาง", terms1Title: "① ยินดีรับสตรีมเมอร์", terms1Desc: "สามารถนำไปใช้ในไลฟ์สตรีม YouTube หรือ Twitch ได้เลย!"
+                guideModalTitle: "คู่มือใช้งาน", termsModalTitle: "ข้อตกลงและแนวทาง", terms1Title: "① ยินดีรับสตรีมเมอร์", terms1Desc: "สามารถนำไปใช้ในไลฟ์สตรีม YouTube หรือ Twitch ได้เลย!",
+                terms2Title: "② ฟรี & บันทึกในเครื่อง", terms2Desc: "เครื่องมือนี้ฟรี 100% ข้อมูลทั้งหมดจะถูกบันทึกไว้ในเบราว์เซอร์ของคุณเท่านั้น",
+                guideHeading1: "4 ขั้นตอนง่ายๆ ในการส่งคำตอบไปยัง Google Form",
+                guideStep1Title: "1. สร้างการ์ด", guideStep1Desc: "คลิกช่องเพื่อใส่ชื่อเรื่อง ระบบค้นหาภาพปกอัตโนมัติ",
+                guideStep2Title: "2. กดส่งคำตอบ", guideStep2Desc: "กด 'ส่งไปยัง Google Form' เพื่อแปลงข้อมูลเป็นข้อความ",
+                guideStep3Title: "3. คัดลอกและเปิดฟอร์ม", guideStep3Desc: "ใส่ลิงก์ Google Form ของสตรีมเมอร์เพื่อคัดลอกข้อความอัตโนมัติ",
+                guideStep4Title: "4. วางและส่งคำตอบ", guideStep4Desc: "วางข้อความใน Google Form แล้วกดส่งได้ทันที! รองรับการส่งแบบไม่ระบุตัวตน",
+                guideHeading2: "สำหรับสตรีมเมอร์: วิธีใช้ระบบสถิติจัดอันดับ",
+                guideStreamerDesc: "ใส่ลิงก์ Google Sheets CSV ในแท็บ 'คลังข้อมูล' เพื่อดูอันดับผลงานยอดนิยมและคำตอบของผู้ตอบทั้งหมด"
             },
             fr: {
-                navAnime: "Top 15 Animes", navAnimeMovie: "Films d'Animation", navMovie: "Top 15 Films", navManga: "Top 15 Mangas",
+                navAnime: "Animes", navAnimeMovie: "Films d'Animation", navMovie: "Films", navManga: "Mangas",
                 navGoods: "Produits", navArchive: "Archives", navMypage: "Ma Page", navGuide: "Guide",
                 mobAnime: "Anime", mobAnimeMovie: "Film Animé", mobMovie: "Film", mobManga: "Manga", mobGoods: "Produits", mobArchive: "Archive", mobMypage: "Ma Page", mobGuide: "❓ Guide",
                 blurOff: "Flou OFF", blurOn: "Flou ON", btnSaveImage: "Enregistrer Image",
@@ -863,10 +899,18 @@
                 submitModalTitle: "Envoyer au Google Form", labelFormUrl: "URL du Google Form", formAnonDesc: "Cochez pour remplacer votre nom par 'Anonyme'.", labelPreview: "Aperçu des données", btnCancel: "Annuler", btnCopyAndOpen: "Copier & Ouvrir Form",
                 candidateModalTitle: "Sélectionner Image", labelTitleInput: "Titre (Recherche auto)", btnCandidates: "Candidats", labelCoverUrl: "URL Image", btnBlurToggle: "Basculer Flou", imgPreviewText: "Aperçu Image", labelComment: "Commentaire", btnSave: "Sauvegarder",
                 goodsModalHeader: "Ajouter/Modifier Produit", labelCategory: "Catégorie", catCustom: "✏️ Personnalisé", labelGoodsTitle: "Nom du Produit", btnAutoSearch: "Recherche Auto", labelGoodsImg: "URL Image Produit", labelGoodsNote: "Note Prix / Magasin", labelGoodsComment: "Point Recommandé",
-                guideModalTitle: "Guide d'Utilisation", termsModalTitle: "Directives & Conditions", terms1Title: "① Streaming Bienvenu", terms1Desc: "Utilisation libre pour vos lives sur YouTube ou Twitch!"
+                guideModalTitle: "Guide d'Utilisation", termsModalTitle: "Directives & Conditions", terms1Title: "① Streaming Bienvenu", terms1Desc: "Utilisation libre pour vos lives sur YouTube ou Twitch!",
+                terms2Title: "② Gratuit & Stockage Local", terms2Desc: "Cet outil est 100% gratuit. Vos données restent enregistrées dans votre navigateur.",
+                guideHeading1: "4 étapes faciles pour envoyer vos réponses",
+                guideStep1Title: "1. Créez votre carte", guideStep1Desc: "Cliquez sur une case pour ajouter un titre. Recherche automatique d'image.",
+                guideStep2Title: "2. Cliquez sur Envoyer", guideStep2Desc: "Transformez vos réponses en texte propre d'un simple clic.",
+                guideStep3Title: "3. Copiez & Ouvrez", guideStep3Desc: "Entrez l'URL du Google Form pour copier automatiquement les réponses.",
+                guideStep4Title: "4. Collez & Envoyez", guideStep4Desc: "Collez les réponses dans le formulaire Google et validez!",
+                guideHeading2: "Pour les Streamers : Guide Analytics",
+                guideStreamerDesc: "Chargez le CSV Google Sheets public dans l'onglet 'Archive' pour afficher le classement des auditeurs."
             },
             es: {
-                navAnime: "Top 15 Animes", navAnimeMovie: "Películas Anime", navMovie: "Top 15 Películas", navManga: "Top 15 Mangas",
+                navAnime: "Animes", navAnimeMovie: "Películas Anime", navMovie: "Películas", navManga: "Mangas",
                 navGoods: "Productos", navArchive: "Archivo", navMypage: "Mi Página", navGuide: "Guía",
                 mobAnime: "Anime", mobAnimeMovie: "Peli Anime", mobMovie: "Película", mobManga: "Manga", mobGoods: "Productos", mobArchive: "Archivo", mobMypage: "Mi Página", mobGuide: "❓ Guía",
                 blurOff: "Desenfoque OFF", blurOn: "Desenfoque ON", btnSaveImage: "Guardar Imagen",
@@ -885,16 +929,24 @@
                 submitModalTitle: "Enviar a Google Form", labelFormUrl: "URL del Google Form", formAnonDesc: "Marca 'Anónimo' para ocultar tu nombre.", labelPreview: "Vista Previa de Datos", btnCancel: "Cancelar", btnCopyAndOpen: "Copiar y Abrir Form",
                 candidateModalTitle: "Seleccionar Imagen", labelTitleInput: "Título (Búsqueda auto)", btnCandidates: "Candidatos", labelCoverUrl: "URL Imagen Cover", btnBlurToggle: "Alternar Desenfoque", imgPreviewText: "Vista Previa", labelComment: "Comentario", btnSave: "Guardar",
                 goodsModalHeader: "Añadir / Editar Producto", labelCategory: "Categoría", catCustom: "✏️ Personalizado", labelGoodsTitle: "Nombre Producto", btnAutoSearch: "Búsqueda Auto", labelGoodsImg: "URL Imagen Producto", labelGoodsNote: "Nota Precio / Tienda", labelGoodsComment: "Punto Recomendado",
-                guideModalTitle: "Guía de Uso", termsModalTitle: "Términos y Guías", terms1Title: "① Uso en Streams", terms1Desc: "¡Libre de usar en streams de YouTube o Twitch!"
+                guideModalTitle: "Guía de Uso", termsModalTitle: "Términos y Guías", terms1Title: "① Uso en Streams", terms1Desc: "¡Libre de usar en streams de YouTube o Twitch!",
+                terms2Title: "② Gratis y Almacenamiento Local", terms2Desc: "Herramienta gratuita y sin fines de lucro. Tus datos se guardan en tu navegador.",
+                guideHeading1: "4 pasos sencillos para enviar respuestas",
+                guideStep1Title: "1. Crea tu Karte", guideStep1Desc: "Haz clic en una casilla para añadir títulos e imágenes automáticamente.",
+                guideStep2Title: "2. Presiona Enviar", guideStep2Desc: "Convierte tus respuestas en texto limpio con un solo clic.",
+                guideStep3Title: "3. Copia y Abre", guideStep3Desc: "Introduce la URL del formulario para copiar las respuestas automáticamente.",
+                guideStep4Title: "4. Pega y Envía", guideStep4Desc: "¡Pega la información en el Google Form y listo!",
+                guideHeading2: "Para Streamers: Guía de Estadísticas",
+                guideStreamerDesc: "Carga el CSV público de Google Sheets en la pestaña 'Archivo' para analizar el ranking de los oyentes."
             }
         };
 
-        // Preset Categories for 15-Grids
+        // Updated 18-Category Presets
         const categoryPresets = {
             anime: [
-                "万人向け", "最推し", "長寿", "青春系", "異世界系",
-                "鬱", "スポーツ系", "感動系", "アクション系", "ロボット系",
-                "料理系", "ホラー系", "癒し系", "ギャグ系", "大人向け（18禁）"
+                "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
+                "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー",
+                "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"
             ],
             animemovie: [
                 "ファンタジー系", "学校・部活系", "青春・友情系", "恋愛系", "ファミリー・キッズ向け",
@@ -907,35 +959,71 @@
                 "コメディ", "アニメーション", "ドキュメンタリー", "ミュージカル", "時代劇 / 歴史劇"
             ],
             manga: [
-                "万人向け", "最推し", "長寿", "青春系", "異世界系",
-                "鬱", "スポーツ系", "感動系", "アクション系", "ロボット系",
-                "料理系", "ホラー系", "癒し系", "ギャグ系", "大人向け（18禁）"
+                "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
+                "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー",
+                "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"
             ]
+        };
+
+        // Multi-Language Category/Genre Translations (18 categories)
+        const categoryTranslations = {
+            anime: {
+                ja: ["最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱", "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー", "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"],
+                en: ["Top Favorite", "Long-Running", "Youth", "Romance", "Isekai", "Dark/Depressing", "Sports", "Emotional", "Action", "Mecha/Sci-Fi", "Gourmet/Cooking", "Horror", "Mystery", "Relaxing/Healing", "Comedy", "Yuri/BL", "Historical", "Mature (18+)"],
+                ko: ["최애작", "장수 애니", "청춘", "연애/로맨스", "이세계", "우울/피폐", "스포츠", "감동", "액션", "로봇/SF", "요리/음식", "공포/호러", "미스터리", "힐링", "개그", "백합/BL", "역사/시대극", "성인용 (18금)"],
+                th: ["เรื่องโปรดที่สุด", "เรื่องยาว", "วัยรุ่น", "โรแมนติก", "ต่างโลก", "ดาร์ก/ดึงดราม่า", "กีฬา", "ซาบซึ้งกินใจ", "แอ็กชัน", "หุ่นยนต์/ไซไฟ", "ทำอาหาร", "สยองขวัญ", "ปริศนา", "ผ่อนคลาย/ฮีลใจ", "ตลก", "ยูริ/BL", "ประวัติศาสตร์", "สำหรับผู้ใหญ่ (18+)"],
+                fr: ["Coup de Cœur", "Longue Série", "Jeunesse", "Romance", "Isekai", "Sombre/Émotionnel", "Sport", "Émouvant", "Action", "Mecha/SF", "Cuisine", "Horreur", "Mystère", "Relaxant", "Comédie", "Yuri/BL", "Historique", "Pour Adultes (18+)"],
+                es: ["Favorito N°1", "Larga Duración", "Juventud", "Romance", "Isekai", "Oscuro/Dramático", "Deportes", "Emotivo", "Acción", "Mecha/SF", "Cocina", "Terror", "Misterio", "Relajante", "Comedia", "Yuri/BL", "Histórico", "Para Adultos (18+)"]
+            },
+            animemovie: {
+                ja: ["ファンタジー系", "学校・部活系", "青春・友情系", "恋愛系", "ファミリー・キッズ向け", "日常系", "ギャグ・コメディ系", "アクション系", "乗り物・ロボット系", "SF・未来系", "時代劇・歴史系", "ミステリー系", "ホラー系", "音楽・アイドル系", "感動系"],
+                en: ["Fantasy", "School / Club", "Youth / Friendship", "Romance", "Family / Kids", "Slice of Life", "Comedy", "Action", "Vehicles / Mecha", "Sci-Fi / Future", "Historical / Period", "Mystery", "Horror", "Music / Idol", "Emotional"],
+                ko: ["판타지", "학교/부활동", "청춘/우정", "연애/로맨스", "패밀리/키즈", "일상물", "개그/코미디", "액션", "탈것/메카", "SF/미래", "시대극/역사", "미스터리", "공포/호러", "음악/아이돌", "감동물"],
+                th: ["แฟนตาซี", "โรงเรียน/ชมรม", "วัยรุ่น/มิตรภาพ", "โรแมนติก", "ครอบครัว/เด็ก", "ชีวิตประจำวัน", "ตลก/คอมเมดี้", "แอ็กชัน", "ยานพาหนะ/หุ่นยนต์", "ไซไฟ/อนาคต", "ประวัติศาสตร์", "ปริศนา", "สยองขวัญ", "ดนตรี/ไอดอล", "ซาบซึ้งกินใจ"],
+                fr: ["Fantaisie", "École / Club", "Jeunesse / Amitié", "Romance", "Famille / Enfants", "Tranche de Vie", "Comédie", "Action", "Véhicules / Mecha", "SF / Futur", "Historique", "Mystère", "Horreur", "Musique / Idol", "Émouvant"],
+                es: ["Fantasía", "Escuela / Club", "Juventud / Amistad", "Romance", "Familiar / Niños", "Cosas de la Vida", "Comedia", "Acción", "Vehículos / Mecha", "Ciencia Ficción", "Histórico", "Misterio", "Terror", "Música / Idol", "Emotivo"]
+            },
+            movie: {
+                ja: ["アクション", "冒険", "SF", "ファンタジー", "ホラー", "スリラー", "サスペンス", "ミステリー", "ヒューマンドラマ", "ロマンス", "コメディ", "アニメーション", "ドキュメンタリー", "ミュージカル", "時代劇 / 歴史劇"],
+                en: ["Action", "Adventure", "Sci-Fi", "Fantasy", "Horror", "Thriller", "Suspense", "Mystery", "Drama", "Romance", "Comedy", "Animation", "Documentary", "Musical", "Historical / Period"],
+                ko: ["액션", "모험", "SF", "판타지", "공포", "스릴러", "서스펜스", "미스터리", "휴먼 드라마", "로맨스", "코미디", "애니메이션", "다큐멘터리", "뮤지컬", "시대극/역사"],
+                th: ["แอ็กชัน", "การผจญภัย", "ไซไฟ", "แฟนตาซี", "สยองขวัญ", "ระทึกขวัญ", "สืบสวน", "ปริศนา", "ดราม่า", "โรแมนติก", "คอมเมดี้", "แอนิเมชัน", "สารคดี", "มิวสิเคิล", "ประวัติศาสตร์"],
+                fr: ["Action", "Aventure", "SF", "Fantaisie", "Horreur", "Thriller", "Suspense", "Mystère", "Drame", "Romance", "Comédie", "Animation", "Documentaire", "Comédie Musicale", "Historique"],
+                es: ["Acción", "Aventura", "Ciencia Ficción", "Fantasía", "Terror", "Thriller", "Suspense", "Misterio", "Drama", "Romance", "Comedia", "Animación", "Documental", "Musical", "Histórico"]
+            },
+            manga: {
+                ja: ["最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱", "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー", "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"],
+                en: ["Top Favorite", "Long-Running", "Youth", "Romance", "Isekai", "Dark/Depressing", "Sports", "Emotional", "Action", "Mecha/Sci-Fi", "Gourmet/Cooking", "Horror", "Mystery", "Relaxing/Healing", "Comedy", "Yuri/BL", "Historical", "Mature (18+)"],
+                ko: ["최애작", "장수 애니", "청춘", "연애/로맨스", "이세계", "우울/피폐", "스포츠", "감동", "액션", "로봇/SF", "요리/음식", "공포/호러", "미스터리", "힐링", "개그", "백합/BL", "역사/시대극", "성인용 (18금)"],
+                th: ["เรื่องโปรดที่สุด", "เรื่องยาว", "วัยรุ่น", "โรแมนติก", "ต่างโลก", "ดาร์ก/ดึงดราม่า", "กีฬา", "ซาบซึ้งกินใจ", "แอ็กชัน", "หุ่นยนต์/ไซไฟ", "ทำอาหาร", "สยองขวัญ", "ปริศนา", "ผ่อนคลาย/ฮีลใจ", "ตลก", "ยูริ/BL", "ประวัติศาสตร์", "สำหรับผู้ใหญ่ (18+)"],
+                fr: ["Coup de Cœur", "Longue Série", "Jeunesse", "Romance", "Isekai", "Sombre/Émotionnel", "Sport", "Émouvant", "Action", "Mecha/SF", "Cuisine", "Horreur", "Mystère", "Relaxant", "Comédie", "Yuri/BL", "Historique", "Pour Adultes (18+)"],
+                es: ["Favorito N°1", "Larga Duración", "Juventud", "Romance", "Isekai", "Oscuro/Dramático", "Deportes", "Emotivo", "Acción", "Mecha/SF", "Cocina", "Terror", "Misterio", "Relajante", "Comedia", "Yuri/BL", "Histórico", "Para Adultos (18+)"]
+            }
         };
 
         // TMDb API Configuration
         const TMDB_API_KEY = "8d0c3e6ff1d7873e0f3bca170cf60dd9";
         const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
-        // Application State
+        // Application State Variables
         let currentTab = 'anime';
         let currentLang = 'ja';
         let globalBlurActive = false;
+        let isGlobalMobileView = false;
+        let isAnonymousSubmit = false;
+        let currentSubmitType = 'grid';
         let debounceTimer = null;
         let currentCandidates = [];
-        let currentSubmitType = 'grid';
-        let isAnonymousSubmit = false;
-        let isGlobalMobileView = false;
 
         // App Data Architecture
         let appData = {
             creator: "",
             subtitle: "",
             tabGrids: {
-                anime: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                anime: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
                 animemovie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
                 movie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
-                manga: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }))
+                manga: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }))
             },
             goods: []
         };
@@ -984,6 +1072,11 @@
                     elem.textContent = dict[key];
                 }
             });
+        }
+
+        function getTranslatedCategories(tabKey) {
+            const mediaPresets = categoryTranslations[tabKey] || categoryTranslations.anime;
+            return mediaPresets[currentLang] || mediaPresets.ja;
         }
 
         // Handle title input change with debounced autocomplete
@@ -1073,19 +1166,19 @@
             document.getElementById('display-subtitle').textContent = subtitle;
 
             const mediaTag = document.getElementById('display-media-tag');
-            if (currentTab === 'anime') mediaTag.textContent = 'ANIME 15';
-            else if (currentTab === 'animemovie') mediaTag.textContent = 'ANIME MOVIE 15';
-            else if (currentTab === 'movie') mediaTag.textContent = 'MOVIE 15';
-            else if (currentTab === 'manga') mediaTag.textContent = 'MANGA 15';
+            if (currentTab === 'anime') mediaTag.textContent = 'ANIME';
+            else if (currentTab === 'animemovie') mediaTag.textContent = 'ANIME MOVIE';
+            else if (currentTab === 'movie') mediaTag.textContent = 'MOVIE';
+            else if (currentTab === 'manga') mediaTag.textContent = 'MANGA';
         }
 
-        // Render 15-Card Grid
+        // Render Cards Grid
         function renderMainGrid() {
             const container = document.getElementById('main-15-grid');
             if (!container) return;
             container.innerHTML = '';
 
-            const categories = categoryPresets[currentTab] || categoryPresets.anime;
+            const categories = getTranslatedCategories(currentTab);
             const currentItems = appData.tabGrids[currentTab] || [];
 
             categories.forEach((catName, index) => {
@@ -1119,7 +1212,7 @@
             });
         }
 
-        // Search API Integration with Selected Language Code Mapping
+        // Search API Integration
         async function fetchMultiApiResults(query, mediaType) {
             if (!query || !query.trim()) return [];
 
@@ -1257,7 +1350,7 @@
         }
 
         function openGridModal(slotIndex) {
-            const categories = categoryPresets[currentTab] || categoryPresets.anime;
+            const categories = getTranslatedCategories(currentTab);
             const currentItems = appData.tabGrids[currentTab] || [];
             const item = currentItems[slotIndex] || { id: slotIndex, title: "", imgUrl: "", comment: "" };
 
@@ -1426,7 +1519,6 @@
             document.body.className = `theme-${themeName} min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white`;
         }
 
-        // Image Export Engine with Overflow Fix
         function exportGridImage() {
             const container = document.getElementById('capture-container');
             if (!container) return;
@@ -1497,7 +1589,7 @@
                 }
                 document.getElementById('export-text-preview').value = textData;
             } else {
-                const categories = categoryPresets[currentTab] || categoryPresets.anime;
+                const categories = getTranslatedCategories(currentTab);
                 const currentItems = appData.tabGrids[currentTab] || [];
 
                 let textData = `【#推し活脳内カルテ 回答】\n作成者: ${creator}\nメディア: ${currentTab.toUpperCase()}\n\n`;
@@ -1530,8 +1622,9 @@
         }
 
         function clearCurrentGrid() {
-            if (confirm('現在のタブの15選カードをリセットしますか？')) {
-                appData.tabGrids[currentTab] = Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
+            if (confirm('現在のタブのカードをリセットしますか？')) {
+                const totalSlots = (currentTab === 'anime' || currentTab === 'manga') ? 18 : 15;
+                appData.tabGrids[currentTab] = Array.from({length: totalSlots}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
                 saveToLocalStorage();
                 renderMainGrid();
             }
@@ -1539,7 +1632,7 @@
 
         function loadSampleData() {
             appData.creator = "葵杏くれは";
-            appData.subtitle = "私の人生に影響を与えたアニメ15選";
+            appData.subtitle = "私の人生に影響を与えた作品リスト";
             document.getElementById('cfg-creator').value = appData.creator;
             document.getElementById('cfg-subtitle').value = appData.subtitle;
             saveToLocalStorage();
@@ -1620,7 +1713,6 @@
             }
         }
 
-        // CSV Parser Engine (Deduplicated vote counting per user & Individual response viewer)
         function parseAndDisplayCsvStats(csvText) {
             if (!csvText || !csvText.trim()) return;
 
@@ -1798,10 +1890,11 @@
 
         function loadSampleStats() {
             const sampleCsv = `タイムスタンプ,回答
-2026/11/11 8:49:17 PM,【#推し活脳内カルテ 回答】\\n作成者: 葵杏くれは\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] 呪術廻戦\\n3. [青春系] ハイキュー!!\\n4. [アクション系] 鬼滅の刃\\n5. [ギャグ系] 銀魂
-2026/11/11 8:50:00 PM,【#推し活脳内カルテ 回答】\\n作成者: 匿名希望\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] フリーレン\\n3. [青春系] ハイキュー!!\\n4. [感動系] ヴァイオレット・エヴァーガーデン\\n5. [ギャグ系] SPY×FAMILY`;
+2026/11/11 8:49:17 PM,【#推し活脳内カルテ 回答】\n作成者: 葵杏くれは\nメディア: ANIME\n\n1. [最推し] ONE PIECE\n2. [長寿アニメ] 名探偵コナン\n3. [青春] ハイキュー!!\n4. [アクション] 鬼滅の刃\n5. [ギャグ] 銀魂
+2026/11/11 8:50:00 PM,【#推し活脳内カルテ 回答】\n作成者: 匿名希望\nメディア: ANIME\n\n1. [最推し] フリーレン\n2. [長寿アニメ] ONE PIECE\n3. [青春] ハイキュー!!\n4. [感動] ヴァイオレット・エヴァーガーデン\n5. [ギャグ] SPY×FAMILY`;
             parseAndDisplayCsvStats(sampleCsv);
         }
     </script>
 </body>
 </html>
+```eof
