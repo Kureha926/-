@@ -100,9 +100,20 @@
         .theme-dark ::-webkit-scrollbar-thumb, .theme-cyber ::-webkit-scrollbar-thumb {
             background: #334155;
         }
+
+        /* Global Viewport Simulation (Smartphone Mode Container) */
+        .viewport-mobile-mode {
+            max-width: 430px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            border-left: 2px solid rgba(236, 72, 153, 0.3);
+            border-right: 2px solid rgba(236, 72, 153, 0.3);
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            min-height: 100vh;
+        }
     </style>
 </head>
-<body class="theme-light min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+<body id="app-root-body" class="theme-light min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white">
 
     <!-- Top Navigation Header -->
     <header class="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 backdrop-blur-md transition-colors">
@@ -114,7 +125,7 @@
                     <i class="fa-solid fa-brain"></i>
                 </div>
                 <div>
-                    <h1 class="font-black text-base sm:text-lg tracking-tight bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 bg-clip-text text-transparent whitespace-nowrap">
+                    <h1 id="app-title-header" class="font-black text-base sm:text-lg tracking-tight bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 bg-clip-text text-transparent whitespace-nowrap">
                         #推し活脳内カルテ
                     </h1>
                 </div>
@@ -122,29 +133,37 @@
 
             <!-- Global Navigation Tabs (Desktop) -->
             <nav class="hidden xl:flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700/60 text-xs font-bold shrink-0">
-                <button onclick="switchTab('anime')" id="tab-btn-anime" class="tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap">アニメ15選</button>
-                <button onclick="switchTab('animemovie')" id="tab-btn-animemovie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">アニメ映画15選</button>
-                <button onclick="switchTab('movie')" id="tab-btn-movie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">映画15選</button>
-                <button onclick="switchTab('manga')" id="tab-btn-manga" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">漫画15選</button>
+                <button onclick="switchTab('anime')" id="tab-btn-anime" class="tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap" data-i18n="navAnime">アニメ15選</button>
+                <button onclick="switchTab('animemovie')" id="tab-btn-animemovie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navAnimeMovie">アニメ映画15選</button>
+                <button onclick="switchTab('movie')" id="tab-btn-movie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navMovie">映画15選</button>
+                <button onclick="switchTab('manga')" id="tab-btn-manga" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navManga">漫画15選</button>
                 <button onclick="switchTab('goods')" id="tab-btn-goods" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition flex items-center gap-1 whitespace-nowrap">
-                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品
+                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> <span data-i18n="navGoods">おすすめ商品</span>
                 </button>
-                <button onclick="switchTab('archive')" id="tab-btn-archive" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">アーカイブ</button>
-                <button onclick="switchTab('mypage')" id="tab-btn-mypage" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">マイページ</button>
+                <button onclick="switchTab('archive')" id="tab-btn-archive" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navArchive">アーカイブ</button>
+                <button onclick="switchTab('mypage')" id="tab-btn-mypage" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap" data-i18n="navMypage">マイページ</button>
                 <button onclick="openGuideModal()" class="px-3 py-1.5 rounded-xl text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40 transition whitespace-nowrap flex items-center gap-1">
-                    <i class="fa-solid fa-circle-question"></i> 使い方ガイド
+                    <i class="fa-solid fa-circle-question"></i> <span data-i18n="navGuide">使い方ガイド</span>
                 </button>
             </nav>
 
-            <!-- Language, Theme & Actions -->
+            <!-- Viewport Mode, Language, Theme & Actions -->
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <span id="autosave-status" class="hidden sm:inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> 自動保存完了
-                </span>
+                <!-- Global View Mode Toggle (PC / Mobile) -->
+                <button onclick="toggleGlobalViewMode()" id="view-mode-toggle-btn" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-bold focus:outline-none flex items-center gap-1">
+                    <i class="fa-solid fa-desktop" id="view-mode-icon"></i>
+                    <span id="view-mode-text" class="hidden md:inline">PC版</span>
+                </button>
 
-                <span class="hidden md:inline-flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400 font-extrabold px-2.5 py-1 bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800/40 rounded-lg">
-                    <i class="fa-solid fa-gift"></i> 完全無料・登録不要
-                </span>
+                <!-- Language Selector -->
+                <select id="lang-selector" onchange="changeLanguage(this.value)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="th">🇹🇭 ไทย</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="es">🇪🇸 Español</option>
+                </select>
 
                 <select id="theme-selector" onchange="changeTheme(this.value)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pink-500">
                     <option value="light">☀️ Light</option>
@@ -155,31 +174,31 @@
 
                 <button onclick="toggleGlobalBlur()" id="global-blur-btn" class="px-2.5 py-1.5 bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 rounded-xl text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1 transition whitespace-nowrap">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <span id="global-blur-text" class="hidden sm:inline">ぼかし OFF</span>
+                    <span id="global-blur-text" class="hidden sm:inline" data-i18n="blurOff">ぼかし OFF</span>
                 </button>
 
                 <button onclick="exportGridImage()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md shadow-pink-500/20 flex items-center gap-1 transition active:scale-95 whitespace-nowrap">
                     <i class="fa-solid fa-camera"></i>
-                    <span>画像保存</span>
+                    <span data-i18n="btnSaveImage">画像保存</span>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Navigation bar -->
         <div class="xl:hidden flex overflow-x-auto px-3 py-2 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-xs font-bold gap-1.5 no-scrollbar">
-            <button onclick="switchTab('anime')" id="mob-btn-anime" class="px-3 py-1 rounded-lg bg-pink-500 text-white shrink-0 whitespace-nowrap">アニメ</button>
-            <button onclick="switchTab('animemovie')" id="mob-btn-animemovie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">アニメ映画</button>
-            <button onclick="switchTab('movie')" id="mob-btn-movie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">映画</button>
-            <button onclick="switchTab('manga')" id="mob-btn-manga" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">漫画</button>
-            <button onclick="switchTab('goods')" id="mob-btn-goods" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">商品</button>
-            <button onclick="switchTab('archive')" id="mob-btn-archive" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">アーカイブ</button>
-            <button onclick="switchTab('mypage')" id="mob-btn-mypage" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">マイページ</button>
-            <button onclick="openGuideModal()" class="px-3 py-1 rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 shrink-0 whitespace-nowrap">❓ 使い方</button>
+            <button onclick="switchTab('anime')" id="mob-btn-anime" class="px-3 py-1 rounded-lg bg-pink-500 text-white shrink-0 whitespace-nowrap" data-i18n="mobAnime">アニメ</button>
+            <button onclick="switchTab('animemovie')" id="mob-btn-animemovie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobAnimeMovie">アニメ映画</button>
+            <button onclick="switchTab('movie')" id="mob-btn-movie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobMovie">映画</button>
+            <button onclick="switchTab('manga')" id="mob-btn-manga" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobManga">漫画</button>
+            <button onclick="switchTab('goods')" id="mob-btn-goods" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobGoods">商品</button>
+            <button onclick="switchTab('archive')" id="mob-btn-archive" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobArchive">アーカイブ</button>
+            <button onclick="switchTab('mypage')" id="mob-btn-mypage" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap" data-i18n="mobMypage">マイページ</button>
+            <button onclick="openGuideModal()" class="px-3 py-1 rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 shrink-0 whitespace-nowrap" data-i18n="mobGuide">❓ 使い方</button>
         </div>
     </header>
 
     <!-- Main Workspace -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6">
+    <main id="app-main-container" class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6">
 
         <!-- Sidebar Config -->
         <aside class="w-full lg:w-80 flex flex-col gap-5 shrink-0">
@@ -187,16 +206,16 @@
             <!-- Profile / Info Card -->
             <div class="glass-card p-5 rounded-3xl">
                 <h2 class="font-extrabold text-sm sm:text-base text-pink-500 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-id-card"></i> カルテ情報設定
+                    <i class="fa-solid fa-id-card"></i> <span data-i18n="sidebarInfoTitle">カルテ情報設定</span>
                 </h2>
                 
                 <div class="space-y-3 text-xs">
                     <div>
-                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1">配信者 / リスナー名</label>
+                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1" data-i18n="labelCreator">配信者 / リスナー名</label>
                         <input type="text" id="cfg-creator" value="" placeholder="例: 葵杏くれは" oninput="handleMetaInputChange()" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-pink-500">
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1">カルテサブタイトル</label>
+                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1" data-i18n="labelSubtitle">カルテサブタイトル</label>
                         <input type="text" id="cfg-subtitle" value="" placeholder="例: 私の人生を変えた名作リスト" oninput="handleMetaInputChange()" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-pink-500">
                     </div>
                 </div>
@@ -205,13 +224,13 @@
             <!-- Google Form Integration Box -->
             <div class="glass-card p-5 rounded-3xl border-pink-400/40 bg-gradient-to-br from-pink-500/5 to-purple-500/5">
                 <h3 class="font-extrabold text-xs sm:text-sm text-pink-600 dark:text-pink-400 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i> 企画に回答を送信
+                    <i class="fa-solid fa-paper-plane"></i> <span data-i18n="submitBoxTitle">企画に回答を送信</span>
                 </h3>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed" data-i18n="submitBoxDesc">
                     完成した15選カルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。
                 </p>
-                <button onclick="openSubmitModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/20 transition flex items-center justify-center gap-2 active:scale-95">
-                    <i class="fa-solid fa-clipboard-check"></i> Googleフォームへ回答を送信
+                <button onclick="openSubmitModal('grid')" class="w-full py-2.5 px-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/20 transition flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-clipboard-check"></i> <span data-i18n="btnOpenSubmit">Googleフォームへ回答を送信</span>
                 </button>
             </div>
 
@@ -219,16 +238,16 @@
             <div class="glass-card p-5 rounded-3xl border-amber-400/40">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="font-bold text-xs sm:text-sm text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                        <i class="fa-solid fa-video text-pink-500"></i> 配信利用・ぼかし対策
+                        <i class="fa-solid fa-video text-pink-500"></i> <span data-i18n="streamBoxTitle">配信利用・ぼかし対策</span>
                     </h3>
-                    <span class="px-2 py-0.5 bg-pink-500 text-white text-[10px] font-black rounded-md">配信大歓迎！</span>
+                    <span class="px-2 py-0.5 bg-pink-500 text-white text-[10px] font-black rounded-md" data-i18n="streamWelcomeBadge">配信大歓迎！</span>
                 </div>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed" data-i18n="streamBoxDesc">
                     センシティブな画像やネタバレ画像を配信中にぼかして表示し、1個ずつ解禁演出ができます。
                 </p>
                 
                 <div class="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800">
-                    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">全画像ぼかし</span>
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-300" data-i18n="globalBlurLabel">全画像ぼかし</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="sidebar-global-blur" onchange="toggleGlobalBlur(this.checked)" class="sr-only peer">
                         <div class="w-11 h-6 bg-slate-300 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
@@ -239,14 +258,14 @@
             <!-- Reset Actions -->
             <div class="glass-card p-5 rounded-3xl">
                 <h3 class="font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> 操作・リセット
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> <span data-i18n="resetBoxTitle">操作・リセット</span>
                 </h3>
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="loadSampleData()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-star text-amber-500"></i> サンプル読込
+                        <i class="fa-solid fa-star text-amber-500"></i> <span data-i18n="btnSample">サンプル読込</span>
                     </button>
                     <button onclick="clearCurrentGrid()" class="px-3 py-2 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-trash-can"></i> リセット
+                        <i class="fa-solid fa-trash-can"></i> <span data-i18n="btnReset">リセット</span>
                     </button>
                 </div>
             </div>
@@ -267,7 +286,7 @@
                                 <span id="display-creator" class="px-3 py-0.5 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold tracking-wide">@ユーザー名</span>
                                 <span class="px-2 py-0.5 bg-black/30 text-pink-200 rounded-md text-[10px] font-bold border border-white/20">#推し活脳内カルテ</span>
                             </div>
-                            <h2 id="display-subtitle" class="text-xl sm:text-3xl font-black tracking-tight leading-tight">タイトル未設定</h2>
+                            <h2 id="display-subtitle" class="text-xl sm:text-3xl font-black tracking-tight leading-tight" data-i18n="defaultSubtitleText">タイトル未設定</h2>
                         </div>
                         <div class="text-right self-end sm:self-auto">
                             <span id="display-media-tag" class="px-4 py-1.5 bg-black/40 backdrop-blur-md text-white border border-white/30 font-black rounded-xl text-sm shadow-md tracking-wider uppercase inline-block">ANIME 15</span>
@@ -283,11 +302,11 @@
                     <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-2">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-brain text-pink-500"></i>
-                            <span class="font-bold">#推し活脳内カルテ 公式ジェネレーター</span>
+                            <span class="font-bold" data-i18n="footerGenerator">#推し活脳内カルテ 公式ジェネレーター</span>
                         </div>
                         <div class="flex items-center gap-4 text-[11px]">
                             <button onclick="openTermsModal()" class="hover:underline text-pink-500 dark:text-pink-400 font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-file-contract"></i> 利用規約・ガイドライン
+                                <i class="fa-solid fa-file-contract"></i> <span data-i18n="footerTerms">利用規約・ガイドライン</span>
                             </button>
                             <span class="text-slate-300 dark:text-slate-700">|</span>
                             <span>Powered by <a href="https://x.com/kikyokureha" target="_blank" rel="noopener noreferrer" class="font-bold text-pink-500 hover:underline">葵杏くれは (@kikyokureha)</a></span>
@@ -296,10 +315,10 @@
                 </div>
 
                 <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <span class="text-xs text-slate-600 dark:text-slate-400 font-bold">
+                    <span class="text-xs text-slate-600 dark:text-slate-400 font-bold" data-i18n="bottomBannerHint">
                         <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> 完成したら配信者のGoogleフォームに送信して配信企画に参加しよう！
                     </span>
-                    <button onclick="openSubmitModal()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xs font-bold shrink-0 transition shadow-md">
+                    <button onclick="openSubmitModal('grid')" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xs font-bold shrink-0 transition shadow-md" data-i18n="bottomBannerBtn">
                         <i class="fa-solid fa-paper-plane"></i> 企画に回答を送信する
                     </button>
                 </div>
@@ -312,13 +331,18 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                         <div>
                             <h2 class="text-xl font-extrabold flex items-center gap-2">
-                                <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品カルテ
+                                <i class="fa-solid fa-bag-shopping text-pink-500"></i> <span data-i18n="goodsHeaderTitle">おすすめ商品カルテ</span>
                             </h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">おやつ、デザート、食品、季節のアイテムなどの愛用品をカード化！</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="goodsHeaderDesc">おやつ、デザート、食品、季節のアイテムなどの愛用品をカード化！</p>
                         </div>
-                        <button onclick="openGoodsModal()" class="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 transition">
-                            <i class="fa-solid fa-plus"></i> 商品を追加する
-                        </button>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button onclick="openSubmitModal('goods')" class="px-4 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 transition">
+                                <i class="fa-solid fa-paper-plane"></i> <span>企画に回答を送信</span>
+                            </button>
+                            <button onclick="openGoodsModal()" class="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 transition">
+                                <i class="fa-solid fa-plus"></i> <span data-i18n="btnAddGoods">商品を追加する</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div id="goods-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -333,51 +357,66 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div>
                             <h2 class="text-xl font-extrabold flex items-center gap-2">
-                                <i class="fa-solid fa-chart-pie text-purple-500"></i> 配信者向け統計ダッシュボード
+                                <i class="fa-solid fa-chart-pie text-purple-500"></i> <span data-i18n="archiveHeaderTitle">配信者向け統計ダッシュボード</span>
                             </h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Googleスプレッドシート公開CSV URLまたはCSVファイル読込で自動集計！</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="archiveHeaderDesc">Googleスプレッドシート公開CSV URLまたはCSVファイル読込で自動集計！</p>
                         </div>
                         <button onclick="loadSampleStats()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-database"></i> サンプル統計を表示
+                            <i class="fa-solid fa-database"></i> <span data-i18n="btnLoadSampleStats">サンプル統計を表示</span>
                         </button>
                     </div>
 
                     <div class="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
-                        <label class="block font-bold text-xs text-slate-700 dark:text-slate-300">Googleスプレッドシート公開CSV URL</label>
+                        <label class="block font-bold text-xs text-slate-700 dark:text-slate-300" data-i18n="csvUrlLabel">Googleスプレッドシート公開CSV URL</label>
                         <div class="flex gap-2">
                             <input type="url" id="csv-url-input" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv" class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500">
-                            <button onclick="fetchSheetCsvData()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl text-xs shrink-0 transition">
+                            <button onclick="fetchSheetCsvData()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl text-xs shrink-0 transition" data-i18n="btnLoadCsv">
                                 CSV読込
                             </button>
                         </div>
                         <div class="text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                            <span>ローカルファイル: <input type="file" id="csv-file-upload" accept=".csv" onchange="handleLocalCsvUpload(event)" class="text-xs inline-block"></span>
+                            <span><span data-i18n="localFileLabel">ローカルファイル:</span> <input type="file" id="csv-file-upload" accept=".csv" onchange="handleLocalCsvUpload(event)" class="text-xs inline-block"></span>
                             <button onclick="clearCsvStats()" class="px-3 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0">
-                                <i class="fa-solid fa-rotate-left"></i> 集計リセット
+                                <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btnResetStats">集計リセット</span>
                             </button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <span class="text-xs font-bold text-slate-500 block mb-1">通算参加リスナー数</span>
-                            <span class="text-2xl sm:text-3xl font-black text-pink-500" id="stat-listener-count">0 <span class="text-xs text-slate-400 font-normal">名</span></span>
+                            <span class="text-xs font-bold text-slate-500 block mb-1" data-i18n="statListeners">通算参加リスナー数</span>
+                            <span class="text-2xl sm:text-3xl font-black text-pink-500" id="stat-listener-count">0 <span class="text-xs text-slate-400 font-normal" data-i18n="unitPersons">名</span></span>
                         </div>
                         <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <span class="text-xs font-bold text-slate-500 block mb-1">最推し1位作品</span>
-                            <span class="text-base sm:text-lg font-black text-purple-600 dark:text-purple-300 truncate block" id="stat-top-work">未集計</span>
+                            <span class="text-xs font-bold text-slate-500 block mb-1" data-i18n="statTopWork">最推し1位作品</span>
+                            <span class="text-base sm:text-lg font-black text-purple-600 dark:text-purple-300 truncate block" id="stat-top-work" data-i18n="statUncalculated">未集計</span>
                         </div>
                         <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <span class="text-xs font-bold text-slate-500 block mb-1">登録商品数</span>
-                            <span class="text-2xl sm:text-3xl font-black text-cyan-500" id="stat-goods-count">0 <span class="text-xs text-slate-400 font-normal">点</span></span>
+                            <span class="text-xs font-bold text-slate-500 block mb-1" data-i18n="statGoodsCount">登録商品数</span>
+                            <span class="text-2xl sm:text-3xl font-black text-cyan-500" id="stat-goods-count">0 <span class="text-xs text-slate-400 font-normal" data-i18n="unitItems">点</span></span>
                         </div>
                     </div>
 
                     <div class="space-y-3">
-                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">🏆 リスナー人気作品ランキング TOP 5</h3>
+                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200" data-i18n="rankingTitle">🏆 リスナー人気作品ランキング TOP 5</h3>
                         <div id="stat-ranking-container" class="space-y-2">
-                            <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400" data-i18n="rankingPlaceholder">
                                 CSVデータを読み込むとここにランキングが表示されます。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INDIVIDUAL LISTENER RESPONSES SECTION -->
+                    <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-pink-500"></i> リスナー個別の提出回答一覧
+                            </h3>
+                            <span id="individual-responses-count" class="text-xs text-slate-400 font-bold">0 件</span>
+                        </div>
+                        <div id="individual-responses-container" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">
+                                CSVデータを読み込むと、各リスナーの完全な選出リスト（全回答内容）がここに1件ずつ表示されます。
                             </div>
                         </div>
                     </div>
@@ -389,9 +428,9 @@
                 <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6 max-w-2xl mx-auto">
                     <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-500/40 rounded-2xl text-xs space-y-2">
                         <h4 class="font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5 text-sm">
-                            <i class="fa-solid fa-shield-check"></i> 【完全無料・非営利・安心宣言】
+                            <i class="fa-solid fa-shield-check"></i> <span data-i18n="mypageNoticeTitle">【完全無料・非営利・安心宣言】</span>
                         </h4>
-                        <p class="text-emerald-900/80 dark:text-emerald-200/80 leading-relaxed">
+                        <p class="text-emerald-900/80 dark:text-emerald-200/80 leading-relaxed" data-i18n="mypageNoticeDesc">
                             当アプリは個人開発の完全無料Webツールです。有料課金、広告表示、ユーザー登録、個人情報の収集・外部送信は一切行いません。<br>
                             作成したカルテはお使いの端末（ブラウザ）内にのみ安全に保存されます。
                         </p>
@@ -399,20 +438,20 @@
 
                     <div class="space-y-4">
                         <h3 class="font-extrabold text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                            <i class="fa-solid fa-hard-drive text-pink-500"></i> ブラウザ保存データ
+                            <i class="fa-solid fa-hard-drive text-pink-500"></i> <span data-i18n="mypageDataTitle">ブラウザ保存データ</span>
                         </h3>
                         
                         <div class="flex gap-2">
-                            <button onclick="saveCurrentKarteToLocalStorage()" class="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl text-xs font-bold shadow-md hover:from-pink-600 hover:to-purple-700 transition">
+                            <button onclick="saveCurrentKarteToLocalStorage()" class="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl text-xs font-bold shadow-md hover:from-pink-600 hover:to-purple-700 transition" data-i18n="btnManualSave">
                                 <i class="fa-solid fa-bookmark mr-1"></i> 現在のカルテをブラウザに手動保存
                             </button>
-                            <button onclick="exportKarteToJson()" class="py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-2xl text-xs font-bold transition">
+                            <button onclick="exportKarteToJson()" class="py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-2xl text-xs font-bold transition" data-i18n="btnJsonExport">
                                 <i class="fa-solid fa-download mr-1"></i> JSON書き出し
                             </button>
                         </div>
 
                         <div class="pt-2">
-                            <label class="block text-xs font-bold text-slate-500 mb-1">保存済みJSONファイルの読込:</label>
+                            <label class="block text-xs font-bold text-slate-500 mb-1" data-i18n="labelJsonImport">保存済みJSONファイルの読込:</label>
                             <input type="file" id="json-file-input" accept=".json" onchange="importKarteFromJson(event)" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-pink-500/10 file:text-pink-600 hover:file:bg-pink-500/20">
                         </div>
 
@@ -431,7 +470,7 @@
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 space-y-4">
             <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800">
                 <h3 class="font-black text-base flex items-center gap-2 text-pink-500">
-                    <i class="fa-solid fa-paper-plane"></i> Googleフォームへ回答を送信
+                    <i class="fa-solid fa-paper-plane"></i> <span data-i18n="submitModalTitle">Googleフォームへ回答を送信</span>
                 </h3>
                 <button onclick="closeSubmitModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
                     <i class="fa-solid fa-xmark"></i>
@@ -440,26 +479,34 @@
 
             <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
                 <div>
-                    <label class="block font-bold mb-1">配信者のGoogleフォームURL</label>
+                    <label class="block font-bold mb-1" data-i18n="labelFormUrl">配信者のGoogleフォームURL</label>
                     <input type="url" id="google-form-url" placeholder="https://forms.gle/xxxxx" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-pink-500">
                 </div>
 
-                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
-                    <span class="font-bold text-slate-700 dark:text-slate-200 block">🔒 匿名送信</span>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                        個人情報やパスワードの入力は不要です。コピーしてフォームにそのまま貼り付けて送信できます。
+                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-secret text-pink-500"></i> 匿名で送信する
+                        </span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="modal-anon-checkbox" onchange="toggleAnonymity(this.checked)" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
+                        </label>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-i18n="formAnonDesc">
+                        「匿名希望」にチェックを入れると名前欄が「匿名希望」に置き換わります。
                     </p>
                 </div>
 
                 <div>
-                    <label class="block font-bold mb-1">送信データのプレビュー</label>
+                    <label class="block font-bold mb-1" data-i18n="labelPreview">送信データのプレビュー</label>
                     <textarea id="export-text-preview" rows="5" readonly class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-[11px] font-mono resize-none focus:outline-none"></textarea>
                 </div>
             </div>
 
             <div class="pt-2 flex gap-3">
-                <button onclick="closeSubmitModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs">キャンセル</button>
-                <button onclick="copyAndOpenForm()" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold rounded-xl text-xs shadow-md">
+                <button onclick="closeSubmitModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs" data-i18n="btnCancel">キャンセル</button>
+                <button onclick="copyAndOpenForm()" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold rounded-xl text-xs shadow-md" data-i18n="btnCopyAndOpen">
                     コピーしてフォームを開く
                 </button>
             </div>
@@ -471,7 +518,7 @@
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-4">
             <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800">
                 <h3 class="font-bold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-pink-500"></i> 画像を選択（候補一覧）
+                    <i class="fa-solid fa-list-check text-pink-500"></i> <span data-i18n="candidateModalTitle">画像を選択（候補一覧）</span>
                 </h3>
                 <button onclick="closeCandidatesModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark"></i>
@@ -503,11 +550,11 @@
 
                 <!-- Title Input with Auto-complete Dropdown -->
                 <div class="relative">
-                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）</label>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelTitleInput">作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）</label>
                     <div class="flex gap-2">
                         <input type="text" id="modal-slot-title" oninput="handleTitleInputChange(this.value, 'grid')" autocomplete="off" placeholder="例: パイレーツ カリビアン / フリーレン / ポテトチップス" class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
                         <button type="button" onclick="autoFetchImageWithCandidates('grid')" id="btn-autofetch" class="px-3.5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 flex items-center gap-1.5">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> 候補一覧
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btnCandidates">候補一覧</span>
                         </button>
                     </div>
 
@@ -519,9 +566,9 @@
 
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300">カバー画像 (URL)</label>
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300" data-i18n="labelCoverUrl">カバー画像 (URL)</label>
                         <button type="button" onclick="toggleModalBlurReveal()" id="modal-reveal-btn" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 flex items-center gap-1">
-                            <i class="fa-solid fa-eye"></i> ぼかしトグル
+                            <i class="fa-solid fa-eye"></i> <span data-i18n="btnBlurToggle">ぼかしトグル</span>
                         </button>
                     </div>
                     <input type="url" id="modal-slot-imgurl" oninput="updateModalImgPreview(this.value)" placeholder="https://example.com/poster.jpg" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
@@ -529,19 +576,19 @@
                     <div class="mt-3 h-40 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 overflow-hidden relative flex items-center justify-center">
                         <img id="modal-img-preview" src="" class="w-full h-full object-cover hidden" onerror="this.src='https://placehold.co/400x300/cbd5e1/64748b?text=Image+Error'">
                         <span id="modal-img-placeholder" class="text-xs text-slate-400 font-bold flex items-center gap-1">
-                            <i class="fa-regular fa-image"></i> 画像プレビュー
+                            <i class="fa-regular fa-image"></i> <span data-i18n="imgPreviewText">画像プレビュー</span>
                         </span>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">おすすめコメント</label>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelComment">おすすめコメント</label>
                     <textarea id="modal-slot-comment" rows="3" placeholder="簡潔なおすすめ理由を入力..." class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500 resize-none"></textarea>
                 </div>
 
                 <div class="pt-3 flex gap-3">
-                    <button type="button" onclick="closeGridModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs">キャンセル</button>
-                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-xl text-xs shadow-md">保存する</button>
+                    <button type="button" onclick="closeGridModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs" data-i18n="btnCancel">キャンセル</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-xl text-xs shadow-md" data-i18n="btnSave">保存する</button>
                 </div>
             </form>
         </div>
@@ -552,7 +599,7 @@
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
             <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
                 <h3 id="goods-modal-title-text" class="font-bold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品の追加・編集
+                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> <span data-i18n="goodsModalHeader">おすすめ商品の追加・編集</span>
                 </h3>
                 <button onclick="closeGoodsModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark"></i>
@@ -563,7 +610,7 @@
                 <input type="hidden" id="goods-item-id">
                 
                 <div>
-                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">カテゴリ設定</label>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelCategory">カテゴリ設定</label>
                     <div class="space-y-2">
                         <select id="goods-category-select" onchange="handleCategorySelectChange(this.value)" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-pink-500">
                             <option value="おやつ">🍿 おやつ</option>
@@ -573,18 +620,18 @@
                             <option value="愛用コスメ">💄 愛用コスメ</option>
                             <option value="生活雑貨">🏠 生活雑貨</option>
                             <option value="ガジェット">🎧 ガジェット</option>
-                            <option value="custom">✏️ 自由入力</option>
+                            <option value="custom" data-i18n="catCustom">✏️ 自由入力</option>
                         </select>
                         <input type="text" id="goods-category-input" placeholder="例: おすすめプロテイン" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500 hidden">
                     </div>
                 </div>
 
                 <div class="relative">
-                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">商品名（1文字入力からリアルタイム検索・候補表示）</label>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelGoodsTitle">商品名（1文字入力からリアルタイム検索・候補表示）</label>
                     <div class="flex gap-2">
                         <input type="text" id="goods-title" oninput="handleTitleInputChange(this.value, 'goods')" autocomplete="off" placeholder="例: じゃがりこ / ポテトチップス" required class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
                         <button type="button" onclick="autoFetchImageWithCandidates('goods')" class="px-3 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 flex items-center gap-1">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i> 画像自動検索
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btnAutoSearch">画像自動検索</span>
                         </button>
                     </div>
                     
@@ -594,180 +641,111 @@
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">商品画像URL</label>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelGoodsImg">商品画像URL</label>
                     <input type="url" id="goods-imgurl" placeholder="https://example.com/item.jpg" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">価格帯 / 購入場所 メモ</label>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelGoodsNote">価格帯 / 購入場所 メモ</label>
                     <input type="text" id="goods-note" placeholder="例: 約500円 / コンビニ・スーパー限定" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
                 </div>
 
                 <div>
-                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">おすすめポイント</label>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelGoodsComment">おすすめポイント</label>
                     <textarea id="goods-comment" rows="3" placeholder="おすすめ理由を入力..." class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 resize-none focus:outline-none focus:border-pink-500"></textarea>
                 </div>
 
                 <div class="pt-2 flex gap-3">
-                    <button type="button" onclick="closeGoodsModal()" class="flex-1 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl transition">キャンセル</button>
-                    <button type="submit" class="flex-1 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow-md transition">保存</button>
+                    <button type="button" onclick="closeGoodsModal()" class="flex-1 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl transition" data-i18n="btnCancel">キャンセル</button>
+                    <button type="submit" class="flex-1 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow-md transition" data-i18n="btnSave">保存</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- GUIDE MODAL -->
+    <!-- GUIDE MODAL (UPDATED VISUAL FLOW TO GOOGLE FORMS) -->
     <div id="guide-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
         <div id="guide-modal-container" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 dark:border-slate-800 gap-2">
                 <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2 text-pink-500">
-                    <i class="fa-solid fa-circle-question"></i> <span>使い方ガイド</span>
+                    <i class="fa-solid fa-circle-question"></i> <span data-i18n="guideModalTitle">使い方ガイド</span>
                 </h3>
 
-                <!-- Modal Controls: Text Size & View Mode -->
                 <div class="flex items-center gap-2 flex-wrap">
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
-                        <span class="px-1.5 text-slate-400">文字:</span>
-                        <button onclick="setModalTextSize('guide', 'sm')" id="btn-guide-ts-sm" class="px-2 py-0.5 rounded-lg transition">標準</button>
-                        <button onclick="setModalTextSize('guide', 'md')" id="btn-guide-ts-md" class="px-2 py-0.5 rounded-lg bg-pink-500 text-white shadow transition">大</button>
-                        <button onclick="setModalTextSize('guide', 'lg')" id="btn-guide-ts-lg" class="px-2 py-0.5 rounded-lg transition">特大</button>
-                    </div>
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
-                        <button onclick="setModalViewMode('guide', 'pc')" id="btn-guide-vm-pc" class="px-2 py-0.5 rounded-lg bg-purple-500 text-white shadow transition"><i class="fa-solid fa-desktop"></i> PC</button>
-                        <button onclick="setModalViewMode('guide', 'mobile')" id="btn-guide-vm-mobile" class="px-2 py-0.5 rounded-lg transition"><i class="fa-solid fa-mobile-screen"></i> スマホ</button>
-                    </div>
                     <button onclick="closeGuideModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
             </div>
 
-            <div id="guide-modal-body" class="space-y-4 text-xs">
+            <div id="guide-modal-body" class="space-y-5 text-xs">
+                
+                <!-- STEP BY STEP VISUAL GUIDE TO GOOGLE FORMS -->
                 <div class="space-y-3">
-                    <h4 class="font-black text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs shrink-0">1</span>
-                        【配信者向け】15選カルテの作成と演出
+                    <h4 class="font-black text-sm text-pink-600 dark:text-pink-400 flex items-center gap-2">
+                        <i class="fa-solid fa-map-location-dot"></i> Googleフォーム回答・企画参加の超簡単4ステップ
                     </h4>
-                    <div id="guide-grid-layout" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
-                            <span class="font-bold text-pink-500">A. リアルタイム予測入力</span>
-                            <p class="text-slate-500 dark:text-slate-400">アニメ・映画・漫画・商品の全カテゴリで入力時に予測候補とジャケット画像が自動表示されます。</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-3.5 bg-pink-50/50 dark:bg-pink-950/20 rounded-2xl border border-pink-200 dark:border-pink-900/40 relative">
+                            <span class="w-6 h-6 rounded-full bg-pink-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">1</span>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">カルテの15選を作成</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">好きな作品や商品をカードをクリックして入力・登録します。1文字入力で自動画像検索が使えます！</p>
                         </div>
-                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
-                            <span class="font-bold text-amber-500">B. ぼかし＆解禁演出</span>
-                            <p class="text-slate-500 dark:text-slate-400">「ぼかしOFF」で画像を保護。配信中に編集画面から1枚ずつ解禁発表が可能です。</p>
+
+                        <div class="p-3.5 bg-purple-50/50 dark:bg-purple-950/20 rounded-2xl border border-purple-200 dark:border-purple-900/40 relative">
+                            <span class="w-6 h-6 rounded-full bg-purple-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">2</span>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">「企画に回答を送信」を押す</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">画面左側または下部の「企画に回答を送信」ボタンをクリック。回答内容が自動的に綺麗にテキスト化されます。</p>
                         </div>
-                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
-                            <span class="font-bold text-cyan-500">C. オート保存＆画像出力</span>
-                            <p class="text-slate-500 dark:text-slate-400">入力内容は自動保存されます。「画像保存」で高画質PNGを出力し配信にご活用いただけます。</p>
+
+                        <div class="p-3.5 bg-indigo-50/50 dark:bg-indigo-950/20 rounded-2xl border border-indigo-200 dark:border-indigo-900/40 relative">
+                            <span class="w-6 h-6 rounded-full bg-indigo-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">3</span>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">コピーしてフォームを開く</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">モーダルで配信者のフォームURLを入力し、「コピーしてフォームを開く」を押すと、回答が自動コピーされフォームが開きます。</p>
+                        </div>
+
+                        <div class="p-3.5 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200 dark:border-emerald-900/40 relative">
+                            <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-extrabold text-xs flex items-center justify-center mb-2">4</span>
+                            <h5 class="font-bold text-slate-800 dark:text-slate-100 text-xs mb-1">フォームへ貼り付けて送信！</h5>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">開いたGoogleフォームの回答欄に「貼り付け（Ctrl+V / 長押し）」して送信完了！匿名希望チェッカーも使えます。</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-3 pt-2">
-                    <h4 class="font-black text-sm text-pink-600 dark:text-pink-400 flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs shrink-0">2</span>
-                        【リスナー企画】Googleフォーム集計＆自動統計
+                <div class="space-y-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <h4 class="font-black text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> 配信者向け：自動集計機能の使い方
                     </h4>
                     <div class="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
-                        <ol class="list-decimal list-inside space-y-1.5 text-slate-600 dark:text-slate-300 font-medium">
-                            <li><strong>フォーム作成</strong>: 配信者がGoogleフォームを開設。</li>
-                            <li><strong>リスナー回答</strong>: 「企画に回答を送信」でデータが自動コピーされ、フォームへワンタップ移動。</li>
-                            <li><strong>スプレッドシート集計</strong>: 公開CSV URLをアーカイブに読み込ませることで人気ランキングが自動生成されます！</li>
-                        </ol>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Googleフォームと連携したスプレッドシートの「公開CSV URL」または「CSVファイル」を『アーカイブ』タブで読み込むことで、リスナーからの人気作品ランキングおよび個別回答が自動で可視化されます。
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TERMS MODAL (Contains mandatory 4 points) -->
+    <!-- TERMS MODAL -->
     <div id="terms-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
         <div id="terms-modal-container" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-4">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 dark:border-slate-800 gap-2">
                 <h3 class="font-extrabold text-base flex items-center gap-2 text-pink-500">
-                    <i class="fa-solid fa-file-contract"></i> 利用規約・配信利用ガイドライン
+                    <i class="fa-solid fa-file-contract"></i> <span data-i18n="termsModalTitle">利用規約・配信利用ガイドライン</span>
                 </h3>
-
-                <!-- Modal Controls: Text Size & View Mode -->
-                <div class="flex items-center gap-2 flex-wrap">
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
-                        <span class="px-1.5 text-slate-400">文字:</span>
-                        <button onclick="setModalTextSize('terms', 'sm')" id="btn-terms-ts-sm" class="px-2 py-0.5 rounded-lg transition">標準</button>
-                        <button onclick="setModalTextSize('terms', 'md')" id="btn-terms-ts-md" class="px-2 py-0.5 rounded-lg bg-pink-500 text-white shadow transition">大</button>
-                        <button onclick="setModalTextSize('terms', 'lg')" id="btn-terms-ts-lg" class="px-2 py-0.5 rounded-lg transition">特大</button>
-                    </div>
-                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
-                        <button onclick="setModalViewMode('terms', 'pc')" id="btn-terms-vm-pc" class="px-2 py-0.5 rounded-lg bg-purple-500 text-white shadow transition"><i class="fa-solid fa-desktop"></i> PC</button>
-                        <button onclick="setModalViewMode('terms', 'mobile')" id="btn-terms-vm-mobile" class="px-2 py-0.5 rounded-lg transition"><i class="fa-solid fa-mobile-screen"></i> スマホ</button>
-                    </div>
-                    <button onclick="closeTermsModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
+                <button onclick="closeTermsModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
             <div id="terms-modal-body" class="space-y-4 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
-                <!-- Rule 1: Streamer Welcome -->
                 <div class="p-3 bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800/40 rounded-2xl space-y-1">
-                    <h4 class="font-black text-pink-600 dark:text-pink-400 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-video"></i> ①【配信大歓迎】
-                    </h4>
-                    <p class="text-slate-600 dark:text-slate-300">
-                        当ツールは**VTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作・リスナー参加型企画でのご利用を大歓迎**しております！収益化チャンネルでの配信利用も問題ありません。
-                    </p>
+                    <h4 class="font-black text-pink-600 dark:text-pink-400 text-sm flex items-center gap-1.5" data-i18n="terms1Title">①【配信大歓迎】</h4>
+                    <p class="text-slate-600 dark:text-slate-300" data-i18n="terms1Desc">当ツールはVTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作でのご利用を大歓迎しております！</p>
                 </div>
-
-                <!-- Rule 2: Safety Blur Recommendation -->
-                <div class="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 rounded-2xl space-y-1">
-                    <h4 class="font-black text-amber-700 dark:text-amber-400 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-shield-halved"></i> ②【著作権考慮とぼかしモードの推奨】
-                    </h4>
-                    <p class="text-slate-600 dark:text-slate-300">
-                        作品・商品の権利は各権利元に帰属します。著作権配慮およびYouTube等の配信BANリスク回避のため、配信画面にカードを映す際は**「ぼかしモード（Safety Blur）」のご使用を強く推奨**いたします。
-                    </p>
-                </div>
-
-                <!-- Rule 3: Credit Requirement -->
-                <div class="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-1.5">
-                    <h4 class="font-black text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-quote-left text-pink-500"></i> ③【概要欄へのクレジット記載ルール】
-                    </h4>
-                    <p class="text-slate-600 dark:text-slate-300">
-                        配信や動画で本サイトを使用される際は、配信概要欄や投稿本文に**以下の制作者情報およびサイトURLの明記**をお願いいたします。
-                    </p>
-                    <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-mono text-[11px] text-pink-600 dark:text-pink-400 select-all">
-                        #推し活脳内カルテ<br>
-                        制作者: 葵杏くれは (@kikyokureha)<br>
-                        URL: https://kikyokureha.github.io/oshikatsu-karte
-                    </div>
-                </div>
-
-                <!-- Rule 4: Hashtag Recommendation -->
-                <div class="p-3 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/40 rounded-2xl space-y-1">
-                    <h4 class="font-black text-purple-600 dark:text-purple-400 text-sm flex items-center gap-1.5">
-                        <i class="fa-solid fa-hashtag"></i> ④【ハッシュタグ活用の推奨】
-                    </h4>
-                    <p class="text-slate-600 dark:text-slate-300">
-                        SNS（X等）で共有・投稿する際は、ハッシュタグ「 **#推し活脳内カルテ** 」をつけて投稿し、企画を盛り上げていただけますと幸いです！
-                    </p>
-                </div>
-
-                <!-- API Attributions & Source Credits -->
-                <div class="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-1 text-[11px] text-slate-500">
-                    <h4 class="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                        <i class="fa-solid fa-database text-pink-500"></i> 外部データ出典・クレジット情報
-                    </h4>
-                    <p class="leading-relaxed">
-                        当ツールで表示される映画・アニメポスター画像およびデータは **TMBb API** から、漫画コミックス画像および書籍データは **Google Books API** の公式データ連携APIを利用して取得・表示しています。
-                    </p>
-                </div>
-
                 <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex justify-between items-center">
                     <span>Powered by 葵杏くれは (@kikyokureha)</span>
-                    <a href="https://x.com/kikyokureha" target="_blank" rel="noopener noreferrer" class="text-pink-500 font-bold hover:underline flex items-center gap-1">
-                        <i class="fa-brands fa-x-twitter"></i> @kikyokureha
-                    </a>
                 </div>
             </div>
         </div>
@@ -775,6 +753,142 @@
 
     <!-- Application Engine Logic -->
     <script>
+        // Multi-Language Translation Dictionary
+        const i18nDict = {
+            ja: {
+                navAnime: "アニメ15選", navAnimeMovie: "アニメ映画15選", navMovie: "映画15選", navManga: "漫画15選",
+                navGoods: "おすすめ商品", navArchive: "アーカイブ", navMypage: "マイページ", navGuide: "使い方ガイド",
+                mobAnime: "アニメ", mobAnimeMovie: "アニメ映画", mobMovie: "映画", mobManga: "漫画", mobGoods: "商品", mobArchive: "アーカイブ", mobMypage: "マイページ", mobGuide: "❓ 使い方",
+                blurOff: "ぼかし OFF", blurOn: "ぼかし ON", btnSaveImage: "画像保存",
+                sidebarInfoTitle: "カルテ情報設定", labelCreator: "配信者 / リスナー名", labelSubtitle: "カルテサブタイトル",
+                submitBoxTitle: "企画に回答を送信", submitBoxDesc: "完成した15選カルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。", btnOpenSubmit: "Googleフォームへ回答を送信",
+                streamBoxTitle: "配信利用・ぼかし対策", streamWelcomeBadge: "配信大歓迎！", streamBoxDesc: "センシティブな画像やネタバレ画像を配信中にぼかして表示し、1個ずつ解禁演出ができます。", globalBlurLabel: "全画像ぼかし",
+                resetBoxTitle: "操作・リセット", btnSample: "サンプル読込", btnReset: "リセット", defaultSubtitleText: "タイトル未設定",
+                footerGenerator: "#推し活脳内カルテ 公式ジェネレーター", footerTerms: "利用規約・ガイドライン", bottomBannerHint: "完成したら配信者のGoogleフォームに送信して配信企画に参加しよう！", bottomBannerBtn: "企画に回答を送信する",
+                goodsHeaderTitle: "おすすめ商品カルテ", goodsHeaderDesc: "おやつ、デザート、食品、季節のアイテムなどの愛用品をカード化！", btnAddGoods: "商品を追加する",
+                archiveHeaderTitle: "配信者向け統計ダッシュボード", archiveHeaderDesc: "Googleスプレッドシート公開CSV URLまたはCSVファイル読込で自動集計！", btnLoadSampleStats: "サンプル統計を表示",
+                csvUrlLabel: "Googleスプレッドシート公開CSV URL", btnLoadCsv: "CSV読込", localFileLabel: "ローカルファイル:", btnResetStats: "集計リセット",
+                statListeners: "通算参加リスナー数", unitPersons: "名", statTopWork: "最推し1位作品", statUncalculated: "未集計", statGoodsCount: "登録商品数", unitItems: "点",
+                rankingTitle: "🏆 リスナー人気作品ランキング TOP 5", rankingPlaceholder: "CSVデータを読み込むとここにランキングが表示されます。",
+                mypageNoticeTitle: "【完全無料・非営利・安心宣言】", mypageNoticeDesc: "当アプリは個人開発の完全無料Webツールです。有料課金、広告表示、ユーザー登録、個人情報の収集・外部送信は一切行いません。作成したカルテはお使いの端末（ブラウザ）内にのみ安全に保存されます。",
+                mypageDataTitle: "ブラウザ保存データ", btnManualSave: "現在のカルテをブラウザに手動保存", btnJsonExport: "JSON書き出し", labelJsonImport: "保存済みJSONファイルの読込:",
+                submitModalTitle: "Googleフォームへ回答を送信", labelFormUrl: "配信者のGoogleフォームURL", formAnonDesc: "「匿名希望」にチェックを入れると名前欄が「匿名希望」に置き換わります。", labelPreview: "送信データのプレビュー", btnCancel: "キャンセル", btnCopyAndOpen: "コピーしてフォームを開く",
+                candidateModalTitle: "画像を選択（候補一覧）", labelTitleInput: "作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）", btnCandidates: "候補一覧", labelCoverUrl: "カバー画像 (URL)", btnBlurToggle: "ぼかしトグル", imgPreviewText: "画像プレビュー", labelComment: "おすすめコメント", btnSave: "保存する",
+                goodsModalHeader: "おすすめ商品の追加・編集", labelCategory: "カテゴリ設定", catCustom: "✏️ 自由入力", labelGoodsTitle: "商品名（1文字入力からリアルタイム検索・候補表示）", btnAutoSearch: "画像自動検索", labelGoodsImg: "商品画像URL", labelGoodsNote: "価格帯 / 購入場所 メモ", labelGoodsComment: "おすすめポイント",
+                guideModalTitle: "使い方ガイド", termsModalTitle: "利用規約・配信利用ガイドライン", terms1Title: "①【配信大歓迎】", terms1Desc: "当ツールはVTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作でのご利用を大歓迎しております！"
+            },
+            en: {
+                navAnime: "Top 15 Anime", navAnimeMovie: "Anime Movies", navMovie: "Top 15 Movies", navManga: "Top 15 Manga",
+                navGoods: "Goods", navArchive: "Archive", navMypage: "My Page", navGuide: "User Guide",
+                mobAnime: "Anime", mobAnimeMovie: "Anime Movie", mobMovie: "Movie", mobManga: "Manga", mobGoods: "Goods", mobArchive: "Archive", mobMypage: "My Page", mobGuide: "❓ Guide",
+                blurOff: "Blur OFF", blurOn: "Blur ON", btnSaveImage: "Save Image",
+                sidebarInfoTitle: "Karte Settings", labelCreator: "Streamer / User Name", labelSubtitle: "Karte Subtitle",
+                submitBoxTitle: "Submit to Streamer", submitBoxDesc: "Format your karte and safely send it to the streamer's Google Form.", btnOpenSubmit: "Submit to Google Form",
+                streamBoxTitle: "Stream Safety & Blur", streamWelcomeBadge: "Streaming Welcome!", streamBoxDesc: "Blur images during streams for spoiler safety and reveal them one by one.", globalBlurLabel: "Global Blur",
+                resetBoxTitle: "Actions & Reset", btnSample: "Load Sample", btnReset: "Reset", defaultSubtitleText: "Untitled Karte",
+                footerGenerator: "#OshikatsuBrainKarte Generator", footerTerms: "Terms & Guidelines", bottomBannerHint: "Send your completed karte to the streamer's Google Form!", bottomBannerBtn: "Submit Answers",
+                goodsHeaderTitle: "Recommended Goods", goodsHeaderDesc: "Cardify your favorite snacks, desserts, items, and gadgets!", btnAddGoods: "Add Goods",
+                archiveHeaderTitle: "Streamer Analytics Dashboard", archiveHeaderDesc: "Load public Google Spreadsheet CSV URL or local CSV to auto-aggregate!", btnLoadSampleStats: "Load Sample Stats",
+                csvUrlLabel: "Google Sheets Public CSV URL", btnLoadCsv: "Load CSV", localFileLabel: "Local File:", btnResetStats: "Reset Stats",
+                statListeners: "Total Listeners", unitPersons: "", statTopWork: "Top Voted Title", statUncalculated: "N/A", statGoodsCount: "Saved Goods", unitItems: "items",
+                rankingTitle: "🏆 Top 5 Popular Titles", rankingPlaceholder: "Load CSV data to display rankings here.",
+                mypageNoticeTitle: "【100% Free & Secure Guarantee】", mypageNoticeDesc: "This is a free personal Web tool. No ads, no fees, no registration required. All data is saved securely in your browser.",
+                mypageDataTitle: "Browser Saved Data", btnManualSave: "Save to Browser", btnJsonExport: "Export JSON", labelJsonImport: "Import JSON File:",
+                submitModalTitle: "Submit to Google Form", labelFormUrl: "Streamer's Google Form URL", formAnonDesc: "Check 'Anonymous' to replace your name with 'Anonymous'.", labelPreview: "Formatted Preview Data", btnCancel: "Cancel", btnCopyAndOpen: "Copy & Open Form",
+                candidateModalTitle: "Select Image Candidates", labelTitleInput: "Title (Real-time auto search)", btnCandidates: "Candidates", labelCoverUrl: "Cover Image URL", btnBlurToggle: "Toggle Blur", imgPreviewText: "Image Preview", labelComment: "Comment", btnSave: "Save",
+                goodsModalHeader: "Add / Edit Goods", labelCategory: "Category", catCustom: "✏️ Custom", labelGoodsTitle: "Goods Name", btnAutoSearch: "Auto Search", labelGoodsImg: "Goods Image URL", labelGoodsNote: "Price / Store Note", labelGoodsComment: "Review Comment",
+                guideModalTitle: "User Guide", termsModalTitle: "Terms & Guidelines", terms1Title: "① Streaming Welcome", terms1Desc: "VTubers and streamers are welcome to use this app on YouTube or Twitch streams!"
+            },
+            ko: {
+                navAnime: "애니 15선", navAnimeMovie: "극장판 애니", navMovie: "영화 15선", navManga: "만화 15선",
+                navGoods: "추천 상품", navArchive: "아카이브", navMypage: "마이페이지", navGuide: "가이드",
+                mobAnime: "애니", mobAnimeMovie: "극장판", mobMovie: "영화", mobManga: "만화", mobGoods: "상품", mobArchive: "아카이브", mobMypage: "마이페이지", mobGuide: "❓ 가이드",
+                blurOff: "블러 OFF", blurOn: "블러 ON", btnSaveImage: "이미지 저장",
+                sidebarInfoTitle: "차트 정보 설정", labelCreator: "스트리머 / 닉네임", labelSubtitle: "차트 서브타이틀",
+                submitBoxTitle: "방송 기획 답변 제출", submitBoxDesc: "작성한 15선 차트를 텍스트로 자동 변환하여 구글 폼에 안전하게 제출합니다.", btnOpenSubmit: "구글 폼으로 답변 제출",
+                streamBoxTitle: "방송용 블러 설정", streamWelcomeBadge: "방송 이용 환영!", streamBoxDesc: "스포일러 방지를 위해 이미지를 블러 처리하고 하나씩 공개할 수 있습니다.", globalBlurLabel: "전체 이미지 블러",
+                resetBoxTitle: "작업 & 리셋", btnSample: "샘플 불러오기", btnReset: "리셋", defaultSubtitleText: "제목 미설정",
+                footerGenerator: "#오시카츠뇌내차트 공식 제네레이터", footerTerms: "이용약관・가이드라인", bottomBannerHint: "완성된 차트를 스트리머의 구글 폼에 제출해보세요!", bottomBannerBtn: "답변 제출하기",
+                goodsHeaderTitle: "추천 상품 차트", goodsHeaderDesc: "애용하는 간식, 디저트, 애정템을 카드 형태로 등록하세요!", btnAddGoods: "상품 추가하기",
+                archiveHeaderTitle: "스트리머용 통계 대시보드", archiveHeaderDesc: "구글 스프레드시트 공개 CSV URL 또는 CSV 파일로 자동 집계!", btnLoadSampleStats: "샘플 통계 표시",
+                csvUrlLabel: "구글 스프레드시트 공개 CSV URL", btnLoadCsv: "CSV 읽기", localFileLabel: "로컬 파일:", btnResetStats: "집계 리셋",
+                statListeners: "총 참여 리스너", unitPersons: "명", statTopWork: "1위 인기 작품", statUncalculated: "미집계", statGoodsCount: "등록 상품 수", unitItems: "개",
+                rankingTitle: "🏆 리스너 인기 작품 TOP 5", rankingPlaceholder: "CSV 데이터를 읽어오면 여기에 랭킹이 표시됩니다.",
+                mypageNoticeTitle: "【100% 무료 & 안전 보장】", mypageNoticeDesc: "본 앱은 완전 무료 개인 웹 툴입니다. 광고나 개인정보 수집이 전혀 없습니다.",
+                mypageDataTitle: "브라우저 저장 데이터", btnManualSave: "브라우저에 저장", btnJsonExport: "JSON 내보내기", labelJsonImport: "JSON 파일 읽기:",
+                submitModalTitle: "구글 폼으로 답변 제출", labelFormUrl: "스트리머 구글 폼 URL", formAnonDesc: "익명 희망에 체크하면 이름이 '익명'으로 변경됩니다.", labelPreview: "제출 데이터 미리보기", btnCancel: "취소", btnCopyAndOpen: "복사하고 폼 열기",
+                candidateModalTitle: "이미지 후보 선택", labelTitleInput: "작품/상품 제목 (실시간 검색)", btnCandidates: "후보 목록", labelCoverUrl: "커버 이미지 URL", btnBlurToggle: "블러 토글", imgPreviewText: "이미지 미리보기", labelComment: "추천 한마디", btnSave: "저장하기",
+                goodsModalHeader: "추천 상품 추가/수정", labelCategory: "카테고리", catCustom: "✏️ 직접 입력", labelGoodsTitle: "상품명", btnAutoSearch: "이미지 자동 검색", labelGoodsImg: "상품 이미지 URL", labelGoodsNote: "가격/구매처 메모", labelGoodsComment: "추천 포인트",
+                guideModalTitle: "사용 가이드", termsModalTitle: "이용약관 & 가이드라인", terms1Title: "① 방송 이용 환영", terms1Desc: "VTuber 및 스트리머분들의 방송 활용을 적극 환영합니다!"
+            },
+            th: {
+                navAnime: "อนิเมะ 15 เรื่อง", navAnimeMovie: "อนิเมะมูฟวี่", navMovie: "หนัง 15 เรื่อง", navManga: "มังงะ 15 เรื่อง",
+                navGoods: "สินค้าแนะนำ", navArchive: "คลังข้อมูล", navMypage: "มายเพจ", navGuide: "คู่มือใช้งาน",
+                mobAnime: "อนิเมะ", mobAnimeMovie: "มูฟวี่", mobMovie: "หนัง", mobManga: "มังงะ", mobGoods: "สินค้า", mobArchive: "คลัง", mobMypage: "มายเพจ", mobGuide: "❓ คู่มือ",
+                blurOff: "เบลอ OFF", blurOn: "เบลอ ON", btnSaveImage: "บันทึกภาพ",
+                sidebarInfoTitle: "ตั้งค่าการ์ด", labelCreator: "ชื่อสตรีมเมอร์ / ผู้ใช้", labelSubtitle: "หัวข้อการ์ด",
+                submitBoxTitle: "ส่งคำตอบ", submitBoxDesc: "แปลงข้อมูลการ์ดเป็นข้อความและส่งไปยัง Google Form ของสตรีมเมอร์", btnOpenSubmit: "ส่งไปยัง Google Form",
+                streamBoxTitle: "โหมดเบลอป้องกันสปอยล์", streamWelcomeBadge: "ยินดีต้อนรับสตรีมเมอร์!", streamBoxDesc: "ซ่อนภาพและค่อยๆ เปิดทีละภาพระหว่างไลฟ์สตรีม", globalBlurLabel: "เบลอภาพทั้งหมด",
+                resetBoxTitle: "การจัดการ & รีเซ็ต", btnSample: "โหลดตัวอย่าง", btnReset: "รีเซ็ต", defaultSubtitleText: "ยังไม่ได้ตั้งชื่อ",
+                footerGenerator: "#OshikatsuBrainKarte เครื่องมือสร้างการ์ด", footerTerms: "ข้อตกลง & แนวทาง", bottomBannerHint: "ส่งการ์ดที่เสร็จแล้วไปยัง Google Form ของสตรีมเมอร์!", bottomBannerBtn: "ส่งคำตอบ",
+                goodsHeaderTitle: "การ์ดสินค้าแนะนำ", goodsHeaderDesc: "บันทึกของกิน ขนม ของใช้ชิ้นโปรดของคุณ!", btnAddGoods: "เพิ่มสินค้า",
+                archiveHeaderTitle: "แดชบอร์ดสถิติสำหรับสตรีมเมอร์", archiveHeaderDesc: "รวบรวมสถิติอัตโนมัติจากลิงก์ Google Sheets CSV", btnLoadSampleStats: "แสดงตัวอย่างสถิติ",
+                csvUrlLabel: "ลิงก์ Google Sheets Public CSV", btnLoadCsv: "โหลด CSV", localFileLabel: "ไฟล์ในเครื่อง:", btnResetStats: "รีเซ็ตสถิติ",
+                statListeners: "จำนวนผู้ตอบทั้งหมด", unitPersons: "คน", statTopWork: "อันดับ 1 ขวัญใจ", statUncalculated: "ยังไม่คำนวณ", statGoodsCount: "จำนวนสินค้า", unitItems: "ชิ้น",
+                rankingTitle: "🏆 5 อันดับผลงานยอดนิยม", rankingPlaceholder: "โหลดข้อมูล CSV เพื่อแสดงอันดับที่นี่",
+                mypageNoticeTitle: "【ฟรี 100% & ปลอดภัยแน่นอน】", mypageNoticeDesc: "เว็บแอปนี้ฟรีไม่มีค่าใช้จ่าย ไม่มีการเก็บข้อมูลส่วนตัว ข้อมูลจะถูกบันทึกในเบราว์เซอร์ของคุณเท่านั้น",
+                mypageDataTitle: "ข้อมูลที่บันทึกในเบราว์เซอร์", btnManualSave: "บันทึกลงเบราว์เซอร์", btnJsonExport: "ส่งออก JSON", labelJsonImport: "นำเข้าไฟล์ JSON:",
+                submitModalTitle: "ส่งคำตอบไปยัง Google Form", labelFormUrl: "ลิงก์ Google Form ของสตรีมเมอร์", formAnonDesc: "ติ๊ก 'ไม่เปิดเผยชื่อ' เพื่อเปลี่ยนชื่อเป็น ไม่ระบุตัวตน", labelPreview: "ตัวอย่างข้อความที่จะส่ง", btnCancel: "ยกเลิก", btnCopyAndOpen: "ก๊อปปี้และเปิดฟอร์ม",
+                candidateModalTitle: "เลือกภาพปก", labelTitleInput: "ชื่อผลงาน/สินค้า (ค้นหาอัตโนมัติ)", btnCandidates: "รายการ候補", labelCoverUrl: "URL ภาพปก", btnBlurToggle: "เปิด/ปิด เบลอ", imgPreviewText: "ตัวอย่างภาพ", labelComment: "ความคิดเห็น", btnSave: "บันทึก",
+                goodsModalHeader: "เพิ่ม/แก้ไข สินค้า", labelCategory: "หมวดหมู่", catCustom: "✏️ กำหนดเอง", labelGoodsTitle: "ชื่อสินค้า", btnAutoSearch: "ค้นหาภาพอัตโนมัติ", labelGoodsImg: "URL ภาพสินค้า", labelGoodsNote: "บันทึกราคา/สถานที่ซื้อ", labelGoodsComment: "จุดเด่นแนะนำ",
+                guideModalTitle: "คู่มือใช้งาน", termsModalTitle: "ข้อตกลงและแนวทาง", terms1Title: "① ยินดีรับสตรีมเมอร์", terms1Desc: "สามารถนำไปใช้ในไลฟ์สตรีม YouTube หรือ Twitch ได้เลย!"
+            },
+            fr: {
+                navAnime: "Top 15 Animes", navAnimeMovie: "Films d'Animation", navMovie: "Top 15 Films", navManga: "Top 15 Mangas",
+                navGoods: "Produits", navArchive: "Archives", navMypage: "Ma Page", navGuide: "Guide",
+                mobAnime: "Anime", mobAnimeMovie: "Film Animé", mobMovie: "Film", mobManga: "Manga", mobGoods: "Produits", mobArchive: "Archive", mobMypage: "Ma Page", mobGuide: "❓ Guide",
+                blurOff: "Flou OFF", blurOn: "Flou ON", btnSaveImage: "Enregistrer Image",
+                sidebarInfoTitle: "Configuration Karte", labelCreator: "Streamer / Pseudo", labelSubtitle: "Sous-titre Karte",
+                submitBoxTitle: "Envoyer au Streamer", submitBoxDesc: "Formattez votre liste et envoyez-la au Google Form du streamer.", btnOpenSubmit: "Envoyer vers Google Form",
+                streamBoxTitle: "Sécurité Stream & Flou", streamWelcomeBadge: "Streaming Bienvenu!", streamBoxDesc: "Floutez les images spoiler pendant le live et révélez-les une par une.", globalBlurLabel: "Flou Global",
+                resetBoxTitle: "Actions & Réinitialisation", btnSample: "Exemple", btnReset: "Réinitialiser", defaultSubtitleText: "Titre non défini",
+                footerGenerator: "Générateur #OshikatsuBrainKarte", footerTerms: "Conditions & Directives", bottomBannerHint: "Envoyez votre carte complétée au Google Form du streamer!", bottomBannerBtn: "Soumettre",
+                goodsHeaderTitle: "Produits Recommandés", goodsHeaderDesc: "Créez des cartes pour vos snacks, desserts et objets préférés!", btnAddGoods: "Ajouter Produit",
+                archiveHeaderTitle: "Tableau de Bord Analytics", archiveHeaderDesc: "Agrégation automatique via URL CSV Google Sheets public!", btnLoadSampleStats: "Charger Stats Exemple",
+                csvUrlLabel: "URL CSV Public Google Sheets", btnLoadCsv: "Charger CSV", localFileLabel: "Fichier Local:", btnResetStats: "Réinitialiser Stats",
+                statListeners: "Auditeurs Totaux", unitPersons: "", statTopWork: "Titre N°1", statUncalculated: "N/A", statGoodsCount: "Produits", unitItems: "objets",
+                rankingTitle: "🏆 Top 5 des Titres Populaires", rankingPlaceholder: "Chargez un CSV pour afficher les classements.",
+                mypageNoticeTitle: "【100% Gratuit & Sécurisé】", mypageNoticeDesc: "Outil web personnel entièrement gratuit. Vos données sont conservées localement dans votre navigateur.",
+                mypageDataTitle: "Données du Navigateur", btnManualSave: "Sauvegarder", btnJsonExport: "Exporter JSON", labelJsonImport: "Importer JSON:",
+                submitModalTitle: "Envoyer au Google Form", labelFormUrl: "URL du Google Form", formAnonDesc: "Cochez pour remplacer votre nom par 'Anonyme'.", labelPreview: "Aperçu des données", btnCancel: "Annuler", btnCopyAndOpen: "Copier & Ouvrir Form",
+                candidateModalTitle: "Sélectionner Image", labelTitleInput: "Titre (Recherche auto)", btnCandidates: "Candidats", labelCoverUrl: "URL Image", btnBlurToggle: "Basculer Flou", imgPreviewText: "Aperçu Image", labelComment: "Commentaire", btnSave: "Sauvegarder",
+                goodsModalHeader: "Ajouter/Modifier Produit", labelCategory: "Catégorie", catCustom: "✏️ Personnalisé", labelGoodsTitle: "Nom du Produit", btnAutoSearch: "Recherche Auto", labelGoodsImg: "URL Image Produit", labelGoodsNote: "Note Prix / Magasin", labelGoodsComment: "Point Recommandé",
+                guideModalTitle: "Guide d'Utilisation", termsModalTitle: "Directives & Conditions", terms1Title: "① Streaming Bienvenu", terms1Desc: "Utilisation libre pour vos lives sur YouTube ou Twitch!"
+            },
+            es: {
+                navAnime: "Top 15 Animes", navAnimeMovie: "Películas Anime", navMovie: "Top 15 Películas", navManga: "Top 15 Mangas",
+                navGoods: "Productos", navArchive: "Archivo", navMypage: "Mi Página", navGuide: "Guía",
+                mobAnime: "Anime", mobAnimeMovie: "Peli Anime", mobMovie: "Película", mobManga: "Manga", mobGoods: "Productos", mobArchive: "Archivo", mobMypage: "Mi Página", mobGuide: "❓ Guía",
+                blurOff: "Desenfoque OFF", blurOn: "Desenfoque ON", btnSaveImage: "Guardar Imagen",
+                sidebarInfoTitle: "Configuración Karte", labelCreator: "Streamer / Nombre", labelSubtitle: "Subtítulo Karte",
+                submitBoxTitle: "Enviar al Streamer", submitBoxDesc: "Da formato a tu lista y envíala de forma segura al Google Form.", btnOpenSubmit: "Enviar a Google Form",
+                streamBoxTitle: "Seguridad de Stream", streamWelcomeBadge: "¡Streams Bienvenidos!", streamBoxDesc: "Desenfoca imágenes spoiler en directo y revélalas una por una.", globalBlurLabel: "Desenfoque Global",
+                resetBoxTitle: "Acciones y Reinicio", btnSample: "Cargar Ejemplo", btnReset: "Reiniciar", defaultSubtitleText: "Sin Título",
+                footerGenerator: "Generador #OshikatsuBrainKarte", footerTerms: "Términos y Guías", bottomBannerHint: "¡Envía tu tarjeta completada al Google Form del streamer!", bottomBannerBtn: "Enviar Respuestas",
+                goodsHeaderTitle: "Productos Recomendados", goodsHeaderDesc: "¡Crea tarjetas para tus snacks, postres y objetos favoritos!", btnAddGoods: "Añadir Producto",
+                archiveHeaderTitle: "Panel de Estadísticas", archiveHeaderDesc: "¡Agregación automática mediante URL CSV de Google Sheets!", btnLoadSampleStats: "Ver Ejemplo Stats",
+                csvUrlLabel: "URL CSV Público Google Sheets", btnLoadCsv: "Cargar CSV", localFileLabel: "Archivo Local:", btnResetStats: "Reiniciar Stats",
+                statListeners: "Oyentes Totales", unitPersons: "", statTopWork: "Título N°1", statUncalculated: "N/A", statGoodsCount: "Productos", unitItems: "items",
+                rankingTitle: "🏆 Top 5 Títulos Populares", rankingPlaceholder: "Carga datos CSV para mostrar el ranking aquí.",
+                mypageNoticeTitle: "【100% Gratis y Seguro】", mypageNoticeDesc: "Herramienta web personal completamente gratuita. Todos tus datos se guardan en tu navegador.",
+                mypageDataTitle: "Datos Guardados", btnManualSave: "Guardar en Navegador", btnJsonExport: "Exportar JSON", labelJsonImport: "Importar JSON:",
+                submitModalTitle: "Enviar a Google Form", labelFormUrl: "URL del Google Form", formAnonDesc: "Marca 'Anónimo' para ocultar tu nombre.", labelPreview: "Vista Previa de Datos", btnCancel: "Cancelar", btnCopyAndOpen: "Copiar y Abrir Form",
+                candidateModalTitle: "Seleccionar Imagen", labelTitleInput: "Título (Búsqueda auto)", btnCandidates: "Candidatos", labelCoverUrl: "URL Imagen Cover", btnBlurToggle: "Alternar Desenfoque", imgPreviewText: "Vista Previa", labelComment: "Comentario", btnSave: "Guardar",
+                goodsModalHeader: "Añadir / Editar Producto", labelCategory: "Categoría", catCustom: "✏️ Personalizado", labelGoodsTitle: "Nombre Producto", btnAutoSearch: "Búsqueda Auto", labelGoodsImg: "URL Imagen Producto", labelGoodsNote: "Nota Precio / Tienda", labelGoodsComment: "Punto Recomendado",
+                guideModalTitle: "Guía de Uso", termsModalTitle: "Términos y Guías", terms1Title: "① Uso en Streams", terms1Desc: "¡Libre de usar en streams de YouTube o Twitch!"
+            }
+        };
+
         // Preset Categories for 15-Grids
         const categoryPresets = {
             anime: [
@@ -805,9 +919,13 @@
 
         // Application State
         let currentTab = 'anime';
+        let currentLang = 'ja';
         let globalBlurActive = false;
         let debounceTimer = null;
         let currentCandidates = [];
+        let currentSubmitType = 'grid';
+        let isAnonymousSubmit = false;
+        let isGlobalMobileView = false;
 
         // App Data Architecture
         let appData = {
@@ -829,7 +947,44 @@
             renderGoodsGrid();
             updateHeaderBanner();
             updateArchiveGoodsCount();
+            applyLanguageTranslations();
         };
+
+        // View Mode Switcher (PC / Mobile Viewport)
+        function toggleGlobalViewMode() {
+            isGlobalMobileView = !isGlobalMobileView;
+            const main = document.getElementById('app-main-container');
+            const icon = document.getElementById('view-mode-icon');
+            const text = document.getElementById('view-mode-text');
+
+            if (isGlobalMobileView) {
+                main.classList.add('viewport-mobile-mode');
+                icon.className = 'fa-solid fa-mobile-screen';
+                if (text) text.textContent = 'スマホ版';
+            } else {
+                main.classList.remove('viewport-mobile-mode');
+                icon.className = 'fa-solid fa-desktop';
+                if (text) text.textContent = 'PC版';
+            }
+        }
+
+        // Language Engine Switcher
+        function changeLanguage(langKey) {
+            currentLang = langKey || 'ja';
+            applyLanguageTranslations();
+            renderMainGrid();
+            renderGoodsGrid();
+        }
+
+        function applyLanguageTranslations() {
+            const dict = i18nDict[currentLang] || i18nDict.ja;
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (dict[key]) {
+                    elem.textContent = dict[key];
+                }
+            });
+        }
 
         // Handle title input change with debounced autocomplete
         function handleTitleInputChange(val, mode) {
@@ -856,7 +1011,7 @@
                 : document.getElementById('goods-title').value;
 
             if (!inputVal || !inputVal.trim()) {
-                alert('作品・商品タイトルを入力してください。');
+                alert(currentLang === 'ja' ? '作品・商品タイトルを入力してください。' : 'Please enter a title.');
                 return;
             }
 
@@ -913,7 +1068,7 @@
         // Update Header Banner Metadata
         function updateHeaderBanner() {
             const creator = appData.creator || 'ユーザー名';
-            const subtitle = appData.subtitle || '私の人生を変えた名作15選';
+            const subtitle = appData.subtitle || (i18nDict[currentLang]?.defaultSubtitleText || 'タイトル未設定');
             document.getElementById('display-creator').textContent = `@${creator}`;
             document.getElementById('display-subtitle').textContent = subtitle;
 
@@ -947,7 +1102,7 @@
 
                             <div class="aspect-[3/4] rounded-xl bg-slate-200 dark:bg-slate-950 overflow-hidden relative mb-2 flex items-center justify-center">
                                 ${item.imgUrl ? 
-                                    `<img src="${item.imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">` :
+                                    `<img src="${item.imgUrl}" crossorigin="anonymous" class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">` :
                                     `<div class="text-center p-2 text-slate-400 dark:text-slate-600">
                                         <i class="fa-regular fa-image text-xl mb-1 block"></i>
                                         <span class="text-[10px] font-bold block">クリックして登録</span>
@@ -964,11 +1119,13 @@
             });
         }
 
-        // Search API Integration (Rakuten Books for Manga / TMDb for Movies & Anime)
+        // Search API Integration with Selected Language Code Mapping
         async function fetchMultiApiResults(query, mediaType) {
             if (!query || !query.trim()) return [];
-            
-            // Manga / Books Search Strategy (楽天ブックスAPIによるコミック単行本専用検索)
+
+            const langCodeMap = { ja: 'ja-JP', en: 'en-US', ko: 'ko-KR', th: 'th-TH', fr: 'fr-FR', es: 'es-ES' };
+            const apiLang = langCodeMap[currentLang] || 'ja-JP';
+
             if (mediaType === 'manga') {
                 try {
                     const rakutenUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${encodeURIComponent(query)}&booksGenreId=001001&hits=5&applicationId=1019383342621213031`;
@@ -990,7 +1147,6 @@
                     console.warn('Rakuten Books API error:', e);
                 }
 
-                // 該当なしの場合は一律で No photo を表示
                 return [{
                     title: query,
                     imgUrl: 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
@@ -998,9 +1154,8 @@
                 }];
             }
 
-            // Movies & Anime Search Strategy (TMDb API)
             try {
-                const tmdbUrl = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=ja-JP&query=${encodeURIComponent(query)}&page=1&include_adult=false`;
+                const tmdbUrl = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=${apiLang}&query=${encodeURIComponent(query)}&page=1&include_adult=false`;
                 const res = await fetch(tmdbUrl);
                 if (res.ok) {
                     const data = await res.json();
@@ -1011,7 +1166,7 @@
                             .map(item => ({
                                 title: item.title || item.name || item.original_title,
                                 imgUrl: item.poster_path ? `${TMDB_IMAGE_BASE}${item.poster_path}` : 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
-                                subtitle: item.release_date ? `公開: ${item.release_date.split('-')[0]}年` : (item.first_air_date ? `放送: ${item.first_air_date.split('-')[0]}年` : '作品ポスター')
+                                subtitle: item.release_date ? `Release: ${item.release_date.split('-')[0]}` : (item.first_air_date ? `Air: ${item.first_air_date.split('-')[0]}` : 'Poster')
                             }));
                     }
                 }
@@ -1022,11 +1177,10 @@
             return [{
                 title: query,
                 imgUrl: 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
-                subtitle: '公式画像が見つかりませんでした'
+                subtitle: 'No image found'
             }];
         }
 
-        // Render Autocomplete Dropdown
         function renderAutocompleteDropdown(results, dropdownElem, mode) {
             if (!dropdownElem) return;
             if (!results || results.length === 0) {
@@ -1039,7 +1193,7 @@
                 const item = document.createElement('div');
                 item.className = 'p-2.5 hover:bg-pink-50 dark:hover:bg-slate-800 cursor-pointer flex items-center gap-3 transition';
                 item.innerHTML = `
-                    <img src="${res.imgUrl}" class="w-10 h-14 object-cover rounded-lg border border-slate-200 dark:border-slate-700 shrink-0" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                    <img src="${res.imgUrl}" crossorigin="anonymous" class="w-10 h-14 object-cover rounded-lg border border-slate-200 dark:border-slate-700 shrink-0" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
                     <div class="min-w-0 flex-1">
                         <p class="font-extrabold text-xs text-slate-800 dark:text-slate-100 truncate">${res.title}</p>
                         <p class="text-[10px] text-slate-400 truncate">${res.subtitle || ''}</p>
@@ -1061,7 +1215,6 @@
             dropdownElem.classList.remove('hidden');
         }
 
-        // Multi-candidate Modal Handler
         function renderCandidatesModal(mode) {
             const container = document.getElementById('candidates-list-container');
             if (!container) return;
@@ -1075,7 +1228,7 @@
                     card.className = 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-2 cursor-pointer hover:border-pink-500 transition text-center';
                     card.innerHTML = `
                         <div class="aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-slate-200 dark:bg-slate-900">
-                            <img src="${candidate.imgUrl}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                            <img src="${candidate.imgUrl}" crossorigin="anonymous" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
                         </div>
                         <p class="font-bold text-xs truncate">${candidate.title}</p>
                     `;
@@ -1103,7 +1256,6 @@
             modal.classList.add('opacity-0', 'pointer-events-none');
         }
 
-        // Open Slot Edit Modal
         function openGridModal(slotIndex) {
             const categories = categoryPresets[currentTab] || categoryPresets.anime;
             const currentItems = appData.tabGrids[currentTab] || [];
@@ -1156,7 +1308,6 @@
             closeGridModal();
         }
 
-        // Render Goods Grid
         function renderGoodsGrid() {
             const container = document.getElementById('goods-grid-container');
             if (!container) return;
@@ -1178,7 +1329,7 @@
                     <div class="glass-card p-4 rounded-2xl flex flex-col justify-between space-y-3 relative overflow-hidden group">
                         <div class="flex gap-3">
                             <div class="w-20 h-20 rounded-xl bg-slate-200 dark:bg-slate-950 overflow-hidden shrink-0">
-                                <img src="${item.imgUrl || 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'}" class="w-full h-full object-cover ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                                <img src="${item.imgUrl || 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'}" crossorigin="anonymous" class="w-full h-full object-cover ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <span class="px-2 py-0.5 bg-pink-500/10 text-pink-600 dark:text-pink-400 text-[10px] font-extrabold rounded-md inline-block mb-1">${item.category}</span>
@@ -1239,16 +1390,14 @@
             updateArchiveGoodsCount();
         }
 
-        // Global Blur Toggle
         function toggleGlobalBlur(forceState) {
             globalBlurActive = forceState !== undefined ? forceState : !globalBlurActive;
             document.getElementById('sidebar-global-blur').checked = globalBlurActive;
-            document.getElementById('global-blur-text').textContent = globalBlurActive ? 'ぼかし ON' : 'ぼかし OFF';
+            document.getElementById('global-blur-text').textContent = globalBlurActive ? (i18nDict[currentLang]?.blurOn || 'ぼかし ON') : (i18nDict[currentLang]?.blurOff || 'ぼかし OFF');
             renderMainGrid();
             renderGoodsGrid();
         }
 
-        // Meta Inputs & LocalStorage Save Engine
         function handleMetaInputChange() {
             appData.creator = document.getElementById('cfg-creator').value;
             appData.subtitle = document.getElementById('cfg-subtitle').value;
@@ -1258,11 +1407,6 @@
 
         function saveToLocalStorage() {
             localStorage.setItem('oshikatsu_brain_karte_data', JSON.stringify(appData));
-            const statusElem = document.getElementById('autosave-status');
-            if (statusElem) {
-                statusElem.classList.remove('hidden');
-                setTimeout(() => statusElem.classList.add('hidden'), 2000);
-            }
         }
 
         function loadFromLocalStorage() {
@@ -1278,42 +1422,40 @@
             }
         }
 
-        // Theme Switcher
         function changeTheme(themeName) {
             document.body.className = `theme-${themeName} min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white`;
         }
 
-        // Image Export Engine (html2canvas)
+        // Image Export Engine with Overflow Fix
         function exportGridImage() {
             const container = document.getElementById('capture-container');
             if (!container) return;
 
+            window.scrollTo(0, 0);
+
             html2canvas(container, {
                 scale: 2,
                 useCORS: true,
-                allowTaint: true,
-                backgroundColor: null
+                allowTaint: false,
+                scrollX: 0,
+                scrollY: 0,
+                backgroundColor: null,
+                windowWidth: document.documentElement.offsetWidth,
+                windowHeight: document.documentElement.offsetHeight
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `推し活脳内カルテ_${currentTab}_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+            }).catch(err => {
+                console.error('Canvas generation error:', err);
+                alert('画像の保存に失敗しました。');
             });
         }
 
-        // Submit Modal Engine
-        function openSubmitModal() {
-            const creator = appData.creator || '未設定';
-            const categories = categoryPresets[currentTab] || categoryPresets.anime;
-            const currentItems = appData.tabGrids[currentTab] || [];
-
-            let textData = `【#推し活脳内カルテ 回答】\n作成者: ${creator}\nメディア: ${currentTab.toUpperCase()}\n\n`;
-            categories.forEach((cat, idx) => {
-                const item = currentItems[idx];
-                textData += `${idx + 1}. [${cat}] ${item && item.title ? item.title : '未設定'}\n`;
-            });
-
-            document.getElementById('export-text-preview').value = textData;
+        function openSubmitModal(type) {
+            currentSubmitType = type || 'grid';
+            generateSubmitPreviewText();
             document.getElementById('submit-modal').classList.remove('opacity-0', 'pointer-events-none');
         }
 
@@ -1333,7 +1475,41 @@
             }
         }
 
-        // Modals Controls & Guides
+        function toggleAnonymity(checked) {
+            isAnonymousSubmit = checked;
+            generateSubmitPreviewText();
+        }
+
+        function generateSubmitPreviewText() {
+            const creator = isAnonymousSubmit ? '匿名希望' : (appData.creator || '未設定');
+
+            if (currentSubmitType === 'goods') {
+                let textData = `【#推し活脳内カルテ おすすめ商品回答】\n作成者: ${creator}\n\n`;
+                if (appData.goods.length === 0) {
+                    textData += `(登録商品なし)\n`;
+                } else {
+                    appData.goods.forEach((item, idx) => {
+                        textData += `${idx + 1}. [${item.category}] ${item.title}`;
+                        if (item.note) textData += ` (${item.note})`;
+                        if (item.comment) textData += ` - ${item.comment}`;
+                        textData += `\n`;
+                    });
+                }
+                document.getElementById('export-text-preview').value = textData;
+            } else {
+                const categories = categoryPresets[currentTab] || categoryPresets.anime;
+                const currentItems = appData.tabGrids[currentTab] || [];
+
+                let textData = `【#推し活脳内カルテ 回答】\n作成者: ${creator}\nメディア: ${currentTab.toUpperCase()}\n\n`;
+                categories.forEach((cat, idx) => {
+                    const item = currentItems[idx];
+                    textData += `${idx + 1}. [${cat}] ${item && item.title ? item.title : '未設定'}\n`;
+                });
+
+                document.getElementById('export-text-preview').value = textData;
+            }
+        }
+
         function openGuideModal() {
             document.getElementById('guide-modal').classList.remove('opacity-0', 'pointer-events-none');
         }
@@ -1350,7 +1526,7 @@
 
         function updateArchiveGoodsCount() {
             const statElem = document.getElementById('stat-goods-count');
-            if (statElem) statElem.innerHTML = `${appData.goods.length} <span class="text-xs text-slate-400 font-normal">点</span>`;
+            if (statElem) statElem.innerHTML = `${appData.goods.length} <span class="text-xs text-slate-400 font-normal" data-i18n="unitItems">点</span>`;
         }
 
         function clearCurrentGrid() {
@@ -1369,6 +1545,12 @@
             saveToLocalStorage();
             updateHeaderBanner();
             renderMainGrid();
+        }
+
+        function saveCurrentKarteToLocalStorage() {
+            saveToLocalStorage();
+            alert('現在のカルテをブラウザに保存しました！');
+            renderSavedKartesList();
         }
 
         function renderSavedKartesList() {
@@ -1412,7 +1594,6 @@
             reader.readAsText(file);
         }
 
-        // CSV Local Upload Handler for Streamer Dashboard
         function handleLocalCsvUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1423,7 +1604,6 @@
             reader.readAsText(file);
         }
 
-        // Fetch CSV from Google Sheets Public URL
         async function fetchSheetCsvData() {
             const url = document.getElementById('csv-url-input').value;
             if (!url || !url.trim()) {
@@ -1440,11 +1620,10 @@
             }
         }
 
-        // Parse CSV Text & Update Dashboard Stats
+        // CSV Parser Engine (Deduplicated vote counting per user & Individual response viewer)
         function parseAndDisplayCsvStats(csvText) {
             if (!csvText || !csvText.trim()) return;
 
-            // Simple multi-line quote aware CSV parser
             const rows = [];
             let currentRow = [];
             let currentCell = '';
@@ -1484,39 +1663,53 @@
                 return;
             }
 
-            // Exclude header row
             const dataRows = rows.slice(1);
             const listenerCount = dataRows.length;
             const titleCounts = {};
+            const individualResponses = [];
 
-            dataRows.forEach(row => {
-                // Ignore timestamp (first column) and look for the response text column
+            dataRows.forEach((row, rIdx) => {
                 const contentColumn = row.slice(1).join('\n');
                 const lines = contentColumn.split('\n');
+
+                let userName = 'リスナー' + (rIdx + 1);
+                let userTitlesSet = new Set();
+                let userFullList = [];
 
                 lines.forEach(line => {
                     const trimmed = line.trim();
                     if (!trimmed) return;
 
-                    // Skip metadata headers
-                    if (trimmed.startsWith('【') || trimmed.startsWith('作成者:') || trimmed.startsWith('メディア:')) return;
+                    if (trimmed.startsWith('作成者:')) {
+                        const parsedName = trimmed.replace('作成者:', '').trim();
+                        if (parsedName) userName = parsedName;
+                        return;
+                    }
+                    if (trimmed.startsWith('【') || trimmed.startsWith('メディア:')) return;
 
-                    // Match pattern like "1. [万人向け] 作品タイトル" or "1. 作品タイトル"
-                    const match = trimmed.match(/^\d+\.\s*(?:\[[^\]]+\]\s*)?(.+)$/);
-                    if (match && match[1]) {
-                        const title = match[1].trim();
-                        if (title && title !== '未設定') {
-                            titleCounts[title] = (titleCounts[title] || 0) + 1;
+                    const match = trimmed.match(/^\d+\.\s*(?:\[([^\]]+)\]\s*)?(.+)$/);
+                    if (match && match[2]) {
+                        const category = match[1] || '';
+                        const title = match[2].trim();
+                        if (title && title !== '未設定' && title !== 'N/A') {
+                            userTitlesSet.add(title);
+                            userFullList.push({ category, title });
                         }
                     }
                 });
+
+                userTitlesSet.forEach(title => {
+                    titleCounts[title] = (titleCounts[title] || 0) + 1;
+                });
+
+                individualResponses.push({
+                    userName,
+                    items: userFullList
+                });
             });
 
-            // Sort Ranking
-            const sortedTitles = Object.entries(titleCounts)
-                .sort((a, b) => b[1] - a[1]);
+            const sortedTitles = Object.entries(titleCounts).sort((a, b) => b[1] - a[1]);
 
-            // Update UI
             document.getElementById('stat-listener-count').innerHTML = `${listenerCount} <span class="text-xs text-slate-400 font-normal">名</span>`;
             document.getElementById('stat-top-work').textContent = sortedTitles.length > 0 ? sortedTitles[0][0] : '未集計';
 
@@ -1540,10 +1733,41 @@
                     });
                 }
             }
+
+            const indContainer = document.getElementById('individual-responses-container');
+            const indCountElem = document.getElementById('individual-responses-count');
+            if (indCountElem) indCountElem.textContent = `${individualResponses.length} 件`;
+
+            if (indContainer) {
+                indContainer.innerHTML = '';
+                if (individualResponses.length === 0) {
+                    indContainer.innerHTML = `<div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">個別回答が見つかりませんでした。</div>`;
+                } else {
+                    individualResponses.forEach((resp) => {
+                        const itemsHtml = resp.items.map(it => 
+                            `<span class="inline-block bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded-md text-[10px] text-slate-700 dark:text-slate-300 mr-1 mb-1">
+                                ${it.category ? `<strong class="text-pink-500">[${it.category}]</strong> ` : ''}${it.title}
+                            </span>`
+                        ).join('');
+
+                        indContainer.insertAdjacentHTML('beforeend', `
+                            <div class="p-4 bg-slate-100 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+                                <div class="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-800">
+                                    <span class="font-black text-pink-500 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-user"></i> ${resp.userName}
+                                    </span>
+                                    <span class="text-[10px] bg-purple-500/10 text-purple-600 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold">回答数: ${resp.items.length}件</span>
+                                </div>
+                                <div class="pt-1 leading-relaxed">${itemsHtml || '<span class="text-slate-400">登録項目なし</span>'}</div>
+                            </div>
+                        `);
+                    });
+                }
+            }
+
             alert(`CSVデータを読み込みました！（集計対象: ${listenerCount}名）`);
         }
 
-        // Reset Loaded CSV Statistics & Inputs
         function clearCsvStats() {
             document.getElementById('csv-url-input').value = '';
             document.getElementById('csv-file-upload').value = '';
@@ -1559,13 +1783,23 @@
                     </div>
                 `;
             }
+
+            const indContainer = document.getElementById('individual-responses-container');
+            if (indContainer) {
+                indContainer.innerHTML = `
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">
+                        CSVデータを読み込むと、各リスナーの完全な選出リスト（全回答内容）がここに1件ずつ表示されます。
+                    </div>
+                `;
+            }
+            const indCountElem = document.getElementById('individual-responses-count');
+            if (indCountElem) indCountElem.textContent = '0 件';
         }
 
-        // Load Sample Statistics
         function loadSampleStats() {
             const sampleCsv = `タイムスタンプ,回答
 2026/11/11 8:49:17 PM,【#推し活脳内カルテ 回答】\\n作成者: 葵杏くれは\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] 呪術廻戦\\n3. [青春系] ハイキュー!!\\n4. [アクション系] 鬼滅の刃\\n5. [ギャグ系] 銀魂
-2026/11/11 8:50:00 PM,【#推し活脳内カルテ 回答】\\n作成者: リスナーA\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] フリーレン\\n3. [青春系] ハイキュー!!\\n4. [感動系] ヴァイオレット・エヴァーガーデン\\n5. [ギャグ系] SPY×FAMILY`;
+2026/11/11 8:50:00 PM,【#推し活脳内カルテ 回答】\\n作成者: 匿名希望\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] フリーレン\\n3. [青春系] ハイキュー!!\\n4. [感動系] ヴァイオレット・エヴァーガーデン\\n5. [ギャグ系] SPY×FAMILY`;
             parseAndDisplayCsvStats(sampleCsv);
         }
     </script>
