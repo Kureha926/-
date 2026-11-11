@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="ja" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#推し活脳内カルテ | Oshikatsu Brain Karte</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"M PLUS Rounded 1c"', '"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <!-- html2canvas for Image Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Color Theme Variables */
+        body.theme-light {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        body.theme-light .glass-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body.theme-pastel {
+            background-color: #fdf2f8;
+            color: #4c1d95;
+        }
+        body.theme-pastel .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #fbcfe8;
+            box-shadow: 0 4px 20px -2px rgba(236, 72, 153, 0.1);
+        }
+
+        body.theme-cyber {
+            background-color: #030712;
+            color: #f3f4f6;
+        }
+        body.theme-cyber .glass-card {
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid #06b6d4;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        body.theme-dark {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        body.theme-dark .glass-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Safety Blur Class */
+        .safety-blur {
+            filter: blur(14px) brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+        .safety-blur:hover {
+            filter: blur(0px) brightness(1);
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .theme-dark ::-webkit-scrollbar-thumb, .theme-cyber ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="theme-light min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 backdrop-blur-md transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-2.5 shrink-0 cursor-pointer" onclick="switchTab('anime')">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-500 flex items-center justify-center text-white text-lg font-black shadow-lg shadow-pink-500/20">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-base sm:text-lg tracking-tight bg-gradient-to-r from-pink-500 via-purple-600 to-cyan-500 bg-clip-text text-transparent whitespace-nowrap">
+                        #推し活脳内カルテ
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Global Navigation Tabs (Desktop) -->
+            <nav class="hidden xl:flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700/60 text-xs font-bold shrink-0">
+                <button onclick="switchTab('anime')" id="tab-btn-anime" class="tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap">アニメ15選</button>
+                <button onclick="switchTab('animemovie')" id="tab-btn-animemovie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">アニメ映画15選</button>
+                <button onclick="switchTab('movie')" id="tab-btn-movie" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">映画15選</button>
+                <button onclick="switchTab('manga')" id="tab-btn-manga" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">漫画15選</button>
+                <button onclick="switchTab('goods')" id="tab-btn-goods" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition flex items-center gap-1 whitespace-nowrap">
+                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品
+                </button>
+                <button onclick="switchTab('archive')" id="tab-btn-archive" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">アーカイブ</button>
+                <button onclick="switchTab('mypage')" id="tab-btn-mypage" class="tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap">マイページ</button>
+                <button onclick="openGuideModal()" class="px-3 py-1.5 rounded-xl text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-950/40 transition whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-circle-question"></i> 使い方ガイド
+                </button>
+            </nav>
+
+            <!-- Language, Theme & Actions -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <span id="autosave-status" class="hidden sm:inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-bold px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> 自動保存完了
+                </span>
+
+                <span class="hidden md:inline-flex items-center gap-1 text-[10px] text-pink-600 dark:text-pink-400 font-extrabold px-2.5 py-1 bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800/40 rounded-lg">
+                    <i class="fa-solid fa-gift"></i> 完全無料・登録不要
+                </span>
+
+                <select id="theme-selector" onchange="changeTheme(this.value)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-pink-500">
+                    <option value="light">☀️ Light</option>
+                    <option value="pastel">🌸 Pastel</option>
+                    <option value="cyber">⚡ Cyber</option>
+                    <option value="dark">🌙 Dark</option>
+                </select>
+
+                <button onclick="toggleGlobalBlur()" id="global-blur-btn" class="px-2.5 py-1.5 bg-amber-100 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-500/40 rounded-xl text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1 transition whitespace-nowrap">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span id="global-blur-text" class="hidden sm:inline">ぼかし OFF</span>
+                </button>
+
+                <button onclick="exportGridImage()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md shadow-pink-500/20 flex items-center gap-1 transition active:scale-95 whitespace-nowrap">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>画像保存</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation bar -->
+        <div class="xl:hidden flex overflow-x-auto px-3 py-2 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-xs font-bold gap-1.5 no-scrollbar">
+            <button onclick="switchTab('anime')" id="mob-btn-anime" class="px-3 py-1 rounded-lg bg-pink-500 text-white shrink-0 whitespace-nowrap">アニメ</button>
+            <button onclick="switchTab('animemovie')" id="mob-btn-animemovie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">アニメ映画</button>
+            <button onclick="switchTab('movie')" id="mob-btn-movie" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">映画</button>
+            <button onclick="switchTab('manga')" id="mob-btn-manga" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">漫画</button>
+            <button onclick="switchTab('goods')" id="mob-btn-goods" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">商品</button>
+            <button onclick="switchTab('archive')" id="mob-btn-archive" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">アーカイブ</button>
+            <button onclick="switchTab('mypage')" id="mob-btn-mypage" class="px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap">マイページ</button>
+            <button onclick="openGuideModal()" class="px-3 py-1 rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400 shrink-0 whitespace-nowrap">❓ 使い方</button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6">
+
+        <!-- Sidebar Config -->
+        <aside class="w-full lg:w-80 flex flex-col gap-5 shrink-0">
+            
+            <!-- Profile / Info Card -->
+            <div class="glass-card p-5 rounded-3xl">
+                <h2 class="font-extrabold text-sm sm:text-base text-pink-500 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-id-card"></i> カルテ情報設定
+                </h2>
+                
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1">配信者 / リスナー名</label>
+                        <input type="text" id="cfg-creator" value="" placeholder="例: 葵杏くれは" oninput="handleMetaInputChange()" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-500 dark:text-slate-400 mb-1">カルテサブタイトル</label>
+                        <input type="text" id="cfg-subtitle" value="" placeholder="例: 私の人生を変えた名作リスト" oninput="handleMetaInputChange()" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-pink-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Google Form Integration Box -->
+            <div class="glass-card p-5 rounded-3xl border-pink-400/40 bg-gradient-to-br from-pink-500/5 to-purple-500/5">
+                <h3 class="font-extrabold text-xs sm:text-sm text-pink-600 dark:text-pink-400 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> 企画に回答を送信
+                </h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                    完成した15選カルテを自動テキスト整形し、配信者のGoogleフォームへ安全に送信できます。
+                </p>
+                <button onclick="openSubmitModal()" class="w-full py-2.5 px-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/20 transition flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-clipboard-check"></i> Googleフォームへ回答を送信
+                </button>
+            </div>
+
+            <!-- Stream Welcome & Safety Box -->
+            <div class="glass-card p-5 rounded-3xl border-amber-400/40">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-bold text-xs sm:text-sm text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-video text-pink-500"></i> 配信利用・ぼかし対策
+                    </h3>
+                    <span class="px-2 py-0.5 bg-pink-500 text-white text-[10px] font-black rounded-md">配信大歓迎！</span>
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                    センシティブな画像やネタバレ画像を配信中にぼかして表示し、1個ずつ解禁演出ができます。
+                </p>
+                
+                <div class="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">全画像ぼかし</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="sidebar-global-blur" onchange="toggleGlobalBlur(this.checked)" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-300 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Reset Actions -->
+            <div class="glass-card p-5 rounded-3xl">
+                <h3 class="font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> 操作・リセット
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="loadSampleData()" class="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-star text-amber-500"></i> サンプル読込
+                    </button>
+                    <button onclick="clearCurrentGrid()" class="px-3 py-2 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-trash-can"></i> リセット
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <section class="flex-1 min-w-0">
+            
+            <!-- SECTION 1: 15-GRID WORKSPACE -->
+            <div id="section-grid-view" class="space-y-4">
+                
+                <div id="capture-container" class="glass-card p-4 sm:p-7 rounded-3xl relative overflow-hidden transition-colors">
+                    
+                    <!-- Header Banner -->
+                    <div id="grid-header-banner" class="p-6 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 shadow-xl mb-6">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span id="display-creator" class="px-3 py-0.5 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold tracking-wide">@ユーザー名</span>
+                                <span class="px-2 py-0.5 bg-black/30 text-pink-200 rounded-md text-[10px] font-bold border border-white/20">#推し活脳内カルテ</span>
+                            </div>
+                            <h2 id="display-subtitle" class="text-xl sm:text-3xl font-black tracking-tight leading-tight">タイトル未設定</h2>
+                        </div>
+                        <div class="text-right self-end sm:self-auto">
+                            <span id="display-media-tag" class="px-4 py-1.5 bg-black/40 backdrop-blur-md text-white border border-white/30 font-black rounded-xl text-sm shadow-md tracking-wider uppercase inline-block">ANIME 15</span>
+                        </div>
+                    </div>
+
+                    <!-- 15 Cards Grid -->
+                    <div id="main-15-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
+                        <!-- Dynamic Grid Cards -->
+                    </div>
+
+                    <!-- Watermark Footer -->
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-pink-500"></i>
+                            <span class="font-bold">#推し活脳内カルテ 公式ジェネレーター</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-[11px]">
+                            <button onclick="openTermsModal()" class="hover:underline text-pink-500 dark:text-pink-400 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-file-contract"></i> 利用規約・ガイドライン
+                            </button>
+                            <span class="text-slate-300 dark:text-slate-700">|</span>
+                            <span>Powered by <a href="https://x.com/kikyokureha" target="_blank" rel="noopener noreferrer" class="font-bold text-pink-500 hover:underline">葵杏くれは (@kikyokureha)</a></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <span class="text-xs text-slate-600 dark:text-slate-400 font-bold">
+                        <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> 完成したら配信者のGoogleフォームに送信して配信企画に参加しよう！
+                    </span>
+                    <button onclick="openSubmitModal()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-xl text-xs font-bold shrink-0 transition shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i> 企画に回答を送信する
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- SECTION 2: RECOMMENDED GOODS -->
+            <div id="section-goods-view" class="hidden space-y-6">
+                <div class="glass-card p-6 rounded-3xl">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <h2 class="text-xl font-extrabold flex items-center gap-2">
+                                <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品カルテ
+                            </h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">おやつ、デザート、食品、季節のアイテムなどの愛用品をカード化！</p>
+                        </div>
+                        <button onclick="openGoodsModal()" class="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-2 transition">
+                            <i class="fa-solid fa-plus"></i> 商品を追加する
+                        </button>
+                    </div>
+
+                    <div id="goods-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Dynamic Goods -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: ARCHIVES & STATISTICS -->
+            <div id="section-archive-view" class="hidden space-y-6">
+                <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-extrabold flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-purple-500"></i> 配信者向け統計ダッシュボード
+                            </h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Googleスプレッドシート公開CSV URLまたはCSVファイル読込で自動集計！</p>
+                        </div>
+                        <button onclick="loadSampleStats()" class="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-database"></i> サンプル統計を表示
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
+                        <label class="block font-bold text-xs text-slate-700 dark:text-slate-300">Googleスプレッドシート公開CSV URL</label>
+                        <div class="flex gap-2">
+                            <input type="url" id="csv-url-input" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv" class="flex-1 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500">
+                            <button onclick="fetchSheetCsvData()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl text-xs shrink-0 transition">
+                                CSV読込
+                            </button>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <span>ローカルファイル: <input type="file" id="csv-file-upload" accept=".csv" onchange="handleLocalCsvUpload(event)" class="text-xs inline-block"></span>
+                            <button onclick="clearCsvStats()" class="px-3 py-1 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800/40 rounded-xl text-xs font-bold transition flex items-center gap-1 shrink-0">
+                                <i class="fa-solid fa-rotate-left"></i> 集計リセット
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs font-bold text-slate-500 block mb-1">通算参加リスナー数</span>
+                            <span class="text-2xl sm:text-3xl font-black text-pink-500" id="stat-listener-count">0 <span class="text-xs text-slate-400 font-normal">名</span></span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs font-bold text-slate-500 block mb-1">最推し1位作品</span>
+                            <span class="text-base sm:text-lg font-black text-purple-600 dark:text-purple-300 truncate block" id="stat-top-work">未集計</span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs font-bold text-slate-500 block mb-1">登録商品数</span>
+                            <span class="text-2xl sm:text-3xl font-black text-cyan-500" id="stat-goods-count">0 <span class="text-xs text-slate-400 font-normal">点</span></span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">🏆 リスナー人気作品ランキング TOP 5</h3>
+                        <div id="stat-ranking-container" class="space-y-2">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">
+                                CSVデータを読み込むとここにランキングが表示されます。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: MY PAGE (Secure Local Storage) -->
+            <div id="section-mypage-view" class="hidden space-y-6">
+                <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-6 max-w-2xl mx-auto">
+                    <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-500/40 rounded-2xl text-xs space-y-2">
+                        <h4 class="font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5 text-sm">
+                            <i class="fa-solid fa-shield-check"></i> 【完全無料・非営利・安心宣言】
+                        </h4>
+                        <p class="text-emerald-900/80 dark:text-emerald-200/80 leading-relaxed">
+                            当アプリは個人開発の完全無料Webツールです。有料課金、広告表示、ユーザー登録、個人情報の収集・外部送信は一切行いません。<br>
+                            作成したカルテはお使いの端末（ブラウザ）内にのみ安全に保存されます。
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="font-extrabold text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-hard-drive text-pink-500"></i> ブラウザ保存データ
+                        </h3>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="saveCurrentKarteToLocalStorage()" class="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl text-xs font-bold shadow-md hover:from-pink-600 hover:to-purple-700 transition">
+                                <i class="fa-solid fa-bookmark mr-1"></i> 現在のカルテをブラウザに手動保存
+                            </button>
+                            <button onclick="exportKarteToJson()" class="py-3 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-2xl text-xs font-bold transition">
+                                <i class="fa-solid fa-download mr-1"></i> JSON書き出し
+                            </button>
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">保存済みJSONファイルの読込:</label>
+                            <input type="file" id="json-file-input" accept=".json" onchange="importKarteFromJson(event)" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-pink-500/10 file:text-pink-600 hover:file:bg-pink-500/20">
+                        </div>
+
+                        <div id="saved-kartes-list" class="space-y-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <!-- Injected Saved Items -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- GOOGLE FORM SUBMISSION MODAL -->
+    <div id="submit-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800">
+                <h3 class="font-black text-base flex items-center gap-2 text-pink-500">
+                    <i class="fa-solid fa-paper-plane"></i> Googleフォームへ回答を送信
+                </h3>
+                <button onclick="closeSubmitModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs text-slate-600 dark:text-slate-300">
+                <div>
+                    <label class="block font-bold mb-1">配信者のGoogleフォームURL</label>
+                    <input type="url" id="google-form-url" placeholder="https://forms.gle/xxxxx" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                    <span class="font-bold text-slate-700 dark:text-slate-200 block">🔒 匿名送信</span>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                        個人情報やパスワードの入力は不要です。コピーしてフォームにそのまま貼り付けて送信できます。
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1">送信データのプレビュー</label>
+                    <textarea id="export-text-preview" rows="5" readonly class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-[11px] font-mono resize-none focus:outline-none"></textarea>
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button onclick="closeSubmitModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs">キャンセル</button>
+                <button onclick="copyAndOpenForm()" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold rounded-xl text-xs shadow-md">
+                    コピーしてフォームを開く
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MULTI-CANDIDATE MODAL -->
+    <div id="search-candidates-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800">
+                <h3 class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-pink-500"></i> 画像を選択（候補一覧）
+                </h3>
+                <button onclick="closeCandidatesModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div id="candidates-list-container" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT GRID ITEM MODAL -->
+    <div id="grid-item-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
+            
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="modal-cat-num" class="w-7 h-7 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 text-white font-extrabold text-xs flex items-center justify-center">1</span>
+                    <h3 id="modal-cat-title" class="font-bold text-base">万人向け</h3>
+                </div>
+                <button onclick="closeGridModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="grid-modal-form" onsubmit="saveGridSlotData(event)" class="space-y-4 relative">
+                <input type="hidden" id="modal-slot-id">
+
+                <!-- Title Input with Auto-complete Dropdown -->
+                <div class="relative">
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="modal-slot-title" oninput="handleTitleInputChange(this.value, 'grid')" autocomplete="off" placeholder="例: パイレーツ カリビアン / フリーレン / ポテトチップス" class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
+                        <button type="button" onclick="autoFetchImageWithCandidates('grid')" id="btn-autofetch" class="px-3.5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 候補一覧
+                        </button>
+                    </div>
+
+                    <!-- Auto-Complete Dropdown Box (Max 5 items) -->
+                    <div id="autocomplete-dropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-30 max-h-60 overflow-y-auto hidden divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Dynamic Suggestions -->
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300">カバー画像 (URL)</label>
+                        <button type="button" onclick="toggleModalBlurReveal()" id="modal-reveal-btn" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 flex items-center gap-1">
+                            <i class="fa-solid fa-eye"></i> ぼかしトグル
+                        </button>
+                    </div>
+                    <input type="url" id="modal-slot-imgurl" oninput="updateModalImgPreview(this.value)" placeholder="https://example.com/poster.jpg" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
+                    
+                    <div class="mt-3 h-40 rounded-2xl bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 overflow-hidden relative flex items-center justify-center">
+                        <img id="modal-img-preview" src="" class="w-full h-full object-cover hidden" onerror="this.src='https://placehold.co/400x300/cbd5e1/64748b?text=Image+Error'">
+                        <span id="modal-img-placeholder" class="text-xs text-slate-400 font-bold flex items-center gap-1">
+                            <i class="fa-regular fa-image"></i> 画像プレビュー
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">おすすめコメント</label>
+                    <textarea id="modal-slot-comment" rows="3" placeholder="簡潔なおすすめ理由を入力..." class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500 resize-none"></textarea>
+                </div>
+
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeGridModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs">キャンセル</button>
+                    <button type="submit" class="flex-1 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold rounded-xl text-xs shadow-md">保存する</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- GOODS EDIT MODAL -->
+    <div id="goods-item-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
+                <h3 id="goods-modal-title-text" class="font-bold text-base flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-pink-500"></i> おすすめ商品の追加・編集
+                </h3>
+                <button onclick="closeGoodsModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="goods-modal-form" onsubmit="saveGoodsData(event)" class="space-y-3 text-xs relative">
+                <input type="hidden" id="goods-item-id">
+                
+                <div>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">カテゴリ設定</label>
+                    <div class="space-y-2">
+                        <select id="goods-category-select" onchange="handleCategorySelectChange(this.value)" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-pink-500">
+                            <option value="おやつ">🍿 おやつ</option>
+                            <option value="デザート">🍰 デザート</option>
+                            <option value="食品">🍱 食品</option>
+                            <option value="季節のアイテム">🌸 季節のアイテム</option>
+                            <option value="愛用コスメ">💄 愛用コスメ</option>
+                            <option value="生活雑貨">🏠 生活雑貨</option>
+                            <option value="ガジェット">🎧 ガジェット</option>
+                            <option value="custom">✏️ 自由入力</option>
+                        </select>
+                        <input type="text" id="goods-category-input" placeholder="例: おすすめプロテイン" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500 hidden">
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">商品名（1文字入力からリアルタイム検索・候補表示）</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="goods-title" oninput="handleTitleInputChange(this.value, 'goods')" autocomplete="off" placeholder="例: じゃがりこ / ポテトチップス" required class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
+                        <button type="button" onclick="autoFetchImageWithCandidates('goods')" class="px-3 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 flex items-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> 画像自動検索
+                        </button>
+                    </div>
+                    
+                    <div id="goods-autocomplete-dropdown" class="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl z-30 max-h-60 overflow-y-auto hidden divide-y divide-slate-100 dark:divide-slate-800">
+                        <!-- Dynamic Goods Suggestions -->
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">商品画像URL</label>
+                    <input type="url" id="goods-imgurl" placeholder="https://example.com/item.jpg" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">価格帯 / 購入場所 メモ</label>
+                    <input type="text" id="goods-note" placeholder="例: 約500円 / コンビニ・スーパー限定" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-600 dark:text-slate-300 mb-1">おすすめポイント</label>
+                    <textarea id="goods-comment" rows="3" placeholder="おすすめ理由を入力..." class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 resize-none focus:outline-none focus:border-pink-500"></textarea>
+                </div>
+
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="closeGoodsModal()" class="flex-1 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold rounded-xl transition">キャンセル</button>
+                    <button type="submit" class="flex-1 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow-md transition">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- GUIDE MODAL -->
+    <div id="guide-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div id="guide-modal-container" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 dark:border-slate-800 gap-2">
+                <h3 class="font-extrabold text-base sm:text-lg flex items-center gap-2 text-pink-500">
+                    <i class="fa-solid fa-circle-question"></i> <span>使い方ガイド</span>
+                </h3>
+
+                <!-- Modal Controls: Text Size & View Mode -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
+                        <span class="px-1.5 text-slate-400">文字:</span>
+                        <button onclick="setModalTextSize('guide', 'sm')" id="btn-guide-ts-sm" class="px-2 py-0.5 rounded-lg transition">標準</button>
+                        <button onclick="setModalTextSize('guide', 'md')" id="btn-guide-ts-md" class="px-2 py-0.5 rounded-lg bg-pink-500 text-white shadow transition">大</button>
+                        <button onclick="setModalTextSize('guide', 'lg')" id="btn-guide-ts-lg" class="px-2 py-0.5 rounded-lg transition">特大</button>
+                    </div>
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
+                        <button onclick="setModalViewMode('guide', 'pc')" id="btn-guide-vm-pc" class="px-2 py-0.5 rounded-lg bg-purple-500 text-white shadow transition"><i class="fa-solid fa-desktop"></i> PC</button>
+                        <button onclick="setModalViewMode('guide', 'mobile')" id="btn-guide-vm-mobile" class="px-2 py-0.5 rounded-lg transition"><i class="fa-solid fa-mobile-screen"></i> スマホ</button>
+                    </div>
+                    <button onclick="closeGuideModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="guide-modal-body" class="space-y-4 text-xs">
+                <div class="space-y-3">
+                    <h4 class="font-black text-sm text-purple-600 dark:text-purple-400 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-xs shrink-0">1</span>
+                        【配信者向け】15選カルテの作成と演出
+                    </h4>
+                    <div id="guide-grid-layout" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                            <span class="font-bold text-pink-500">A. リアルタイム予測入力</span>
+                            <p class="text-slate-500 dark:text-slate-400">アニメ・映画・漫画・商品の全カテゴリで入力時に予測候補とジャケット画像が自動表示されます。</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                            <span class="font-bold text-amber-500">B. ぼかし＆解禁演出</span>
+                            <p class="text-slate-500 dark:text-slate-400">「ぼかしOFF」で画像を保護。配信中に編集画面から1枚ずつ解禁発表が可能です。</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-1">
+                            <span class="font-bold text-cyan-500">C. オート保存＆画像出力</span>
+                            <p class="text-slate-500 dark:text-slate-400">入力内容は自動保存されます。「画像保存」で高画質PNGを出力し配信にご活用いただけます。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <h4 class="font-black text-sm text-pink-600 dark:text-pink-400 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs shrink-0">2</span>
+                        【リスナー企画】Googleフォーム集計＆自動統計
+                    </h4>
+                    <div class="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                        <ol class="list-decimal list-inside space-y-1.5 text-slate-600 dark:text-slate-300 font-medium">
+                            <li><strong>フォーム作成</strong>: 配信者がGoogleフォームを開設。</li>
+                            <li><strong>リスナー回答</strong>: 「企画に回答を送信」でデータが自動コピーされ、フォームへワンタップ移動。</li>
+                            <li><strong>スプレッドシート集計</strong>: 公開CSV URLをアーカイブに読み込ませることで人気ランキングが自動生成されます！</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMS MODAL (Contains mandatory 4 points) -->
+    <div id="terms-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div id="terms-modal-container" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200 max-h-[85vh] overflow-y-auto space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 border-b border-slate-200 dark:border-slate-800 gap-2">
+                <h3 class="font-extrabold text-base flex items-center gap-2 text-pink-500">
+                    <i class="fa-solid fa-file-contract"></i> 利用規約・配信利用ガイドライン
+                </h3>
+
+                <!-- Modal Controls: Text Size & View Mode -->
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
+                        <span class="px-1.5 text-slate-400">文字:</span>
+                        <button onclick="setModalTextSize('terms', 'sm')" id="btn-terms-ts-sm" class="px-2 py-0.5 rounded-lg transition">標準</button>
+                        <button onclick="setModalTextSize('terms', 'md')" id="btn-terms-ts-md" class="px-2 py-0.5 rounded-lg bg-pink-500 text-white shadow transition">大</button>
+                        <button onclick="setModalTextSize('terms', 'lg')" id="btn-terms-ts-lg" class="px-2 py-0.5 rounded-lg transition">特大</button>
+                    </div>
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-[11px] font-bold">
+                        <button onclick="setModalViewMode('terms', 'pc')" id="btn-terms-vm-pc" class="px-2 py-0.5 rounded-lg bg-purple-500 text-white shadow transition"><i class="fa-solid fa-desktop"></i> PC</button>
+                        <button onclick="setModalViewMode('terms', 'mobile')" id="btn-terms-vm-mobile" class="px-2 py-0.5 rounded-lg transition"><i class="fa-solid fa-mobile-screen"></i> スマホ</button>
+                    </div>
+                    <button onclick="closeTermsModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="terms-modal-body" class="space-y-4 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+                <!-- Rule 1: Streamer Welcome -->
+                <div class="p-3 bg-pink-50 dark:bg-pink-950/40 border border-pink-200 dark:border-pink-800/40 rounded-2xl space-y-1">
+                    <h4 class="font-black text-pink-600 dark:text-pink-400 text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-video"></i> ①【配信大歓迎】
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        当ツールは**VTuber様・配信者様向けのツールであり、YouTubeやTwitch等での配信・動画制作・リスナー参加型企画でのご利用を大歓迎**しております！収益化チャンネルでの配信利用も問題ありません。
+                    </p>
+                </div>
+
+                <!-- Rule 2: Safety Blur Recommendation -->
+                <div class="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 rounded-2xl space-y-1">
+                    <h4 class="font-black text-amber-700 dark:text-amber-400 text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved"></i> ②【著作権考慮とぼかしモードの推奨】
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        作品・商品の権利は各権利元に帰属します。著作権配慮およびYouTube等の配信BANリスク回避のため、配信画面にカードを映す際は**「ぼかしモード（Safety Blur）」のご使用を強く推奨**いたします。
+                    </p>
+                </div>
+
+                <!-- Rule 3: Credit Requirement -->
+                <div class="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-1.5">
+                    <h4 class="font-black text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-quote-left text-pink-500"></i> ③【概要欄へのクレジット記載ルール】
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        配信や動画で本サイトを使用される際は、配信概要欄や投稿本文に**以下の制作者情報およびサイトURLの明記**をお願いいたします。
+                    </p>
+                    <div class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 font-mono text-[11px] text-pink-600 dark:text-pink-400 select-all">
+                        #推し活脳内カルテ<br>
+                        制作者: 葵杏くれは (@kikyokureha)<br>
+                        URL: https://kikyokureha.github.io/oshikatsu-karte
+                    </div>
+                </div>
+
+                <!-- Rule 4: Hashtag Recommendation -->
+                <div class="p-3 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/40 rounded-2xl space-y-1">
+                    <h4 class="font-black text-purple-600 dark:text-purple-400 text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-hashtag"></i> ④【ハッシュタグ活用の推奨】
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        SNS（X等）で共有・投稿する際は、ハッシュタグ「 **#推し活脳内カルテ** 」をつけて投稿し、企画を盛り上げていただけますと幸いです！
+                    </p>
+                </div>
+
+                <!-- API Attributions & Source Credits -->
+                <div class="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-1 text-[11px] text-slate-500">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-database text-pink-500"></i> 外部データ出典・クレジット情報
+                    </h4>
+                    <p class="leading-relaxed">
+                        当ツールで表示される映画・アニメポスター画像およびデータは **TMBb API** から、漫画コミックス画像および書籍データは **Google Books API** の公式データ連携APIを利用して取得・表示しています。
+                    </p>
+                </div>
+
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-400 flex justify-between items-center">
+                    <span>Powered by 葵杏くれは (@kikyokureha)</span>
+                    <a href="https://x.com/kikyokureha" target="_blank" rel="noopener noreferrer" class="text-pink-500 font-bold hover:underline flex items-center gap-1">
+                        <i class="fa-brands fa-x-twitter"></i> @kikyokureha
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Engine Logic -->
+    <script>
+        // Preset Categories for 15-Grids
+        const categoryPresets = {
+            anime: [
+                "万人向け", "最推し", "長寿", "青春系", "異世界系",
+                "鬱", "スポーツ系", "感動系", "アクション系", "ロボット系",
+                "料理系", "ホラー系", "癒し系", "ギャグ系", "大人向け（18禁）"
+            ],
+            animemovie: [
+                "ファンタジー系", "学校・部活系", "青春・友情系", "恋愛系", "ファミリー・キッズ向け",
+                "日常系", "ギャグ・コメディ系", "アクション系", "乗り物・ロボット系", "SF・未来系",
+                "時代劇・歴史系", "ミステリー系", "ホラー系", "音楽・アイドル系", "感動系"
+            ],
+            movie: [
+                "アクション", "冒険", "SF", "ファンタジー", "ホラー",
+                "スリラー", "サスペンス", "ミステリー", "ヒューマンドラマ", "ロマンス",
+                "コメディ", "アニメーション", "ドキュメンタリー", "ミュージカル", "時代劇 / 歴史劇"
+            ],
+            manga: [
+                "万人向け", "最推し", "長寿", "青春系", "異世界系",
+                "鬱", "スポーツ系", "感動系", "アクション系", "ロボット系",
+                "料理系", "ホラー系", "癒し系", "ギャグ系", "大人向け（18禁）"
+            ]
+        };
+
+        // TMDb API Configuration
+        const TMDB_API_KEY = "8d0c3e6ff1d7873e0f3bca170cf60dd9";
+        const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
+
+        // Application State
+        let currentTab = 'anime';
+        let globalBlurActive = false;
+        let debounceTimer = null;
+        let currentCandidates = [];
+
+        // App Data Architecture
+        let appData = {
+            creator: "",
+            subtitle: "",
+            tabGrids: {
+                anime: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                animemovie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                movie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                manga: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }))
+            },
+            goods: []
+        };
+
+        // Window Onload Initialization
+        window.onload = function() {
+            loadFromLocalStorage();
+            renderMainGrid();
+            renderGoodsGrid();
+            updateHeaderBanner();
+            updateArchiveGoodsCount();
+        };
+
+        // Handle title input change with debounced autocomplete
+        function handleTitleInputChange(val, mode) {
+            clearTimeout(debounceTimer);
+            const dropdownElem = (mode === 'grid') 
+                ? document.getElementById('autocomplete-dropdown') 
+                : document.getElementById('goods-autocomplete-dropdown');
+
+            if (!val || !val.trim()) {
+                if (dropdownElem) dropdownElem.classList.add('hidden');
+                return;
+            }
+
+            debounceTimer = setTimeout(async () => {
+                const results = await fetchMultiApiResults(val, currentTab);
+                renderAutocompleteDropdown(results, dropdownElem, mode);
+            }, 300);
+        }
+
+        // Trigger manual multi-candidate lookup modal
+        async function autoFetchImageWithCandidates(mode) {
+            const inputVal = (mode === 'grid') 
+                ? document.getElementById('modal-slot-title').value 
+                : document.getElementById('goods-title').value;
+
+            if (!inputVal || !inputVal.trim()) {
+                alert('作品・商品タイトルを入力してください。');
+                return;
+            }
+
+            const results = await fetchMultiApiResults(inputVal, currentTab);
+            currentCandidates = results;
+            renderCandidatesModal(mode);
+        }
+
+        // Switch Active Nav Tab
+        function switchTab(tabKey) {
+            currentTab = tabKey;
+            
+            // Update Tab Button Styles (Desktop)
+            document.querySelectorAll('.tab-nav-btn').forEach(btn => {
+                btn.className = 'tab-nav-btn px-3 py-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-pink-500 transition whitespace-nowrap';
+            });
+            const activeDesktopBtn = document.getElementById(`tab-btn-${tabKey}`);
+            if (activeDesktopBtn) {
+                activeDesktopBtn.className = 'tab-nav-btn px-3 py-1.5 rounded-xl bg-pink-500 text-white shadow-md transition whitespace-nowrap';
+            }
+
+            // Update Mobile Buttons
+            ['anime', 'animemovie', 'movie', 'manga', 'goods', 'archive', 'mypage'].forEach(k => {
+                const mobBtn = document.getElementById(`mob-btn-${k}`);
+                if (mobBtn) {
+                    if (k === tabKey) {
+                        mobBtn.className = 'px-3 py-1 rounded-lg bg-pink-500 text-white shrink-0 whitespace-nowrap';
+                    } else {
+                        mobBtn.className = 'px-3 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0 whitespace-nowrap';
+                    }
+                }
+            });
+
+            // Hide/Show View Sections
+            document.getElementById('section-grid-view').classList.add('hidden');
+            document.getElementById('section-goods-view').classList.add('hidden');
+            document.getElementById('section-archive-view').classList.add('hidden');
+            document.getElementById('section-mypage-view').classList.add('hidden');
+
+            if (tabKey === 'goods') {
+                document.getElementById('section-goods-view').classList.remove('hidden');
+            } else if (tabKey === 'archive') {
+                document.getElementById('section-archive-view').classList.remove('hidden');
+            } else if (tabKey === 'mypage') {
+                document.getElementById('section-mypage-view').classList.remove('hidden');
+                renderSavedKartesList();
+            } else {
+                document.getElementById('section-grid-view').classList.remove('hidden');
+                renderMainGrid();
+                updateHeaderBanner();
+            }
+        }
+
+        // Update Header Banner Metadata
+        function updateHeaderBanner() {
+            const creator = appData.creator || 'ユーザー名';
+            const subtitle = appData.subtitle || '私の人生を変えた名作15選';
+            document.getElementById('display-creator').textContent = `@${creator}`;
+            document.getElementById('display-subtitle').textContent = subtitle;
+
+            const mediaTag = document.getElementById('display-media-tag');
+            if (currentTab === 'anime') mediaTag.textContent = 'ANIME 15';
+            else if (currentTab === 'animemovie') mediaTag.textContent = 'ANIME MOVIE 15';
+            else if (currentTab === 'movie') mediaTag.textContent = 'MOVIE 15';
+            else if (currentTab === 'manga') mediaTag.textContent = 'MANGA 15';
+        }
+
+        // Render 15-Card Grid
+        function renderMainGrid() {
+            const container = document.getElementById('main-15-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const categories = categoryPresets[currentTab] || categoryPresets.anime;
+            const currentItems = appData.tabGrids[currentTab] || [];
+
+            categories.forEach((catName, index) => {
+                const item = currentItems[index] || { id: index, title: "", imgUrl: "", comment: "" };
+                const blurClass = globalBlurActive ? 'safety-blur' : '';
+
+                const cardHtml = `
+                    <div onclick="openGridModal(${index})" class="group cursor-pointer bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-2.5 flex flex-col justify-between hover:border-pink-500/50 transition duration-200 hover:shadow-lg relative overflow-hidden min-h-[220px]">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="w-5 h-5 rounded-full bg-pink-500/10 text-pink-600 dark:text-pink-400 font-extrabold text-[10px] flex items-center justify-center">${index + 1}</span>
+                                <span class="font-extrabold text-[11px] text-slate-600 dark:text-slate-300 truncate max-w-[100px]">${catName}</span>
+                            </div>
+
+                            <div class="aspect-[3/4] rounded-xl bg-slate-200 dark:bg-slate-950 overflow-hidden relative mb-2 flex items-center justify-center">
+                                ${item.imgUrl ? 
+                                    `<img src="${item.imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">` :
+                                    `<div class="text-center p-2 text-slate-400 dark:text-slate-600">
+                                        <i class="fa-regular fa-image text-xl mb-1 block"></i>
+                                        <span class="text-[10px] font-bold block">クリックして登録</span>
+                                    </div>`
+                                }
+                            </div>
+
+                            <h3 class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">${item.title || 'タイトル未設定'}</h3>
+                        </div>
+                        ${item.comment ? `<p class="text-[10px] text-slate-500 dark:text-slate-400 truncate mt-1">${item.comment}</p>` : ''}
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        // Search API Integration (Rakuten Books for Manga / TMDb for Movies & Anime)
+        async function fetchMultiApiResults(query, mediaType) {
+            if (!query || !query.trim()) return [];
+            
+            // Manga / Books Search Strategy (楽天ブックスAPIによるコミック単行本専用検索)
+            if (mediaType === 'manga') {
+                try {
+                    const rakutenUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${encodeURIComponent(query)}&booksGenreId=001001&hits=5&applicationId=1019383342621213031`;
+                    const res = await fetch(rakutenUrl);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.Items && data.Items.length > 0) {
+                            return data.Items.map(item => {
+                                const coverImg = item.Item.largeImageUrl || item.Item.mediumImageUrl || '';
+                                return {
+                                    title: item.Item.title,
+                                    imgUrl: coverImg ? coverImg.replace('http:', 'https:') : 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
+                                    subtitle: item.Item.author ? `作者: ${item.Item.author}` : 'コミックス表紙'
+                                };
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Rakuten Books API error:', e);
+                }
+
+                // 該当なしの場合は一律で No photo を表示
+                return [{
+                    title: query,
+                    imgUrl: 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
+                    subtitle: 'コミックス表紙が見つかりませんでした'
+                }];
+            }
+
+            // Movies & Anime Search Strategy (TMDb API)
+            try {
+                const tmdbUrl = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=ja-JP&query=${encodeURIComponent(query)}&page=1&include_adult=false`;
+                const res = await fetch(tmdbUrl);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        return data.results
+                            .filter(item => item.poster_path || item.backdrop_path)
+                            .slice(0, 5)
+                            .map(item => ({
+                                title: item.title || item.name || item.original_title,
+                                imgUrl: item.poster_path ? `${TMDB_IMAGE_BASE}${item.poster_path}` : 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
+                                subtitle: item.release_date ? `公開: ${item.release_date.split('-')[0]}年` : (item.first_air_date ? `放送: ${item.first_air_date.split('-')[0]}年` : '作品ポスター')
+                            }));
+                    }
+                }
+            } catch (e) {
+                console.warn('TMDb API error:', e);
+            }
+
+            return [{
+                title: query,
+                imgUrl: 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
+                subtitle: '公式画像が見つかりませんでした'
+            }];
+        }
+
+        // Render Autocomplete Dropdown
+        function renderAutocompleteDropdown(results, dropdownElem, mode) {
+            if (!dropdownElem) return;
+            if (!results || results.length === 0) {
+                dropdownElem.classList.add('hidden');
+                return;
+            }
+
+            dropdownElem.innerHTML = '';
+            results.forEach(res => {
+                const item = document.createElement('div');
+                item.className = 'p-2.5 hover:bg-pink-50 dark:hover:bg-slate-800 cursor-pointer flex items-center gap-3 transition';
+                item.innerHTML = `
+                    <img src="${res.imgUrl}" class="w-10 h-14 object-cover rounded-lg border border-slate-200 dark:border-slate-700 shrink-0" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                    <div class="min-w-0 flex-1">
+                        <p class="font-extrabold text-xs text-slate-800 dark:text-slate-100 truncate">${res.title}</p>
+                        <p class="text-[10px] text-slate-400 truncate">${res.subtitle || ''}</p>
+                    </div>
+                `;
+                item.onclick = () => {
+                    if (mode === 'grid') {
+                        document.getElementById('modal-slot-title').value = res.title;
+                        document.getElementById('modal-slot-imgurl').value = res.imgUrl;
+                        updateModalImgPreview(res.imgUrl);
+                    } else {
+                        document.getElementById('goods-title').value = res.title;
+                        document.getElementById('goods-imgurl').value = res.imgUrl;
+                    }
+                    dropdownElem.classList.add('hidden');
+                };
+                dropdownElem.appendChild(item);
+            });
+            dropdownElem.classList.remove('hidden');
+        }
+
+        // Multi-candidate Modal Handler
+        function renderCandidatesModal(mode) {
+            const container = document.getElementById('candidates-list-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (currentCandidates.length === 0) {
+                container.innerHTML = `<div class="col-span-full p-4 text-center text-xs text-slate-400">候補が見つかりませんでした。</div>`;
+            } else {
+                currentCandidates.forEach(candidate => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-2 cursor-pointer hover:border-pink-500 transition text-center';
+                    card.innerHTML = `
+                        <div class="aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-slate-200 dark:bg-slate-900">
+                            <img src="${candidate.imgUrl}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                        </div>
+                        <p class="font-bold text-xs truncate">${candidate.title}</p>
+                    `;
+                    card.onclick = () => {
+                        if (mode === 'grid') {
+                            document.getElementById('modal-slot-title').value = candidate.title;
+                            document.getElementById('modal-slot-imgurl').value = candidate.imgUrl;
+                            updateModalImgPreview(candidate.imgUrl);
+                        } else {
+                            document.getElementById('goods-title').value = candidate.title;
+                            document.getElementById('goods-imgurl').value = candidate.imgUrl;
+                        }
+                        closeCandidatesModal();
+                    };
+                    container.appendChild(card);
+                });
+            }
+
+            const modal = document.getElementById('search-candidates-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeCandidatesModal() {
+            const modal = document.getElementById('search-candidates-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // Open Slot Edit Modal
+        function openGridModal(slotIndex) {
+            const categories = categoryPresets[currentTab] || categoryPresets.anime;
+            const currentItems = appData.tabGrids[currentTab] || [];
+            const item = currentItems[slotIndex] || { id: slotIndex, title: "", imgUrl: "", comment: "" };
+
+            document.getElementById('modal-slot-id').value = slotIndex;
+            document.getElementById('modal-cat-num').textContent = slotIndex + 1;
+            document.getElementById('modal-cat-title').textContent = categories[slotIndex];
+            document.getElementById('modal-slot-title').value = item.title || "";
+            document.getElementById('modal-slot-imgurl').value = item.imgUrl || "";
+            document.getElementById('modal-slot-comment').value = item.comment || "";
+
+            updateModalImgPreview(item.imgUrl);
+
+            const modal = document.getElementById('grid-item-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeGridModal() {
+            const modal = document.getElementById('grid-item-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('autocomplete-dropdown').classList.add('hidden');
+        }
+
+        function updateModalImgPreview(url) {
+            const imgPreview = document.getElementById('modal-img-preview');
+            const placeholder = document.getElementById('modal-img-placeholder');
+            if (url && url.trim()) {
+                imgPreview.src = url;
+                imgPreview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            } else {
+                imgPreview.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+            }
+        }
+
+        function saveGridSlotData(e) {
+            e.preventDefault();
+            const slotIndex = parseInt(document.getElementById('modal-slot-id').value);
+            const title = document.getElementById('modal-slot-title').value;
+            const imgUrl = document.getElementById('modal-slot-imgurl').value;
+            const comment = document.getElementById('modal-slot-comment').value;
+
+            if (!appData.tabGrids[currentTab]) appData.tabGrids[currentTab] = [];
+            appData.tabGrids[currentTab][slotIndex] = { id: slotIndex, title, imgUrl, comment };
+
+            saveToLocalStorage();
+            renderMainGrid();
+            closeGridModal();
+        }
+
+        // Render Goods Grid
+        function renderGoodsGrid() {
+            const container = document.getElementById('goods-grid-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (appData.goods.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full p-8 text-center bg-slate-50 dark:bg-slate-900/40 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800">
+                        <i class="fa-solid fa-bag-shopping text-3xl text-pink-400 mb-2"></i>
+                        <p class="font-bold text-xs text-slate-500">まだおすすめ商品が登録されていません。「商品を追加する」からお気に入りアイテムを登録してみましょう！</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appData.goods.forEach((item, index) => {
+                const blurClass = globalBlurActive ? 'safety-blur' : '';
+                const cardHtml = `
+                    <div class="glass-card p-4 rounded-2xl flex flex-col justify-between space-y-3 relative overflow-hidden group">
+                        <div class="flex gap-3">
+                            <div class="w-20 h-20 rounded-xl bg-slate-200 dark:bg-slate-950 overflow-hidden shrink-0">
+                                <img src="${item.imgUrl || 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'}" class="w-full h-full object-cover ${blurClass}" onerror="this.src='https://placehold.co/400x600/cbd5e1/64748b?text=No+photo'">
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <span class="px-2 py-0.5 bg-pink-500/10 text-pink-600 dark:text-pink-400 text-[10px] font-extrabold rounded-md inline-block mb-1">${item.category}</span>
+                                <h4 class="font-black text-sm text-slate-800 dark:text-slate-100 truncate">${item.title}</h4>
+                                <p class="text-[11px] text-slate-400 truncate">${item.note || ''}</p>
+                            </div>
+                        </div>
+                        ${item.comment ? `<p class="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-950/60 p-2 rounded-xl">${item.comment}</p>` : ''}
+                        <div class="flex justify-end gap-2 pt-1">
+                            <button onclick="removeGoodsItem(${index})" class="text-rose-500 text-xs hover:underline font-bold"><i class="fa-solid fa-trash-can"></i> 削除</button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function openGoodsModal() {
+            document.getElementById('goods-title').value = '';
+            document.getElementById('goods-imgurl').value = '';
+            document.getElementById('goods-note').value = '';
+            document.getElementById('goods-comment').value = '';
+            document.getElementById('goods-item-modal').classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeGoodsModal() {
+            document.getElementById('goods-item-modal').classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('goods-autocomplete-dropdown').classList.add('hidden');
+        }
+
+        function handleCategorySelectChange(val) {
+            const input = document.getElementById('goods-category-input');
+            if (val === 'custom') input.classList.remove('hidden');
+            else input.classList.add('hidden');
+        }
+
+        function saveGoodsData(e) {
+            e.preventDefault();
+            const catSelect = document.getElementById('goods-category-select').value;
+            const catInput = document.getElementById('goods-category-input').value;
+            const category = catSelect === 'custom' ? (catInput || 'その他') : catSelect;
+            const title = document.getElementById('goods-title').value;
+            const imgUrl = document.getElementById('goods-imgurl').value;
+            const note = document.getElementById('goods-note').value;
+            const comment = document.getElementById('goods-comment').value;
+
+            appData.goods.push({ category, title, imgUrl, note, comment });
+            saveToLocalStorage();
+            renderGoodsGrid();
+            updateArchiveGoodsCount();
+            closeGoodsModal();
+        }
+
+        function removeGoodsItem(index) {
+            appData.goods.splice(index, 1);
+            saveToLocalStorage();
+            renderGoodsGrid();
+            updateArchiveGoodsCount();
+        }
+
+        // Global Blur Toggle
+        function toggleGlobalBlur(forceState) {
+            globalBlurActive = forceState !== undefined ? forceState : !globalBlurActive;
+            document.getElementById('sidebar-global-blur').checked = globalBlurActive;
+            document.getElementById('global-blur-text').textContent = globalBlurActive ? 'ぼかし ON' : 'ぼかし OFF';
+            renderMainGrid();
+            renderGoodsGrid();
+        }
+
+        // Meta Inputs & LocalStorage Save Engine
+        function handleMetaInputChange() {
+            appData.creator = document.getElementById('cfg-creator').value;
+            appData.subtitle = document.getElementById('cfg-subtitle').value;
+            updateHeaderBanner();
+            saveToLocalStorage();
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('oshikatsu_brain_karte_data', JSON.stringify(appData));
+            const statusElem = document.getElementById('autosave-status');
+            if (statusElem) {
+                statusElem.classList.remove('hidden');
+                setTimeout(() => statusElem.classList.add('hidden'), 2000);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('oshikatsu_brain_karte_data');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                    document.getElementById('cfg-creator').value = appData.creator || '';
+                    document.getElementById('cfg-subtitle').value = appData.subtitle || '';
+                } catch (e) {
+                    console.error('Failed to parse saved state:', e);
+                }
+            }
+        }
+
+        // Theme Switcher
+        function changeTheme(themeName) {
+            document.body.className = `theme-${themeName} min-h-full flex flex-col antialiased selection:bg-pink-500 selection:text-white`;
+        }
+
+        // Image Export Engine (html2canvas)
+        function exportGridImage() {
+            const container = document.getElementById('capture-container');
+            if (!container) return;
+
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `推し活脳内カルテ_${currentTab}_${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // Submit Modal Engine
+        function openSubmitModal() {
+            const creator = appData.creator || '未設定';
+            const categories = categoryPresets[currentTab] || categoryPresets.anime;
+            const currentItems = appData.tabGrids[currentTab] || [];
+
+            let textData = `【#推し活脳内カルテ 回答】\n作成者: ${creator}\nメディア: ${currentTab.toUpperCase()}\n\n`;
+            categories.forEach((cat, idx) => {
+                const item = currentItems[idx];
+                textData += `${idx + 1}. [${cat}] ${item && item.title ? item.title : '未設定'}\n`;
+            });
+
+            document.getElementById('export-text-preview').value = textData;
+            document.getElementById('submit-modal').classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submit-modal').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function copyAndOpenForm() {
+            const copyText = document.getElementById('export-text-preview');
+            copyText.select();
+            document.execCommand('copy');
+            alert('回答テキストをコピーしました！送信先フォームを開きます。');
+
+            const formUrl = document.getElementById('google-form-url').value;
+            if (formUrl && formUrl.trim()) {
+                window.open(formUrl, '_blank');
+            }
+        }
+
+        // Modals Controls & Guides
+        function openGuideModal() {
+            document.getElementById('guide-modal').classList.remove('opacity-0', 'pointer-events-none');
+        }
+        function closeGuideModal() {
+            document.getElementById('guide-modal').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function openTermsModal() {
+            document.getElementById('terms-modal').classList.remove('opacity-0', 'pointer-events-none');
+        }
+        function closeTermsModal() {
+            document.getElementById('terms-modal').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function updateArchiveGoodsCount() {
+            const statElem = document.getElementById('stat-goods-count');
+            if (statElem) statElem.innerHTML = `${appData.goods.length} <span class="text-xs text-slate-400 font-normal">点</span>`;
+        }
+
+        function clearCurrentGrid() {
+            if (confirm('現在のタブの15選カードをリセットしますか？')) {
+                appData.tabGrids[currentTab] = Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
+                saveToLocalStorage();
+                renderMainGrid();
+            }
+        }
+
+        function loadSampleData() {
+            appData.creator = "葵杏くれは";
+            appData.subtitle = "私の人生に影響を与えたアニメ15選";
+            document.getElementById('cfg-creator').value = appData.creator;
+            document.getElementById('cfg-subtitle').value = appData.subtitle;
+            saveToLocalStorage();
+            updateHeaderBanner();
+            renderMainGrid();
+        }
+
+        function renderSavedKartesList() {
+            const container = document.getElementById('saved-kartes-list');
+            if (!container) return;
+            container.innerHTML = `
+                <div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-slate-800 dark:text-slate-100">${appData.subtitle || 'タイトル未設定カルテ'}</p>
+                        <p class="text-[10px] text-slate-400">作成者: ${appData.creator || '匿名'}</p>
+                    </div>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold px-2 py-0.5 rounded-md">保存済み</span>
+                </div>
+            `;
+        }
+
+        function exportKarteToJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `oshikatsu_karte_backup_${Date.now()}.json`);
+            dlAnchor.click();
+        }
+
+        function importKarteFromJson(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    appData = JSON.parse(e.target.result);
+                    saveToLocalStorage();
+                    renderMainGrid();
+                    renderGoodsGrid();
+                    updateHeaderBanner();
+                    alert('バックアップデータを読み込みました！');
+                } catch (err) {
+                    alert('ファイルの読み込みに失敗しました。');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // CSV Local Upload Handler for Streamer Dashboard
+        function handleLocalCsvUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                parseAndDisplayCsvStats(e.target.result);
+            };
+            reader.readAsText(file);
+        }
+
+        // Fetch CSV from Google Sheets Public URL
+        async function fetchSheetCsvData() {
+            const url = document.getElementById('csv-url-input').value;
+            if (!url || !url.trim()) {
+                alert('Googleスプレッドシートの公開CSV URLを入力してください。');
+                return;
+            }
+            try {
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Network error');
+                const text = await res.text();
+                parseAndDisplayCsvStats(text);
+            } catch (err) {
+                alert('CSVデータの取得に失敗しました。URLが公開設定になっているかご確認ください。');
+            }
+        }
+
+        // Parse CSV Text & Update Dashboard Stats
+        function parseAndDisplayCsvStats(csvText) {
+            if (!csvText || !csvText.trim()) return;
+
+            // Simple multi-line quote aware CSV parser
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                const nextChar = csvText[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        currentCell += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    currentRow.push(currentCell.trim());
+                    currentCell = '';
+                } else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    if (char === '\r' && nextChar === '\n') i++;
+                    currentRow.push(currentCell.trim());
+                    if (currentRow.some(c => c !== '')) rows.push(currentRow);
+                    currentRow = [];
+                    currentCell = '';
+                } else {
+                    currentCell += char;
+                }
+            }
+            if (currentCell || currentRow.length > 0) {
+                currentRow.push(currentCell.trim());
+                if (currentRow.some(c => c !== '')) rows.push(currentRow);
+            }
+
+            if (rows.length <= 1) {
+                alert('有効な回答データが見つかりませんでした。');
+                return;
+            }
+
+            // Exclude header row
+            const dataRows = rows.slice(1);
+            const listenerCount = dataRows.length;
+            const titleCounts = {};
+
+            dataRows.forEach(row => {
+                // Ignore timestamp (first column) and look for the response text column
+                const contentColumn = row.slice(1).join('\n');
+                const lines = contentColumn.split('\n');
+
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return;
+
+                    // Skip metadata headers
+                    if (trimmed.startsWith('【') || trimmed.startsWith('作成者:') || trimmed.startsWith('メディア:')) return;
+
+                    // Match pattern like "1. [万人向け] 作品タイトル" or "1. 作品タイトル"
+                    const match = trimmed.match(/^\d+\.\s*(?:\[[^\]]+\]\s*)?(.+)$/);
+                    if (match && match[1]) {
+                        const title = match[1].trim();
+                        if (title && title !== '未設定') {
+                            titleCounts[title] = (titleCounts[title] || 0) + 1;
+                        }
+                    }
+                });
+            });
+
+            // Sort Ranking
+            const sortedTitles = Object.entries(titleCounts)
+                .sort((a, b) => b[1] - a[1]);
+
+            // Update UI
+            document.getElementById('stat-listener-count').innerHTML = `${listenerCount} <span class="text-xs text-slate-400 font-normal">名</span>`;
+            document.getElementById('stat-top-work').textContent = sortedTitles.length > 0 ? sortedTitles[0][0] : '未集計';
+
+            const rankingContainer = document.getElementById('stat-ranking-container');
+            if (rankingContainer) {
+                rankingContainer.innerHTML = '';
+                if (sortedTitles.length === 0) {
+                    rankingContainer.innerHTML = `<div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">有効な作品名が集計されませんでした。</div>`;
+                } else {
+                    sortedTitles.slice(0, 5).forEach(([title, count], rank) => {
+                        const rankBadges = ['bg-amber-400 text-amber-950', 'bg-slate-300 text-slate-900', 'bg-amber-600 text-white', 'bg-slate-200 text-slate-700', 'bg-slate-200 text-slate-700'];
+                        rankingContainer.insertAdjacentHTML('beforeend', `
+                            <div class="p-3 bg-slate-100 dark:bg-slate-900/90 rounded-2xl border border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <span class="w-6 h-6 rounded-lg ${rankBadges[rank] || 'bg-slate-200'} font-black text-xs flex items-center justify-center shrink-0">${rank + 1}</span>
+                                    <span class="font-bold text-slate-800 dark:text-slate-100 truncate">${title}</span>
+                                </div>
+                                <span class="font-black text-pink-500 shrink-0 ml-2">${count} 票</span>
+                            </div>
+                        `);
+                    });
+                }
+            }
+            alert(`CSVデータを読み込みました！（集計対象: ${listenerCount}名）`);
+        }
+
+        // Reset Loaded CSV Statistics & Inputs
+        function clearCsvStats() {
+            document.getElementById('csv-url-input').value = '';
+            document.getElementById('csv-file-upload').value = '';
+            
+            document.getElementById('stat-listener-count').innerHTML = `0 <span class="text-xs text-slate-400 font-normal">名</span>`;
+            document.getElementById('stat-top-work').textContent = '未集計';
+            
+            const rankingContainer = document.getElementById('stat-ranking-container');
+            if (rankingContainer) {
+                rankingContainer.innerHTML = `
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900/40 rounded-xl text-center text-xs text-slate-400">
+                        CSVデータを読み込むとここにランキングが表示されます。
+                    </div>
+                `;
+            }
+        }
+
+        // Load Sample Statistics
+        function loadSampleStats() {
+            const sampleCsv = `タイムスタンプ,回答
+2026/11/11 8:49:17 PM,【#推し活脳内カルテ 回答】\\n作成者: 葵杏くれは\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] 呪術廻戦\\n3. [青春系] ハイキュー!!\\n4. [アクション系] 鬼滅の刃\\n5. [ギャグ系] 銀魂
+2026/11/11 8:50:00 PM,【#推し活脳内カルテ 回答】\\n作成者: リスナーA\\nメディア: ANIME\\n\\n1. [万人向け] ONE PIECE\\n2. [最推し] フリーレン\\n3. [青春系] ハイキュー!!\\n4. [感動系] ヴァイオレット・エヴァーガーデン\\n5. [ギャグ系] SPY×FAMILY`;
+            parseAndDisplayCsvStats(sampleCsv);
+        }
+    </script>
+</body>
+</html>
