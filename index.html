@@ -550,7 +550,7 @@
                 <div class="relative">
                     <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1" data-i18n="labelTitleInput">作品・商品タイトル（1文字入力からリアルタイム検索・候補表示）</label>
                     <div class="flex gap-2">
-                        <input type="text" id="modal-slot-title" oninput="handleTitleInputChange(this.value, 'grid')" autocomplete="off" placeholder="例: パイレーツ カリビアン / フリーレン / ポテトチップス" class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
+                        <input type="text" id="modal-slot-title" oninput="handleTitleInputChange(this.value, 'grid')" autocomplete="off" placeholder="例: 化物語 / フリーレン / ポテトチップス" class="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-pink-500">
                         <button type="button" onclick="autoFetchImageWithCandidates('grid')" id="btn-autofetch" class="px-3.5 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-white font-bold text-xs rounded-xl shadow-md transition shrink-0 flex items-center gap-1.5">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="btnCandidates">候補一覧</span>
                         </button>
@@ -936,7 +936,7 @@
             }
         };
 
-        // 18-Category Presets
+        // 18-Category Presets (Unified across Anime, Anime Movie, Movie, and Manga)
         const categoryPresets = {
             anime: [
                 "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
@@ -944,14 +944,14 @@
                 "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"
             ],
             animemovie: [
-                "ファンタジー系", "学校・部活系", "青春・友情系", "恋愛系", "ファミリー・キッズ向け",
-                "日常系", "ギャグ・コメディ系", "アクション系", "乗り物・ロボット系", "SF・未来系",
-                "時代劇・歴史系", "ミステリー系", "ホラー系", "音楽・アイドル系", "感動系"
+                "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
+                "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー",
+                "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "ミュージカル・音楽"
             ],
             movie: [
-                "アクション", "冒険", "SF", "ファンタジー", "ホラー",
-                "スリラー", "サスペンス", "ミステリー", "ヒューマンドラマ", "ロマンス",
-                "コメディ", "アニメーション", "ドキュメンタリー", "ミュージカル", "時代劇 / 歴史劇"
+                "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
+                "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー",
+                "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "ミュージカル・音楽"
             ],
             manga: [
                 "最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱",
@@ -970,20 +970,20 @@
                 es: ["Favorito N°1", "Larga Duración", "Juventud", "Romance", "Isekai", "Oscuro/Dramático", "Deportes", "Emotivo", "Acción", "Mecha/SF", "Cocina", "Terror", "Misterio", "Relajante", "Comedia", "Yuri/BL", "Histórico", "Para Adultos (18+)"]
             },
             animemovie: {
-                ja: ["ファンタジー系", "学校・部活系", "青春・友情系", "恋愛系", "ファミリー・キッズ向け", "日常系", "ギャグ・コメディ系", "アクション系", "乗り物・ロボット系", "SF・未来系", "時代劇・歴史系", "ミステリー系", "ホラー系", "音楽・アイドル系", "感動系"],
-                en: ["Fantasy", "School / Club", "Youth / Friendship", "Romance", "Family / Kids", "Slice of Life", "Comedy", "Action", "Vehicles / Mecha", "Sci-Fi / Future", "Historical / Period", "Mystery", "Horror", "Music / Idol", "Emotional"],
-                ko: ["판타지", "학교/부활동", "청춘/우정", "연애/로맨스", "패밀리/키즈", "일상물", "개그/코미디", "액션", "탈것/메카", "SF/미래", "시대극/역사", "미스터리", "공포/호러", "음악/아이돌", "감동물"],
-                th: ["แฟนตาซี", "โรงเรียน/ชมรม", "วัยรุ่น/มิตรภาพ", "โรแมนติก", "ครอบครัว/เด็ก", "ชีวิตประจำวัน", "ตลก/คอมเมดี้", "แอ็กชัน", "ยานพาหนะ/หุ่นยนต์", "ไซไฟ/อนาคต", "ประวัติศาสตร์", "ปริศนา", "สยองขวัญ", "ดนตรี/ไอดอล", "ซาบซึ้งกินใจ"],
-                fr: ["Fantaisie", "École / Club", "Jeunesse / Amitié", "Romance", "Famille / Enfants", "Tranche de Vie", "Comédie", "Action", "Véhicules / Mecha", "SF / Futur", "Historique", "Mystère", "Horreur", "Musique / Idol", "Émouvant"],
-                es: ["Fantasía", "Escuela / Club", "Juventud / Amistad", "Romance", "Familiar / Niños", "Cosas de la Vida", "Comedia", "Acción", "Vehículos / Mecha", "Ciencia Ficción", "Histórico", "Misterio", "Terror", "Música / Idol", "Emotivo"]
+                ja: ["最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱", "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー", "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "ミュージカル・音楽"],
+                en: ["Top Favorite", "Long-Running", "Youth", "Romance", "Isekai", "Dark/Depressing", "Sports", "Emotional", "Action", "Mecha/Sci-Fi", "Gourmet/Cooking", "Horror", "Mystery", "Relaxing/Healing", "Comedy", "Yuri/BL", "Historical", "Musical / Music"],
+                ko: ["최애작", "장수 애니", "청춘", "연애/로맨스", "이세계", "우울/피폐", "스포츠", "감동", "액션", "로봇/SF", "요리/음식", "공포/호러", "미스터리", "힐링", "개그", "백합/BL", "역사/시대극", "뮤지컬/음악"],
+                th: ["เรื่องโปรดที่สุด", "เรื่องยาว", "วัยรุ่น", "โรแมนติก", "ต่างโลก", "ดาร์ก/ดึงดราม่า", "กีฬา", "ซาบซึ้งกินใจ", "แอ็กชัน", "หุ่นยนต์/ไซไฟ", "ทำอาหาร", "สยองขวัญ", "ปริศนา", "ผ่อนคลาย/ฮีลใจ", "ตลก", "ยูริ/BL", "ประวัติศาสตร์", "มิวสิเคิล/ดนตรี"],
+                fr: ["Coup de Cœur", "Longue Série", "Jeunesse", "Romance", "Isekai", "Sombre/Émotionnel", "Sport", "Émouvant", "Action", "Mecha/SF", "Cuisine", "Horreur", "Mystère", "Relaxant", "Comédie", "Yuri/BL", "Historique", "Comédie Musicale / Musique"],
+                es: ["Favorito N°1", "Larga Duración", "Juventud", "Romance", "Isekai", "Oscuro/Dramático", "Deportes", "Emotivo", "Acción", "Mecha/SF", "Cocina", "Terror", "Misterio", "Relajante", "Comedia", "Yuri/BL", "Histórico", "Musical / Música"]
             },
             movie: {
-                ja: ["アクション", "冒険", "SF", "ファンタジー", "ホラー", "スリラー", "サスペンス", "ミステリー", "ヒューマンドラマ", "ロマンス", "コメディ", "アニメーション", "ドキュメンタリー", "ミュージカル", "時代劇 / 歴史劇"],
-                en: ["Action", "Adventure", "Sci-Fi", "Fantasy", "Horror", "Thriller", "Suspense", "Mystery", "Drama", "Romance", "Comedy", "Animation", "Documentary", "Musical", "Historical / Period"],
-                ko: ["액션", "모험", "SF", "판타지", "공포", "스릴러", "서스펜스", "미스터리", "휴먼 드라마", "로맨스", "코미디", "애니메이션", "다큐멘터리", "뮤지컬", "시대극/역사"],
-                th: ["แอ็กชัน", "การผจญภัย", "ไซไฟ", "แฟนตาซี", "สยองขวัญ", "ระทึกขวัญ", "สืบสวน", "ปริศนา", "ดราม่า", "โรแมนติก", "คอมเมดี้", "แอนิเมชัน", "สารคดี", "มิวสิเคิล", "ประวัติศาสตร์"],
-                fr: ["Action", "Aventure", "SF", "Fantaisie", "Horreur", "Thriller", "Suspense", "Mystère", "Drame", "Romance", "Comédie", "Animation", "Documentaire", "Comédie Musicale", "Historique"],
-                es: ["Acción", "Aventura", "Ciencia Ficción", "Fantasía", "Terror", "Thriller", "Suspense", "Misterio", "Drama", "Romance", "Comedia", "Animación", "Documental", "Musical", "Histórico"]
+                ja: ["最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱", "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー", "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "ミュージカル・音楽"],
+                en: ["Top Favorite", "Long-Running", "Youth", "Romance", "Isekai", "Dark/Depressing", "Sports", "Emotional", "Action", "Mecha/Sci-Fi", "Gourmet/Cooking", "Horror", "Mystery", "Relaxing/Healing", "Comedy", "Yuri/BL", "Historical", "Musical / Music"],
+                ko: ["최애작", "장수 애니", "청춘", "연애/로맨스", "이세계", "우울/피폐", "스포츠", "감동", "액션", "로봇/SF", "요리/음식", "공포/호러", "미스터리", "힐링", "개그", "백합/BL", "역사/시대극", "뮤지컬/음악"],
+                th: ["เรื่องโปรดที่สุด", "เรื่องยาว", "วัยรุ่น", "โรแมนติก", "ต่างโลก", "ดาร์ก/ดึงดราม่า", "กีฬา", "ซาบซึ้งกินใจ", "แอ็กชัน", "หุ่นยนต์/ไซไฟ", "ทำอาหาร", "สยองขวัญ", "ปริศนา", "ผ่อนคลาย/ฮีลใจ", "ตลก", "ยูริ/BL", "ประวัติศาสตร์", "มิวสิเคิล/ดนตรี"],
+                fr: ["Coup de Cœur", "Longue Série", "Jeunesse", "Romance", "Isekai", "Sombre/Émotionnel", "Sport", "Émouvant", "Action", "Mecha/SF", "Cuisine", "Horreur", "Mystère", "Relaxant", "Comédie", "Yuri/BL", "Historique", "Comédie Musicale / Musique"],
+                es: ["Favorito N°1", "Larga Duración", "Juventud", "Romance", "Isekai", "Oscuro/Dramático", "Deportes", "Emotivo", "Acción", "Mecha/SF", "Cocina", "Terror", "Misterio", "Relajante", "Comedia", "Yuri/BL", "Histórico", "Musical / Música"]
             },
             manga: {
                 ja: ["最推し", "長寿アニメ", "青春", "恋愛", "異世界", "鬱", "スポーツ", "感動", "アクション", "ロボット・SF", "グルメ・料理", "ホラー", "ミステリー", "癒し系", "ギャグ", "百合・BL", "歴史・時代劇", "大人向け（18禁）"],
@@ -997,6 +997,7 @@
 
         const TMDB_API_KEY = "8d0c3e6ff1d7873e0f3bca170cf60dd9";
         const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
+        const ANILIST_GRAPHQL_ENDPOINT = "https://graphql.anilist.co";
 
         let currentTab = 'anime';
         let currentLang = 'ja';
@@ -1012,8 +1013,8 @@
             subtitle: "",
             tabGrids: {
                 anime: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
-                animemovie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
-                movie: Array.from({length: 15}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                animemovie: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
+                movie: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" })),
                 manga: Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }))
             },
             goods: []
@@ -1192,39 +1193,86 @@
             });
         }
 
+        // Clean AniList GraphQL API Reset & Integration for Anime, Anime Movie, and Manga
+        async function fetchAniListResults(query, mediaType) {
+            const anilistType = (mediaType === 'manga') ? 'MANGA' : 'ANIME';
+            const formatFilter = (mediaType === 'animemovie') ? ', format: MOVIE' : '';
+
+            const graphqlQuery = `
+                query ($search: String, $type: MediaType) {
+                    Page(page: 1, perPage: 6) {
+                        media(search: $search, type: $type${formatFilter}, isAdult: false) {
+                            id
+                            format
+                            seasonYear
+                            title {
+                                native
+                                romaji
+                                english
+                            }
+                            coverImage {
+                                extraLarge
+                                large
+                            }
+                        }
+                    }
+                }
+            `;
+
+            try {
+                const response = await fetch(ANILIST_GRAPHQL_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: graphqlQuery,
+                        variables: {
+                            search: query,
+                            type: anilistType
+                        }
+                    })
+                });
+
+                if (response.ok) {
+                    const json = await response.json();
+                    const mediaList = json?.data?.Page?.media || [];
+                    if (mediaList.length > 0) {
+                        return mediaList.map(m => {
+                            const displayTitle = m.title.native || m.title.romaji || m.title.english || query;
+                            const coverUrl = m.coverImage?.extraLarge || m.coverImage?.large || 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo';
+                            const yearInfo = m.seasonYear ? `${m.seasonYear}` : '';
+                            const formatInfo = m.format ? `${m.format}` : '';
+                            return {
+                                title: displayTitle,
+                                imgUrl: coverUrl,
+                                subtitle: [formatInfo, yearInfo].filter(Boolean).join(' • ') || 'AniList'
+                            };
+                        });
+                    }
+                }
+            } catch (err) {
+                console.warn('AniList API error:', err);
+            }
+
+            return [];
+        }
+
         async function fetchMultiApiResults(query, mediaType) {
             if (!query || !query.trim()) return [];
 
+            // Reset & reload AniList API specifically for anime, animemovie, and manga categories
+            if (mediaType === 'anime' || mediaType === 'animemovie' || mediaType === 'manga') {
+                const anilistResults = await fetchAniListResults(query, mediaType);
+                if (anilistResults.length > 0) {
+                    return anilistResults;
+                }
+            }
+
+            // Fallback / Movie search via TMDb API
             const langCodeMap = { ja: 'ja-JP', en: 'en-US', ko: 'ko-KR', th: 'th-TH', fr: 'fr-FR', es: 'es-ES' };
             const apiLang = langCodeMap[currentLang] || 'ja-JP';
-
-            if (mediaType === 'manga') {
-                try {
-                    const rakutenUrl = `https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&title=${encodeURIComponent(query)}&booksGenreId=001001&hits=5&applicationId=1019383342621213031`;
-                    const res = await fetch(rakutenUrl);
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (data.Items && data.Items.length > 0) {
-                            return data.Items.map(item => {
-                                const coverImg = item.Item.largeImageUrl || item.Item.mediumImageUrl || '';
-                                return {
-                                    title: item.Item.title,
-                                    imgUrl: coverImg ? coverImg.replace('http:', 'https:') : 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
-                                    subtitle: item.Item.author ? `作者: ${item.Item.author}` : 'コミックス表紙'
-                                };
-                            });
-                        }
-                    }
-                } catch (e) {
-                    console.warn('Rakuten Books API error:', e);
-                }
-
-                return [{
-                    title: query,
-                    imgUrl: 'https://placehold.co/400x600/cbd5e1/64748b?text=No+photo',
-                    subtitle: 'コミックス表紙が見つかりませんでした'
-                }];
-            }
 
             try {
                 const tmdbUrl = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_API_KEY}&language=${apiLang}&query=${encodeURIComponent(query)}&page=1&include_adult=false`;
@@ -1485,7 +1533,18 @@
             const saved = localStorage.getItem('oshikatsu_brain_karte_data');
             if (saved) {
                 try {
-                    appData = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    appData = parsed;
+                    if (!appData.tabGrids) appData.tabGrids = {};
+                    ['anime', 'animemovie', 'movie', 'manga'].forEach(tab => {
+                        if (!appData.tabGrids[tab]) {
+                            appData.tabGrids[tab] = Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
+                        } else {
+                            while (appData.tabGrids[tab].length < 18) {
+                                appData.tabGrids[tab].push({ id: appData.tabGrids[tab].length, title: "", imgUrl: "", comment: "" });
+                            }
+                        }
+                    });
                     document.getElementById('cfg-creator').value = appData.creator || '';
                     document.getElementById('cfg-subtitle').value = appData.subtitle || '';
                 } catch (e) {
@@ -1602,8 +1661,7 @@
 
         function clearCurrentGrid() {
             if (confirm('現在のタブのカードをリセットしますか？')) {
-                const totalSlots = (currentTab === 'anime' || currentTab === 'manga') ? 18 : 15;
-                appData.tabGrids[currentTab] = Array.from({length: totalSlots}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
+                appData.tabGrids[currentTab] = Array.from({length: 18}, (_, i) => ({ id: i, title: "", imgUrl: "", comment: "" }));
                 saveToLocalStorage();
                 renderMainGrid();
             }
